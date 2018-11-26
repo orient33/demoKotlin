@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 参考 https://www.jianshu.com/p/55eae30d133c -->
+    <paths>
+        <files-path
+            name="apk"
+            path="apk/" />
+        <!--物理路径相当于Environment.getExternalStorageDirectory() + /path/。 -->
+        <external-files-path
+            name="apk"
+            path="apk" />
+    </paths>
+</resources>

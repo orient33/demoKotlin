@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Demo</string>
+    <string name="title_activity_s" translatable="false">SActivity</string>
+    <string name="version_info">版本: %1$s 版本号: %2$d targetSDK:%3$d</string>
+
+    <string name="get_location">获取位置信息</string>
+    <string name="gnss">GNSS</string>
+
+    <string name="room_add">添加</string>
+    <string name="room_remove">删除</string>
+    <string name="room_remove_all">删除全部</string>
+</resources>
