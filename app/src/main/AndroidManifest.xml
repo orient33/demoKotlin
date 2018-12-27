@@ -1,60 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.example.kotlindemo">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.kotlindemo">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission
-            android:name="android.permission.INSTALL_LOCATION_PROVIDER"
-            tools:ignore="ProtectedPermissions"/>
+        android:name="android.permission.INSTALL_LOCATION_PROVIDER"
+        tools:ignore="ProtectedPermissions" />
 
     <application
-            android:name="com.example.App"
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme"
-            tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-
+        android:name="com.example.App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
-                android:name=".MainActivity"
-                android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-                android:launchMode="singleTask"
-                android:resizeableActivity="true"
-                android:screenOrientation="nosensor"
-                android:supportsPictureInPicture="true"
-                android:theme="@style/Theme.AppCompat.NoActionBar"
-                tools:targetApi="n">
+            android:name=".MainActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:launchMode="singleTask"
+            android:resizeableActivity="true"
+            android:screenOrientation="nosensor"
+            android:supportsPictureInPicture="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            tools:targetApi="n">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.APP_MUSIC"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_MUSIC" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <provider
-                android:name="android.support.v4.content.FileProvider"
-                android:authorities="com.example.dundo.demo"
-                android:exported="false"
-                android:grantUriPermissions="true">
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.dundo.demo"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/filepath"/>
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepath" />
         </provider>
 
         <!-- 双开app -->
         <activity
-                android:name="com.example.multiApp.MultiAppActivity"
-                android:label="@string/multi_app_name">
+            android:name="com.example.multiApp.MultiAppActivity"
+            android:label="@string/multi_app_name">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN"/> -->
@@ -62,22 +60,32 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-                android:name="com.example.multiApp.EnableProfileActivity"
-                android:label="@string/multi_app_name"/>
+            android:name="com.example.multiApp.EnableProfileActivity"
+            android:label="@string/multi_app_name" />
 
         <receiver
-                android:name="com.example.multiApp.BasicDeviceAdminReceiver"
-                android:description="@string/multi_app_name"
-                android:label="@string/multi_app_name"
-                android:permission="android.permission.BIND_DEVICE_ADMIN">
+            android:name="com.example.multiApp.BasicDeviceAdminReceiver"
+            android:description="@string/multi_app_name"
+            android:label="@string/multi_app_name"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
-                    android:name="android.app.device_admin"
-                    android:resource="@xml/basic_device_admin_receiver"/>
+                android:name="android.app.device_admin"
+                android:resource="@xml/basic_device_admin_receiver" />
 
             <intent-filter>
-                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
         <!-- end 双开app -->
+        <activity
+            android:name="com.example.dialog.DialogActivity"
+            android:theme="@style/Theme.AppCompat.Dialog" />
+
+        <service
+            android:name="com.example.bind.MService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":remote" />
     </application>
+
 </manifest>

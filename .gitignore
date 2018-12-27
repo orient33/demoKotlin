@@ -69,5 +69,6 @@ fastlane/readme.md
 /.idea
 .DS_Store
 /build
+*/build
 /captures
 .externalNativeBuild

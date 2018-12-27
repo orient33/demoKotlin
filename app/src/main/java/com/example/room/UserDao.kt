@@ -11,6 +11,9 @@ interface UserDao {
     @Query("SELECT * FROM user")
     fun getAll(): List<User>
 
+    @Query("SELECT id FROM user WHERE uuid = :uuid")
+    fun get(uuid: String): Int
+
     @Query("SELECT * FROM user")
     fun getAllLiveData(): LiveData<List<User>>
 

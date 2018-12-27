@@ -1,16 +1,20 @@
 package com.example.kotlindemo
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.dialog.DialogActivity
 import kotlinx.android.synthetic.main.fragment_test.*
+import java.util.*
 
 /**
  * @author dundongfang on 2018/4/26.
@@ -38,26 +42,28 @@ class ListFragment : Fragment() {
 //        lm.infinite = true
         rv.layoutManager = lm
         rv.adapter = adapter
-        rv.addItemDecoration(Divider(4))
+        rv.addItemDecoration(Divider())
+        val ith = ItemTouchHelper(ItemMoveCallback().setAdapter(adapter))
+        ith.attachToRecyclerView(rv)
 
-        val lis: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                Log.d(
-                    "df", "first :" + lm.findFirstVisibleItemPosition()
-                            + ". last: " + lm.findLastVisibleItemPosition()
-                )
-            }
-        }
         Log.d("df", "add lis")
-        rv.addOnScrollListener(lis)
+//        rv.addOnScrollListener(lis)
+//        val i = Intent()
+//        i.setClassName(rv.context, DialogActivity::class.java.name)
+//        startActivity(i)
     }
 
-    internal class Adapter : RecyclerView.Adapter<VH>() {
+    class Adapter : RecyclerView.Adapter<VH>() {
         private val list = mutableListOf<Int>()
         fun setData(d: List<Int>) {
             list.clear()
             list.addAll(d)
             notifyDataSetChanged()
+        }
+
+        fun swap(a: Int, b: Int) {
+            Collections.swap(list, a, b)
+            notifyItemMoved(a, b)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {

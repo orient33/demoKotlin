@@ -34,6 +34,7 @@ dependencies {
     implementation "com.android.support:design:28.0.0"
     implementation "com.android.support:support-annotations:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
+    implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
     implementation "android.arch.persistence.room:runtime:$lifecycle_version"
     kapt "android.arch.persistence.room:compiler:$lifecycle_version"
     // ViewModel and LiveData
@@ -49,6 +50,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.8.0'
 
     testImplementation 'junit:junit:4.12'
+    testImplementation "android.arch.persistence.room:testing:$lifecycle_version"
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

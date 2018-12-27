@@ -16,7 +16,7 @@ import java.util.*
 
 //import org.jetbrains.anko.toast
 
-class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener{
+class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     lateinit var fm: FragmentManager
     lateinit var focus: MusicFocusManager
@@ -24,19 +24,20 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val list = listOf(
-                Pair("列表", "com.example.kotlindemo.ListFragment"),
-                Pair("谷歌Tink加密", "com.example.tink.TinkFragment"),
-                Pair("地理位置", "com.example.location.LocationFragment"),
-                Pair("U盘", "com.example.usb.UsbFragment"),
-                Pair("ROOM数据库", "com.example.room.RoomFragment"),
-                Pair("画中画", "com.example.pip.PiPFragment"))
+            Pair("列表", "com.example.kotlindemo.ListFragment"),
+            Pair("谷歌Tink加密", "com.example.tink.TinkFragment"),
+            Pair("地理位置", "com.example.location.LocationFragment"),
+            Pair("U盘", "com.example.usb.UsbFragment"),
+            Pair("ROOM数据库", "com.example.room.RoomFragment"),
+            Pair("画中画", "com.example.pip.PiPFragment")
+        )
         listView.onItemClickListener = this
         fm = supportFragmentManager
         focus = MusicFocusManager(this)
         listView.adapter = object : BaseAdapter() {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
                 val tv = (convertView
-                        ?: layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false)) as TextView
+                    ?: layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false)) as TextView
                 tv.text = list[position].first
                 tv.tag = list[position]
                 return tv
@@ -96,11 +97,13 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener{
         if (view == null) return
         val tag = (view.tag as Pair<*, *>).second
         fm.beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right,
-                        R.anim.slide_in_right, R.anim.slide_out_right)
-                .add(R.id.container, Fragment.instantiate(this, tag as String))
-                .addToBackStack(tag)
-                .commit()
+            .setCustomAnimations(
+                R.anim.slide_in_right, R.anim.slide_out_right,
+                R.anim.slide_in_right, R.anim.slide_out_right
+            )
+            .add(R.id.container, Fragment.instantiate(this, tag as String))
+            .addToBackStack(tag)
+            .commit()
     }
 
     override fun onBackPressed() {
