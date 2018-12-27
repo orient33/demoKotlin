@@ -9,4 +9,22 @@
     <string name="room_add">添加</string>
     <string name="room_remove">删除</string>
     <string name="room_remove_all">删除全部</string>
+
+    <!-- AppListFragment -->
+    <string name="final_color">最终匹配颜色</string>
+    <array name="filter">
+        <item>用户应用</item>
+        <item>系统应用</item>
+        <item>所有应用</item>
+        <!--item>~个税申报~</item-->
+    </array>
+
+    <!-- 12w 申报 -->
+    <array name="title_12w">
+        <item>月份</item>
+        <item>工资总额</item>
+        <item>三险一金</item>
+        <item>个税</item>
+        <item>净收入</item>
+    </array>
 </resources>

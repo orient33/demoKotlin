@@ -16,7 +16,7 @@ import java.util.*
 
 //import org.jetbrains.anko.toast
 
-class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
+class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActivity {
 
     lateinit var fm: FragmentManager
     lateinit var focus: MusicFocusManager
@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
             Pair("地理位置", "com.example.location.LocationFragment"),
             Pair("U盘", "com.example.usb.UsbFragment"),
             Pair("ROOM数据库", "com.example.room.RoomFragment"),
+            Pair("App列表", "com.example.appinfo.AppListFragment"),
             Pair("画中画", "com.example.pip.PiPFragment")
         )
         listView.onItemClickListener = this
@@ -96,13 +97,18 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (view == null) return
         val tag = (view.tag as Pair<*, *>).second
+        val fragment = Fragment.instantiate(this, tag as String)
+        toFragment(fragment)
+    }
+
+    override fun toFragment(fragment: Fragment) {
         fm.beginTransaction()
             .setCustomAnimations(
                 R.anim.slide_in_right, R.anim.slide_out_right,
                 R.anim.slide_in_right, R.anim.slide_out_right
             )
-            .add(R.id.container, Fragment.instantiate(this, tag as String))
-            .addToBackStack(tag)
+            .add(R.id.container, fragment)
+            .addToBackStack(fragment.toString())
             .commit()
     }
 
