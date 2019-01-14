@@ -32,8 +32,21 @@ class RxJavaDemo {
             e.onComplete();
 //            e.onError(new RuntimeException("----------"));
         });
+
         String v = o.blockingFirst();
         log("block first : " + v);
+
+        Flowable.create(e -> {
+            e.onNext("a");
+            e.onNext("b");
+            e.onComplete();
+        }, BackpressureStrategy.LATEST)
+                .subscribe(r -> {
+                    log(" consumer " + r);
+                })
+                .isDisposed();
+
+
         Single<String> s = Single.<String>create(emitter -> {
             try {
                 synchronized (emitter) {

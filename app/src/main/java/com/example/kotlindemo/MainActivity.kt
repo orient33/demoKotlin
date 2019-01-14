@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActi
         setContentView(R.layout.activity_main)
         val list = listOf(
             Pair("列表", "com.example.kotlindemo.ListFragment"),
+            Pair("列表2", "com.example.kotlindemo.ListFragment2"),
             Pair("谷歌Tink加密", "com.example.tink.TinkFragment"),
             Pair("地理位置", "com.example.location.LocationFragment"),
             Pair("U盘", "com.example.usb.UsbFragment"),
