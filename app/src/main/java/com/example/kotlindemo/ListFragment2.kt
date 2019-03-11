@@ -1,9 +1,11 @@
 package com.example.kotlindemo
 
 import android.os.Bundle
+import android.support.annotation.Keep
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,36 +14,35 @@ import kotlinx.android.synthetic.main.fragment_test.*
 import java.util.*
 
 /**
+ * 竖向的RecyclerView. 外层套了一个下拉控件 SwipeRefreshLayout.
  * @author dundongfang on 2018/4/26.
  */
+@Keep
 class ListFragment2 : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_list2, container, false)
     }
 
-    val data = listOf(
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9,// 10, 11, 12, 13, 14, 15,
-        10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
-    )
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = Adapter()
-        adapter.setData(data)
+        adapter.setData()
         val lm = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
         rv.layoutManager = lm
         rv.adapter = adapter
         rv.addItemDecoration(Divider())
+        ItemTouchHelper(ItemMoveCallback().setAdapter(adapter)).attachToRecyclerView(rv)
     }
 
-    class Adapter : RecyclerView.Adapter<VH>() {
+    class Adapter : RecyclerView.Adapter<VH>(), SwapAdapter {
         private val list = mutableListOf<Int>()
-        fun setData(d: List<Int>) {
-            list.clear()
-            list.addAll(d)
+        fun setData() {
+            for (i in 0..20) {
+                list.add(i)
+            }
             notifyDataSetChanged()
         }
 
-        fun swap(a: Int, b: Int) {
+        override fun swap(a: Int, b: Int) {
             Collections.swap(list, a, b)
             notifyItemMoved(a, b)
         }

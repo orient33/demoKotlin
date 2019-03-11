@@ -3,6 +3,8 @@
     <string name="title_activity_s" translatable="false">SActivity</string>
     <string name="version_info">版本: %1$s 版本号: %2$d targetSDK:%3$d</string>
 
+    <string name="list1">普通RecyclerView</string>
+    <string name="list2">嵌套了横向左拉刷新控件的RecyclerView</string>
     <string name="get_location">获取位置信息</string>
     <string name="gnss">GNSS</string>
 

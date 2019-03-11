@@ -8,7 +8,7 @@ import java.util.Locale;
 public class MyClass {
     public static void main(String[] args) {
         //test RxJava
-        RxJavaDemo.test();
+//        RxJavaDemo.test();
 //        GsonTest.test();
         log(String.format(Locale.CHINA, "%.2f,%.2f", 39.2222d, 116.3333d));
 //        StringCodeUtil.test();
@@ -19,7 +19,8 @@ public class MyClass {
 //        } catch (FileNotFoundException e) {
 //            e.printStackTrace();
 //        }
-        List<String> strList = Arrays.asList("a", "b", "c", "d", "e", "f", "g");
+        List<String> strList = Arrays.asList("0a", "1b", "2c", "3d", "4e", "5f", "6g");
+//        Collections.swap(strList, 6, 4);
         moveItem(6, 4, strList);
         log("after move: " + list2String(strList));
         log("run completed ! ");

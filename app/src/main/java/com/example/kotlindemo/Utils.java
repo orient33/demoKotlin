@@ -1,12 +1,17 @@
 package com.example.kotlindemo;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
@@ -16,6 +21,8 @@ import android.util.TypedValue;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 //import com.androidnetworking.AndroidNetworking;
 //import com.androidnetworking.common.Priority;
@@ -115,5 +122,24 @@ public class Utils {
     public static int dp2px(Context c, int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 c.getResources().getDisplayMetrics());
+    }
+
+    public static void sendNotification(Context context, String title, String msg) {
+        NotificationManager nm = (NotificationManager) context.getSystemService(
+                NOTIFICATION_SERVICE);
+        String channelId = "upgrade";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelName = "升级11";
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+            nm.createNotificationChannel(channel);
+        }
+        Notification notification = new NotificationCompat.Builder(context, "upgrade")
+                .setContentTitle(title)
+                .setContentText(msg)
+                .setSmallIcon(R.mipmap.ic_launcher)
+//                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                .setAutoCancel(true)
+                .build();
+        nm.notify(title.hashCode(), notification);
     }
 }

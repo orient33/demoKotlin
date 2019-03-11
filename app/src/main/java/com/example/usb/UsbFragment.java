@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbManager;
+import android.media.AudioDeviceInfo;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
@@ -74,9 +77,13 @@ public class UsbFragment extends Fragment {
         IntentFilter filter2 = new IntentFilter(UsbManager.ACTION_USB_DEVICE_DETACHED);
         filter2.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter2.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+        filter2.addAction(Intent.ACTION_HEADSET_PLUG);//耳机插拔
+        filter2.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);//耳机拔出? 包括蓝牙么
         mContext.registerReceiver(usbReceiver, filter2);
         appendMsg("\n 已注册相关广播. " + (filter.countActions() + filter2.countActions()));
         loadUSBfile();
+        //load headset state.
+        loadHeadset();
     }
 
     @Override
@@ -107,7 +114,16 @@ public class UsbFragment extends Fragment {
     private final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(intent.getAction())) {
+            if (Intent.ACTION_HEADSET_PLUG.equals(intent.getAction())) {
+                if (intent.hasExtra("state")) {
+                    int state = intent.getIntExtra("state", 0);
+                    appendMsg("headset :" + (state == 1 ? "插入耳机" : "拔出耳机"));
+                } else {
+                    appendMsg("headset action. no extra!");
+                }
+            } else if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())){
+                appendMsg("ACTION_AUDIO_BECOMING_NOISY,");
+            } else if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(intent.getAction())) {
                 appendMsg("U盘已插入..");
                 scanDelay();
             } else {
@@ -140,6 +156,19 @@ public class UsbFragment extends Fragment {
                     .append(",description=").append(sv.getDescription(c));//即为label,英文可正常读取.
         }
         appendMsg(sb.toString());
+    }
+
+    private void loadHeadset() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            AudioManager am = mContext.getSystemService(AudioManager.class);
+            appendMsg("耳机连接状态 : " + am.isWiredHeadsetOn());
+
+            AudioDeviceInfo[] adi = am.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
+            for (AudioDeviceInfo ai : adi) {
+                appendMsg(String.format(Locale.CHINA, "--info: id=%d, pro=%s,type=%d ,sink=%b,source=%b",
+                        ai.getId(), ai.getProductName(), ai.getType(), ai.isSink(), ai.isSource()));
+            }
+        }
     }
 
     File mUsb;

@@ -16,8 +16,8 @@ import android.view.ViewGroup;
 import com.example.TopUtilKt;
 
 // 类似 SwipeRefreshLayout但时横向的. Listener待完善.
-public class SepLayout extends ViewGroup {
-    private static final String TAG = "SepLayout";
+public class PullRefreshLayout extends ViewGroup {
+    private static final String TAG = "PullRefreshLayout";
     private static final int MAX_SCROLL = 300;  // mLeft 滑动做大距离
     private static final int STOP_SCROLL = 200; // mLeft 大于此值,认为开始刷新..且此处有动画.
     private final NestedScrollingParentHelper mParentHelper;
@@ -26,7 +26,7 @@ public class SepLayout extends ViewGroup {
     private View mLeft; // left loading View
     private View mTarget;// RecyclerView or ListView
 
-    public SepLayout(Context context, AttributeSet attrs) {
+    public PullRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mParentHelper = new NestedScrollingParentHelper(this);
 //        mLeft = new CircleImageView(getContext(), Color.RED);
