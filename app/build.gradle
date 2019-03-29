@@ -47,11 +47,14 @@ dependencies {
     implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'com.google.crypto.tink:tink-android:1.2.0'
+    implementation 'com.google.crypto.tink:tink-android:1.2.2'
     implementation 'rouchuan.viewpagerlayoutmanager:viewpagerlayoutmanager:2.0.18'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     kapt 'com.github.bumptech.glide:compiler:4.8.0'
     implementation 'com.airbnb.android:lottie:2.7.0'
+    //方便调试,查看数据库的.可以在PC上直接浏览db,,不需要每次pull出来文件.
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
     testImplementation 'junit:junit:4.12'
     testImplementation "android.arch.persistence.room:testing:$lifecycle_version"
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

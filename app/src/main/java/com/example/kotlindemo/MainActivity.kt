@@ -19,13 +19,13 @@ import java.util.*
 class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActivity {
 
     lateinit var fm: FragmentManager
-    lateinit var focus: MusicFocusManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val list = listOf(
             Pair("列表", "com.example.kotlindemo.ListFragment"),
             Pair("列表2", "com.example.kotlindemo.ListFragment2"),
+            Pair("设备信息", "com.example.device.DeviceInfo"),
             Pair("ListAdapter测试", "com.example.list_adapter_verify.ListAdapterTestFragment"),
             Pair("SoundPool", "com.example.soundpool.SoundFragment"),
             Pair("谷歌Tink加密", "com.example.tink.TinkFragment"),
@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActi
         )
         listView.onItemClickListener = this
         fm = supportFragmentManager
-        focus = MusicFocusManager(this)
         listView.adapter = object : BaseAdapter() {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
                 val tv = (convertView
