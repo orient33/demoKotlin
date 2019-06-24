@@ -77,15 +77,6 @@
             </intent-filter>
         </receiver>
         <!-- end 双开app -->
-        <activity
-            android:name="com.example.dialog.DialogActivity"
-            android:theme="@style/Theme.AppCompat.Dialog" />
-
-        <service
-            android:name="com.example.bind.MService"
-            android:enabled="true"
-            android:exported="false"
-            android:process=":remote" />
     </application>
 
 </manifest>

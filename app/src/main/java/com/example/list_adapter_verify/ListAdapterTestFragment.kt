@@ -1,6 +1,7 @@
 package com.example.list_adapter_verify
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -45,17 +46,19 @@ class ListAdapterTestFragment : Fragment() {
         }
         val bg = RecognizeBgDrawable(Color.RED)
         bg.setBounds(0, 0, 1000, 200)
-        imageDemo.setImageDrawable(bg)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            imageDemo.setImageDrawable(bg)
+        }
         seek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                val width = bg.bounds.right
-                bg.setBounds(
-                    0, 0,
-                    if (width == 1000) 1400 else 1000, 200
-                )
+//                val width = bg.bounds.right
+//                bg.setBounds(
+//                    0, 0,
+//                    if (width == 1000) 1400 else 1000, 200
+//                )
             }
 
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {

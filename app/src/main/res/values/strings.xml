@@ -18,9 +18,28 @@
         <item>用户应用</item>
         <item>系统应用</item>
         <item>所有应用</item>
+        <item>更新的系统app</item>
         <!--item>~个税申报~</item-->
     </array>
 
+    <array name="xfmode">
+        <item>Clear</item>
+        <item>Src</item>
+        <item>Dst</item>
+        <item>SrcOver</item>
+        <item>DstOver</item>
+        <item>SrcIn</item>
+        <item>DstIn</item>
+        <item>SrcOut</item>
+        <item>DstOut</item>
+        <item>SrcATop</item>
+        <item>DstATop</item>
+        <item>Xor</item>
+        <item>DarKen</item>
+        <item>Lighten</item>
+        <item>Multiply</item>
+        <item>Screen</item>
+    </array>
     <!-- 12w 申报 -->
     <array name="title_12w">
         <item>月份</item>

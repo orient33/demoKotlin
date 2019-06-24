@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.example.displayCut
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,8 +22,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActi
     lateinit var fm: FragmentManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        displayCut(this)
         setContentView(R.layout.activity_main)
         val list = listOf(
+            Pair("临时测试页", "com.example.kotlindemo.TestFragment"),
             Pair("列表", "com.example.kotlindemo.ListFragment"),
             Pair("列表2", "com.example.kotlindemo.ListFragment2"),
             Pair("设备信息", "com.example.device.DeviceInfo"),
@@ -32,7 +35,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActi
             Pair("地理位置", "com.example.location.LocationFragment"),
             Pair("U盘", "com.example.usb.UsbFragment"),
             Pair("ROOM数据库", "com.example.room.RoomFragment"),
-            Pair("App列表", "com.example.appinfo.AppListFragment"),
+            Pair("LauncherApp列表", "com.example.appinfo.AppListFragment"),
+            Pair("应用列表", "com.example.appinfo.PkgListFragment"),
             Pair("画中画", "com.example.pip.PiPFragment")
         )
         listView.onItemClickListener = this

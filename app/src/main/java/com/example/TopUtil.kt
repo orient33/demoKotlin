@@ -1,7 +1,11 @@
 package com.example
 
+import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageInfo
+import android.os.Build
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Toast
 import java.util.*
 
@@ -38,6 +42,20 @@ fun <T> moveItem(sourceIndex: Int, targetIndex: Int, list: List<T>) {
         Collections.rotate(list.subList(targetIndex, sourceIndex + 1), 1)
     }
 }
+
+fun displayCut(activity: Activity) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        val attr = activity.window.attributes
+        attr.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+        activity.window.attributes = attr
+    }
+}
+
+
+val PackageInfo.appName: String
+    get() {
+        return applicationInfo.loadLabel(App.sContext.packageManager).toString()
+    }
 /**
  * Extensions
  *

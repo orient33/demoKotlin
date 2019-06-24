@@ -1,5 +1,6 @@
 package com.example;
 
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -14,15 +15,15 @@ public class MyClass {
 //        StringCodeUtil.test();
 //        TimerTest.test();
 
-//        try {
-//            ProcessLogCount.count();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-        List<String> strList = Arrays.asList("0a", "1b", "2c", "3d", "4e", "5f", "6g");
+        try {
+            ProcessLogCount2.count();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+//        List<String> strList = Arrays.asList("0a", "1b", "2c", "3d", "4e", "5f", "6g");
 //        Collections.swap(strList, 6, 4);
-        moveItem(6, 4, strList);
-        log("after move: " + list2String(strList));
+//        moveItem(6, 4, strList);
+//        log("after move: " + list2String(strList));
         log("run completed ! ");
     }
 

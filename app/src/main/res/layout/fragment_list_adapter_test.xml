@@ -46,7 +46,7 @@
         android:id="@+id/random"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="100dp"
+        android:minHeight="50dp"
         android:text="随机产生数据"
         android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
