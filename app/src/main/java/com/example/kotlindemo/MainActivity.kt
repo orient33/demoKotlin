@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActi
         displayCut(this)
         setContentView(R.layout.activity_main)
         val list = listOf(
+            Pair("录屏Demo", "com.example.screenrecoder.RecorderFragment"),
             Pair("临时测试页", "com.example.kotlindemo.TestFragment"),
             Pair("列表", "com.example.kotlindemo.ListFragment"),
             Pair("列表2", "com.example.kotlindemo.ListFragment2"),
@@ -127,16 +128,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActi
         } else {
             super.onBackPressed()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-//        focus.requestAudioFocus()
-    }
-
-    override fun onPause() {
-        super.onPause()
-//        focus.abandonAudioFocusRequest()
     }
 
     private fun log(msg: String) {

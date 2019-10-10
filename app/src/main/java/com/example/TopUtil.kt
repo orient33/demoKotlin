@@ -7,6 +7,10 @@ import android.os.Build
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
@@ -19,6 +23,19 @@ fun log(msg: String, tag: String = "df") {
 
 fun toast(context: Context, msg: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(context, msg, duration).show()
+}
+
+fun formatTimeNow() = formatTime(System.currentTimeMillis())
+fun formatTime(time: Long): String {
+    val yy = "yyyy-MM-dd HH:mm:ss"
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val ldt = LocalDateTime.from(LocalTime.now())
+        val dtf = DateTimeFormatter.ofPattern(yy)
+        ldt.format(dtf)
+    } else {
+        val sdf = SimpleDateFormat(yy, Locale.CHINA)
+        sdf.format(Date(time))
+    }
 }
 
 fun <T> list2String(list: List<T>?): String {
@@ -46,7 +63,8 @@ fun <T> moveItem(sourceIndex: Int, targetIndex: Int, list: List<T>) {
 fun displayCut(activity: Activity) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
         val attr = activity.window.attributes
-        attr.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+        attr.layoutInDisplayCutoutMode =
+            WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         activity.window.attributes = attr
     }
 }
