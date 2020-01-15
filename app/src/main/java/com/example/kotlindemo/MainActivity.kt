@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActi
                 Pair("设备信息", "com.example.device.DeviceInfo"),
                 Pair("ListAdapter测试", "com.example.list_adapter_verify.ListAdapterTestFragment"),
                 Pair("SoundPool", "com.example.soundpool.SoundFragment"),
-                Pair("谷歌Tink加密", "com.example.tink.TinkFragment"),
+                Pair("谷歌Tinker加密", "com.example.tink.TinkerFragment"),
                 Pair("地理位置", "com.example.location.LocationFragment"),
                 Pair("U盘", "com.example.usb.UsbFragment"),
                 Pair("ROOM数据库", "com.example.room.RoomFragment"),

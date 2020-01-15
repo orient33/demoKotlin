@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer;
+import androidx.lifecycle.Observer
 import com.example.App
 import com.example.kotlindemo.R
 import com.example.log
@@ -16,10 +16,10 @@ import com.example.toast
 import kotlinx.android.synthetic.main.fragment_room.*
 import java.util.*
 
-class RoomFragment : androidx.fragment.app.Fragment(), View.OnClickListener {
+class RoomFragment : Fragment(), View.OnClickListener {
     private lateinit var dao: UserDao
     private lateinit var adapter: AdapterUser
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         dao = AppDb.getIns(App.sContext).userDao()
     }
@@ -38,8 +38,7 @@ class RoomFragment : androidx.fragment.app.Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = AdapterUser(view.context)
-        listView.layoutManager =
-            androidx.recyclerview.widget.LinearLayoutManager(view.context)
+        listView.layoutManager =LinearLayoutManager(view.context)
         listView.adapter = adapter
         add.setOnClickListener(this)
         remove.setOnClickListener(this)
