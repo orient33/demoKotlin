@@ -9,9 +9,9 @@ import android.location.*
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
-import android.support.annotation.RequiresApi
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_location.*
  * 定位fragment示例. LocationManager
  *
  */
-class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
+class LocationFragment : androidx.fragment.app.Fragment(), OnClickListener, View.OnLongClickListener {
     private lateinit var lm: LocationManager
     private val permissions = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

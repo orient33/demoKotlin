@@ -1,14 +1,14 @@
 package com.example.room
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.arch.lifecycle.Observer;
+import androidx.lifecycle.Observer;
 import com.example.App
 import com.example.kotlindemo.R
 import com.example.log
@@ -16,7 +16,7 @@ import com.example.toast
 import kotlinx.android.synthetic.main.fragment_room.*
 import java.util.*
 
-class RoomFragment : Fragment(), View.OnClickListener {
+class RoomFragment : androidx.fragment.app.Fragment(), View.OnClickListener {
     private lateinit var dao: UserDao
     private lateinit var adapter: AdapterUser
     override fun onAttach(context: Context?) {
@@ -38,7 +38,8 @@ class RoomFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = AdapterUser(view.context)
-        listView.layoutManager = LinearLayoutManager(view.context)
+        listView.layoutManager =
+            androidx.recyclerview.widget.LinearLayoutManager(view.context)
         listView.adapter = adapter
         add.setOnClickListener(this)
         remove.setOnClickListener(this)

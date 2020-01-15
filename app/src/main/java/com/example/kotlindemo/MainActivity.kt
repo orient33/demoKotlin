@@ -1,9 +1,9 @@
 package com.example.kotlindemo
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Pair
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +19,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActivity {
 
-    lateinit var fm: FragmentManager
+    lateinit var fm: androidx.fragment.app.FragmentManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         displayCut(this)
@@ -104,11 +104,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActi
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (view == null) return
         val tag = (view.tag as Pair<*, *>).second
-        val fragment = Fragment.instantiate(this, tag as String)
+        val fragment = androidx.fragment.app.Fragment.instantiate(this, tag as String)
         toFragment(fragment)
     }
 
-    override fun toFragment(fragment: Fragment) {
+    override fun toFragment(fragment: androidx.fragment.app.Fragment) {
         fm.beginTransaction()
             .setCustomAnimations(
                 R.anim.slide_in_right, R.anim.slide_out_right,

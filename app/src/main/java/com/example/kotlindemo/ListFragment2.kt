@@ -1,11 +1,11 @@
 package com.example.kotlindemo
 
 import android.os.Bundle
-import android.support.annotation.Keep
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.annotation.Keep
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +18,7 @@ import java.util.*
  * @author dundongfang on 2018/4/26.
  */
 @Keep
-class ListFragment2 : Fragment() {
+class ListFragment2 : androidx.fragment.app.Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_list2, container, false)
     }
@@ -26,14 +26,18 @@ class ListFragment2 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = Adapter()
         adapter.setData()
-        val lm = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
+        val lm = androidx.recyclerview.widget.LinearLayoutManager(
+            view.context,
+            androidx.recyclerview.widget.LinearLayoutManager.VERTICAL,
+            false
+        )
         rv.layoutManager = lm
         rv.adapter = adapter
         rv.addItemDecoration(Divider())
         ItemTouchHelper(ItemMoveCallback().setAdapter(adapter)).attachToRecyclerView(rv)
     }
 
-    class Adapter : RecyclerView.Adapter<VH>(), SwapAdapter {
+    class Adapter : androidx.recyclerview.widget.RecyclerView.Adapter<VH>(), SwapAdapter {
         private val list = mutableListOf<Int>()
         fun setData() {
             for (i in 0..20) {
@@ -64,7 +68,7 @@ class ListFragment2 : Fragment() {
         }
     }
 
-    class VH(v: View) : RecyclerView.ViewHolder(v) {
+    class VH(v: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(v) {
         val text: TextView = v as TextView
     }
 

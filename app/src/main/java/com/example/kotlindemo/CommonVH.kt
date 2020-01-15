@@ -1,9 +1,9 @@
 package com.example.kotlindemo
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 
-class CommonVH(v: View) : RecyclerView.ViewHolder(v) {
+class CommonVH(v: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(v) {
     val text = v as TextView
 }

@@ -3,9 +3,14 @@ package com.example.myNestScroll;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.*;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.*;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.Px;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.*;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -26,9 +31,7 @@ import com.example.TopUtilKt;
  */
 public class SwipeRefreshLayoutHor extends ViewGroup implements NestedScrollingParent, NestedScrollingChild {
 
-    @VisibleForTesting
     static final int CIRCLE_DIAMETER = 40;
-    @VisibleForTesting
     static final int CIRCLE_DIAMETER_LARGE = 56;
 
     private static final String LOG_TAG = SwipeRefreshLayoutHor.class.getSimpleName();

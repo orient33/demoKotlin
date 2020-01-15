@@ -8,7 +8,7 @@ import android.content.Intent
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +20,7 @@ import pub.devrel.easypermissions.EasyPermissions
 const val PERMISSION_REQ = 1
 const val RECORD_REQUEST_CODE = 10
 
-class RecorderFragment : Fragment(), View.OnClickListener {
+class RecorderFragment : androidx.fragment.app.Fragment(), View.OnClickListener {
     var recorderTool: RecorderTool? = null
     override fun onCreateView(
         inflater: LayoutInflater,

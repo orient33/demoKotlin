@@ -9,8 +9,8 @@ import android.graphics.RadialGradient;
 import android.graphics.Shader;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.animation.Animation;
 
@@ -21,7 +21,7 @@ import android.view.animation.Animation;
  * platforms.
  */
 @SuppressLint("ViewConstructor")
-class CircleImageView extends android.support.v7.widget.AppCompatImageView {
+class CircleImageView extends androidx.appcompat.widget.AppCompatImageView {
 
     private static final int KEY_SHADOW_COLOR = 0x1E000000;
     private static final int FILL_SHADOW_COLOR = 0x3D000000;

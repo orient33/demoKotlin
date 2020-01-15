@@ -3,7 +3,7 @@ package com.example.widget;
 import android.content.Context;
 import android.graphics.*;
 import android.os.Build;
-import android.support.v7.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
 public class RoundImageView extends AppCompatImageView {

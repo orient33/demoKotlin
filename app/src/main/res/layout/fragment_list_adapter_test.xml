@@ -37,7 +37,7 @@
         android:text="用ListAdapter的RecyclerView"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="100dp" />

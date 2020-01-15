@@ -10,7 +10,7 @@ import android.media.ImageReader
 import android.media.MediaRecorder
 import android.media.projection.MediaProjection
 import android.os.Environment
-import android.support.annotation.Keep
+import androidx.annotation.Keep
 import com.example.formatTime
 import com.example.formatTimeNow
 import com.example.log

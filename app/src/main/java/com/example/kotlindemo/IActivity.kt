@@ -1,7 +1,7 @@
 package com.example.kotlindemo
 
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 
 interface IActivity {
-    fun toFragment(fragment: Fragment)
+    fun toFragment(fragment: androidx.fragment.app.Fragment)
 }

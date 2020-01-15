@@ -3,29 +3,26 @@ package com.example.appinfo;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.LauncherActivityInfo;
 import android.content.pm.LauncherApps;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.example.TopUtilKt;
 import com.example.kotlindemo.IActivity;
-import com.example.kotlindemo.MainActivity;
 import com.example.kotlindemo.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 // https://github.com/orient33/getAppInfo
 

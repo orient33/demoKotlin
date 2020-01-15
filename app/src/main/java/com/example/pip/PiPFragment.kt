@@ -15,9 +15,9 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.BaseColumns
 import android.provider.MediaStore
-import android.support.annotation.RequiresApi
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import android.text.SpannableString
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.TextUtils
@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.fragment_pip.*
 import java.io.File
 import java.util.*
 
-class PiPFragment : Fragment(), AdapterView.OnItemClickListener, IFragment {
+class PiPFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickListener, IFragment {
     private val TAG: String = PiPFragment::class.java.simpleName
 
     private var width: Int = 1920

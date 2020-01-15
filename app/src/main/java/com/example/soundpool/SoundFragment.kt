@@ -17,7 +17,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.storage.StorageManager
 import android.os.storage.StorageVolume
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -36,7 +36,7 @@ import java.util.TimeZone
  * @author dundongfang on 2018/9/28.
  */
 @TargetApi(21)
-class SoundFragment : Fragment() {
+class SoundFragment : androidx.fragment.app.Fragment() {
 
     private var soundId = -1
     private val wheelSound = SoundPool.Builder()

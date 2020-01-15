@@ -1,11 +1,11 @@
 package com.example.kotlindemo
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
-class CommonAdapter<T> : RecyclerView.Adapter<CommonVH>() {
+class CommonAdapter<T> : androidx.recyclerview.widget.RecyclerView.Adapter<CommonVH>() {
     val list = mutableListOf<T>()
     fun setData(data: List<T>) {
         list.clear()

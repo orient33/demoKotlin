@@ -1,7 +1,7 @@
 package com.example.kotlindemo
 
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.text.TextUtils
 import android.util.Log
 import com.example.log
@@ -19,7 +19,7 @@ class ItemMoveCallback : ItemTouchHelper.SimpleCallback(
     }
 
     var lastMove = ""
-    override fun onMove(v: RecyclerView, h1: RecyclerView.ViewHolder, h2: RecyclerView.ViewHolder): Boolean {
+    override fun onMove(v: androidx.recyclerview.widget.RecyclerView, h1: androidx.recyclerview.widget.RecyclerView.ViewHolder, h2: androidx.recyclerview.widget.RecyclerView.ViewHolder): Boolean {
         val move = when {
             h1.adapterPosition > edge -> false
             h2.adapterPosition > edge -> false
@@ -41,7 +41,7 @@ class ItemMoveCallback : ItemTouchHelper.SimpleCallback(
         return move
     }
 
-    override fun getMovementFlags(recyclerView: RecyclerView, h: RecyclerView.ViewHolder): Int {
+    override fun getMovementFlags(recyclerView: androidx.recyclerview.widget.RecyclerView, h: androidx.recyclerview.widget.RecyclerView.ViewHolder): Int {
         return when {
             h.adapterPosition > edge -> ItemTouchHelper.Callback.makeMovementFlags(0, 0)
             h.adapterPosition == edge -> ItemTouchHelper.Callback.makeMovementFlags(ItemTouchHelper.START, 0)
@@ -53,7 +53,7 @@ class ItemMoveCallback : ItemTouchHelper.SimpleCallback(
     }
 
     //当长按 item 刚开始拖曳的时候调用
-    override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+    override fun onSelectedChanged(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
         log(
             "onSelectChanged. op position: ${viewHolder?.adapterPosition}" +
@@ -67,21 +67,21 @@ class ItemMoveCallback : ItemTouchHelper.SimpleCallback(
     }
 
     //当完成拖曳手指松开的时候调用
-    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+    override fun clearView(recyclerView: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
         log("clearView. ${viewHolder.adapterPosition}")
     }
 
     override fun canDropOver(
-        recyclerView: RecyclerView,
-        current: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
+        recyclerView: androidx.recyclerview.widget.RecyclerView,
+        current: androidx.recyclerview.widget.RecyclerView.ViewHolder,
+        target: androidx.recyclerview.widget.RecyclerView.ViewHolder
     ): Boolean {
 //        log("can drop over ${current.adapterPosition} ${target.adapterPosition}")
         return target.adapterPosition <= edge
     }
 
-    override fun onSwiped(p0: RecyclerView.ViewHolder, p: Int) {
+    override fun onSwiped(p0: androidx.recyclerview.widget.RecyclerView.ViewHolder, p: Int) {
         log("onSwiped. $p")
     }
 }

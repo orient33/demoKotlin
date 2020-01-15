@@ -1,6 +1,6 @@
 package com.example.room
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 
 
 class ItemDiff : DiffUtil.ItemCallback<User>() {

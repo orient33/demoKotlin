@@ -3,11 +3,11 @@ package com.example.kotlindemo
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.Keep
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.annotation.Keep
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_test.*
  * @author dundongfang on 2018/4/26.
  */
 @Keep
-class ListFragment : Fragment() {
+class ListFragment : androidx.fragment.app.Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_test, container, false)
     }
@@ -48,9 +48,13 @@ class ListFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView(context: Context, v: RecyclerView) {
+    private fun setupRecyclerView(context: Context, v: androidx.recyclerview.widget.RecyclerView) {
         val adapter = Adapter(25)
-        val lm = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val lm = androidx.recyclerview.widget.LinearLayoutManager(
+            context,
+            androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
+            false
+        )
         v.layoutManager = lm
         v.adapter = adapter
         v.addItemDecoration(Divider())
@@ -58,7 +62,7 @@ class ListFragment : Fragment() {
             .attachToRecyclerView(v)
     }
 
-    class Adapter(size: Int) : RecyclerView.Adapter<VH>(), SwapAdapter {
+    class Adapter(size: Int) : androidx.recyclerview.widget.RecyclerView.Adapter<VH>(), SwapAdapter {
         private val list = mutableListOf<Int>()
 
         init {
@@ -96,7 +100,7 @@ class ListFragment : Fragment() {
         }
     }
 
-    class VH(v: View) : RecyclerView.ViewHolder(v) {
+    class VH(v: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(v) {
         val text: TextView = v as TextView
     }
 
