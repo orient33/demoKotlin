@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission
         android:name="android.permission.INSTALL_LOCATION_PROVIDER"
         tools:ignore="ProtectedPermissions" />
@@ -39,6 +40,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="com.example.screenrecoder.RecorderService"
+            android:enabled="true"
+            android:foregroundServiceType="mediaProjection|mediaPlayback|dataSync" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -77,7 +83,6 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
-        <!-- end 双开app -->
     </application>
 
 </manifest>

@@ -15,28 +15,29 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.BaseColumns
 import android.provider.MediaStore
-import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
 import android.text.SpannableString
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.util.Rational
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import com.bumptech.glide.Glide
-import com.example.kotlindemo.IFragment
+import android.widget.AdapterView
+import android.widget.BaseAdapter
+import android.widget.MediaController
+import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import com.example.kotlindemo.R
+import com.example.log
 import com.example.toast
 import kotlinx.android.synthetic.main.fragment_pip.*
 import java.io.File
 import java.util.*
 
-class PiPFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickListener, IFragment {
+class PiPFragment : Fragment(), AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener{
     private val TAG: String = PiPFragment::class.java.simpleName
 
     private var width: Int = 1920
@@ -51,6 +52,7 @@ class PiPFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLis
         super.onViewCreated(view, savedInstanceState)
         videoView.setMediaController(MediaController(context))
         listView.onItemClickListener = this
+        listView.onItemLongClickListener = this
         listView.adapter = object : BaseAdapter() {
             @SuppressLint("SetTextI18n")
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -63,11 +65,17 @@ class PiPFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLis
                 ss.setSpan(ForegroundColorSpan(Color.GREEN), 0, vi.path.length, SPAN_EXCLUSIVE_EXCLUSIVE)
                 textView.append(ss)
                 tv.tag = data[position]
-                val imageView = tv.findViewById<ImageView>(R.id.image)
-                imageView.setImageResource(0)
-                if (TextUtils.isEmpty(vi.imgPath)) return tv
-//                Log.d("df", "load " + vi.imgPath)
-                Glide.with(view.context).load(File(vi.imgPath)).into(imageView)
+                //:TODO 经常无访问权限 在10.0上
+//                val imageView = tv.findViewById<ImageView>(R.id.image)
+//                if (TextUtils.isEmpty(vi.path)){
+//                    if (TextUtils.isEmpty(vi.imgPath)){
+//                        imageView.setImageResource(R.mipmap.ic_launcher_round)
+//                    } else {
+//                        Glide.with(view.context).load(vi.imgPath).into(imageView)
+//                    }
+//                } else {
+//                    Glide.with(view.context).load(vi.path).into(imageView)
+//                }
                 return tv
             }
 
@@ -90,7 +98,7 @@ class PiPFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLis
         height = dm.heightPixels
     }
 
-    override fun onBackPressed(): Boolean {
+    private fun enterPip(): Boolean {
         return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
             if (videoView.visibility != View.VISIBLE) {
                 return false
@@ -127,6 +135,12 @@ class PiPFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLis
         videoView.start()
     }
 
+    override fun onItemLongClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long): Boolean {
+        onItemClick(parent,view, position, id)
+        enterPip()
+        return true
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == 1) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -145,7 +159,9 @@ class PiPFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLis
             if (ActivityCompat.checkSelfPermission(act, permission) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(permission), 1)
                 return
-            } // else . has permission. do work.
+            } else {
+                log("has permission : $permission")
+            }
         }
 //        val cr = activity?.contentResolver
 //        if (cr == null) return

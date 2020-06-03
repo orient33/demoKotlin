@@ -1,14 +1,14 @@
 package com.example.room
 
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.App
 import com.example.kotlindemo.R
 import com.example.log
@@ -26,8 +26,8 @@ class RoomFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val model = ViewModelProviders.of(this).get(UserViewModel::class.java)
-        model.getUsers().observe(this, Observer<List<User>> { users ->
+        val model = ViewModelProvider(this).get(UserViewModel::class.java)
+        model.getUsers().observe(viewLifecycleOwner, Observer<List<User>> { users ->
             updateUI(users)
         })
     }
@@ -38,7 +38,7 @@ class RoomFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = AdapterUser(view.context)
-        listView.layoutManager =LinearLayoutManager(view.context)
+        listView.layoutManager = LinearLayoutManager(view.context)
         listView.adapter = adapter
         add.setOnClickListener(this)
         remove.setOnClickListener(this)

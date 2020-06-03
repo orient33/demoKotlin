@@ -2,6 +2,7 @@ package com.example
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.os.Build
 import android.util.Log
@@ -9,7 +10,6 @@ import android.view.WindowManager
 import android.widget.Toast
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -29,7 +29,7 @@ fun formatTimeNow() = formatTime(System.currentTimeMillis())
 fun formatTime(time: Long): String {
     val yy = "yyyy-MM-dd HH:mm:ss"
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val ldt = LocalDateTime.from(LocalTime.now())
+        val ldt = LocalDateTime.now()//(LocalTime.now())
         val dtf = DateTimeFormatter.ofPattern(yy)
         ldt.format(dtf)
     } else {
@@ -69,6 +69,13 @@ fun displayCut(activity: Activity) {
     }
 }
 
+fun startService(context: Context, intent: Intent) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        context.startForegroundService(intent)
+    } else {
+        context.startService(intent)
+    }
+}
 
 val PackageInfo.appName: String
     get() {

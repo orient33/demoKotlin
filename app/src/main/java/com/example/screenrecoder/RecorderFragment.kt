@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.kotlindemo.R
+import com.example.startService
 import kotlinx.android.synthetic.main.fragment_recorder.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -20,8 +21,7 @@ import pub.devrel.easypermissions.EasyPermissions
 const val PERMISSION_REQ = 1
 const val RECORD_REQUEST_CODE = 10
 
-class RecorderFragment : androidx.fragment.app.Fragment(), View.OnClickListener {
-    var recorderTool: RecorderTool? = null
+class RecorderFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,15 +35,15 @@ class RecorderFragment : androidx.fragment.app.Fragment(), View.OnClickListener 
         stop.setOnClickListener(this)
     }
 
-    override fun onDestroyView() {
-        recorderTool?.stop()
-        super.onDestroyView()
-    }
-
     override fun onClick(v: View) {
         when (v.id) {
             R.id.start -> startRecorder()
-            R.id.stop -> stopRecorder()
+            R.id.stop -> requireContext().stopService(
+                Intent(
+                    requireContext(),
+                    RecorderService::class.java
+                )
+            )
         }
     }
 
@@ -60,12 +60,12 @@ class RecorderFragment : androidx.fragment.app.Fragment(), View.OnClickListener 
         super.onActivityResult(requestCode, resultCode, data)
         if (Build.VERSION.SDK_INT < 21) return
         if (requestCode == RECORD_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            val pm =
-                context?.getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-            val mp = pm.getMediaProjection(resultCode, data)
-            val localContext = context ?: return
-            recorderTool = RecorderTool(localContext.applicationContext, mp)
-            recorderTool?.startVideo()
+            startService(requireContext(), Intent(requireContext(), RecorderService::class.java)
+                .apply {
+                    action = ACTION_START
+                    putExtra(EXTRA_CODE, resultCode)
+                    putExtra(EXTRA_DATA, data)
+                })
         }
     }
 
@@ -98,7 +98,4 @@ class RecorderFragment : androidx.fragment.app.Fragment(), View.OnClickListener 
         }
     }
 
-    private fun stopRecorder() {
-        recorderTool?.stop()
-    }
 }

@@ -7,6 +7,7 @@
     <string name="list2">嵌套了横向左拉刷新控件的RecyclerView</string>
     <string name="get_location">获取位置信息</string>
     <string name="gnss">GNSS</string>
+    <string name="screen_recorder">录屏中…</string>
 
     <string name="room_add">添加</string>
     <string name="room_remove">删除</string>
