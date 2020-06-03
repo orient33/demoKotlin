@@ -8,15 +8,22 @@ import android.content.pm.LauncherActivityInfo;
 import android.content.pm.LauncherApps;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.*;
 import com.example.TopUtilKt;
 import com.example.kotlindemo.IActivity;
 import com.example.kotlindemo.R;
@@ -28,9 +35,6 @@ import java.util.List;
 
 @SuppressLint("NewApi")
 public class AppListFragment extends Fragment {
-    private static final int FLAG_DATA = 0;
-    private static final int FLAG_SYSTEM = 1;
-    private static final int FLAG_ALL = 2;
     View root;
     ListView mListView;
     Spinner mSpinner;
@@ -63,10 +67,6 @@ public class AppListFragment extends Fragment {
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 2) {
-                    doFlag(position);
-                    return;
-                }
                 aa.setFilter(position);
                 TopUtilKt.toast(view.getContext(), "onItemSelected=" + position, 0);
             }
@@ -171,20 +171,29 @@ public class AppListFragment extends Fragment {
             context = ctx;
             dm = ctx.getResources().getDisplayMetrics().densityDpi;
             all = d;
-            setFilter(FLAG_DATA);
+            setFilter(0);
         }
 
+        // 0用户, 1系统, 2所有, 3系统更新
         void setFilter(int flag) {
-            if (flag < 0 || flag > 2) throw new RuntimeException("Flags error. ");
             data.clear();
-            if (flag == FLAG_ALL) {
+            if (flag == 2) {
                 data.addAll(all);
             } else {
                 for (LauncherActivityInfo item : all) {
-                    int flags = item.getApplicationInfo().flags & ApplicationInfo.FLAG_SYSTEM;
-                    if ((flags != 0 && flag == FLAG_SYSTEM) ||
-                            (flags == 0 && flag == FLAG_DATA)) {
-                        data.add(item);
+                    if (flag == 1) {
+                        if ((item.getApplicationInfo().flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
+                            data.add(item);
+                        }
+                    } else if (flag == 0) {
+                        if ((item.getApplicationInfo().flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                            data.add(item);
+                        }
+                    } else if (flag == 3) {
+                        if ((item.getApplicationInfo().flags
+                                & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
+                            data.add(item);
+                        }
                     }
                 }
             }

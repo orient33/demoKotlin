@@ -13,17 +13,21 @@ import com.example.kotlindemo.R
 import com.example.kotlindemo.RecognizeBgDrawable
 import kotlinx.android.synthetic.main.fragment_list_adapter_test.*
 
-class ListAdapterTestFragment : androidx.fragment.app.Fragment() {
+class ListAdapterTestFragment : Fragment() {
     private var adapter: MyListAdapter? = null
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_list_adapter_test, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = MyListAdapter()
-        rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+        rv.layoutManager = LinearLayoutManager(
             view.context,
-            androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
+            LinearLayoutManager.HORIZONTAL,
             false
         )
         rv.adapter = adapter
@@ -75,11 +79,11 @@ class ListAdapterTestFragment : androidx.fragment.app.Fragment() {
 
     private fun doRandom() {
         adapter?.commitList(mutableListOf(Pair(876, ""), Pair(900, ""), Pair(905, "")))
-        val list2 = mutableListOf(
-            Pair(876, "北京文艺"), Pair(900, "音乐之声"), Pair(905, "环球资讯")
-        )
-        adapter?.commitList(list2)
-        adapter?.commitList(list2)
-        adapter?.commitList(list2)
+        rv.postDelayed({
+            val list2 = mutableListOf(
+                Pair(876, "北京文艺"), Pair(900, "音乐之声"), Pair(905, "环球资讯")
+            )
+            adapter?.commitList(list2)
+        }, 1000)
     }
 }

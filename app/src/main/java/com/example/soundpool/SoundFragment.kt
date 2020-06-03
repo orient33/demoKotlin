@@ -43,9 +43,9 @@ class SoundFragment : androidx.fragment.app.Fragment() {
         .setMaxStreams(1)
         .setAudioAttributes(
             AudioAttributes.Builder()
-//                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-//                .setUsage(AudioAttributes.USAGE_MEDIA)
-                .setLegacyStreamType(11)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+//                .setLegacyStreamType(11)
                 .build()
         )
         .build()

@@ -13,7 +13,7 @@ import com.example.kotlindemo.CommonAdapter
 import com.example.kotlindemo.R
 import kotlinx.android.synthetic.main.fragment_list2.*
 
-class DeviceInfo : androidx.fragment.app.Fragment() {
+class DeviceInfo : Fragment() {
     lateinit var adapter: CommonAdapter<String>
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_list2, container, false)
@@ -21,8 +21,7 @@ class DeviceInfo : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = CommonAdapter()
-        rv.layoutManager =
-            androidx.recyclerview.widget.LinearLayoutManager(context)
+        rv.layoutManager = LinearLayoutManager(context)
         rv.adapter = adapter
     }
 

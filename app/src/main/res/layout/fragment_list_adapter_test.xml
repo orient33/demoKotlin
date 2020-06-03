@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:clickable="true"
-    android:focusable="true"
     android:orientation="vertical"
     tools:ignore="HardcodedText">
 
@@ -14,6 +12,7 @@
         android:id="@+id/lottie"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
         android:background="#000"
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
@@ -26,7 +25,7 @@
 
     <ImageView
         android:id="@+id/imageDemo"
-        android:layout_width="1900dp"
+        android:layout_width="match_parent"
         android:layout_height="20dp"
         android:background="#aaa"
         android:contentDescription="@null" />
@@ -34,13 +33,15 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:text="用ListAdapter的RecyclerView"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="wrap_content"
+        android:paddingVertical="20dp" />
 
     <Button
         android:id="@+id/random"
@@ -49,6 +50,5 @@
         android:minHeight="50dp"
         android:text="随机产生数据"
         android:textAppearance="@style/TextAppearance.AppCompat.Button" />
-
 
 </LinearLayout>

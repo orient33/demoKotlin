@@ -5,16 +5,20 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical">
 
-    <com.example.widget.RoundImageView
-        android:id="@+id/riv"
+    <ImageView
+        android:id="@+id/imageV"
         android:layout_width="match_parent"
-        android:scaleType="fitXY"
-        android:layout_height="300dp"
-        android:src="@drawable/asset" />
+        android:layout_height="400dp"
+        android:scaleType="centerInside" />
 
-    <Spinner
-        android:id="@+id/spinner"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:entries="@array/xfmode" />
+        android:layout_height="wrap_content"
+        android:text="当前壁纸compment" />
+
+    <TextView
+        android:id="@+id/cn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
 </LinearLayout>

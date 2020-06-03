@@ -5,12 +5,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class MyClass {
     public static void main(String[] args) {
         //test RxJava
 //        RxJavaDemo.test();
 //        GsonTest.test();
+        log("1小时等于 多少 毫秒ms"+ TimeUnit.HOURS.toMillis(1));
         log(String.format(Locale.CHINA, "%.2f,%.2f", 39.2222d, 116.3333d));
 //        StringCodeUtil.test();
 //        TimerTest.test();

@@ -1,13 +1,20 @@
 package com.example.kotlindemo
 
-import android.graphics.PorterDuff
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.annotation.Keep
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
+import androidx.annotation.Keep
+import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.example.log
 import com.example.toast
 import kotlinx.android.synthetic.main.test_round_image_view.*
 
@@ -16,45 +23,48 @@ import kotlinx.android.synthetic.main.test_round_image_view.*
  */
 @Keep
 class TestFragment : androidx.fragment.app.Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.test_round_image_view, container, false)
     }
 
+    @SuppressLint("StaticFieldLeak")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                setXfMode(position)
-            }
+//        val wm  = WallpaperManager.getInstance(requireContext())
+//        wm.setBitmap(1)
+        if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            Glide.with(requireActivity())
+                .load("/storage/emulated/0/MIUI/.videowallpaper/巍峨雪山_&_78637290-1135-411d-b85b-38cb100889dd")
+                .placeholder(R.drawable.asset)
+                .addListener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        log("onLoadFailed. ")
+                        return true
+                    }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                toast(parent!!.context, "onNothingSelected!")
-            }
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        log("onResourceReady..")
+                        return true
+                    }
 
+                })
+                .into(imageV)
+        } else{
+            toast(requireContext(),"没权限")
         }
-    }
-
-    private fun setXfMode(position: Int) {
-        val mode: PorterDuff.Mode
-        when (position) {
-            0 -> mode = PorterDuff.Mode.CLEAR
-            1 -> mode = PorterDuff.Mode.SRC
-            2 -> mode = PorterDuff.Mode.DST
-            3 -> mode = PorterDuff.Mode.SRC_OVER
-            4 -> mode = PorterDuff.Mode.DST_OVER
-            5 -> mode = PorterDuff.Mode.SRC_IN
-            6 -> mode = PorterDuff.Mode.DST_IN
-            7 -> mode = PorterDuff.Mode.SRC_OUT
-            8 -> mode = PorterDuff.Mode.DST_OUT
-            9 -> mode = PorterDuff.Mode.SRC_ATOP
-            10 -> mode = PorterDuff.Mode.DST_ATOP
-            11 -> mode = PorterDuff.Mode.XOR
-            12 -> mode = PorterDuff.Mode.DARKEN
-            13 -> mode = PorterDuff.Mode.LIGHTEN
-            14 -> mode = PorterDuff.Mode.MULTIPLY
-            15 -> mode = PorterDuff.Mode.SCREEN
-            else -> throw IllegalArgumentException("position error. $position")
-        }
-        toast(view!!.context, "select $position , Mode $mode")
-        riv.setXfMode(mode)
     }
 }

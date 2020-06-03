@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.location.*
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.Looper
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_location.*
  * 定位fragment示例. LocationManager
  *
  */
-class LocationFragment : androidx.fragment.app.Fragment(), OnClickListener, View.OnLongClickListener {
+class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
     private lateinit var lm: LocationManager
     private val permissions = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -47,12 +48,12 @@ class LocationFragment : androidx.fragment.app.Fragment(), OnClickListener, View
         }
     }
 
-    override fun onLongClick(v: View?): Boolean {
+    override fun onLongClick(v: View): Boolean {
         reqLocation(true)
         return true
     }
 
-    override fun onClick(v: View?) {
+    override fun onClick(v: View) {
         val c = context ?: return
         val act = activity ?: return
         if (ActivityCompat.checkSelfPermission(c, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
@@ -87,41 +88,50 @@ class LocationFragment : androidx.fragment.app.Fragment(), OnClickListener, View
         locationInfo.append("最后位置: ${location2String(location)}\n")
         lm.requestSingleUpdate(it, /*8000L, 1000f,*/ ll, Looper.getMainLooper())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            lm.registerGnssNavigationMessageCallback(gnssCb)
+            lm.registerGnssNavigationMessageCallback(gnssCb, Handler())
         }
     }
 
     private val ll = object : LocationListener {
         override fun onLocationChanged(location: Location?) {
-            log("111")
+            log("111 onLocationChanged")
             locationInfo.append("onLocationChanged. ${location2String(location)}\n\n")
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-            log("222")
+            log("222 onStatusChanged")
             locationInfo.append("onStateChange $provider, $status, $extras")
         }
 
         override fun onProviderEnabled(provider: String?) {
-            log("333")
+            log("333 onProviderEnabled")
             locationInfo.append("onProviderEnable. $provider")
         }
 
         override fun onProviderDisabled(provider: String?) {
-            log("444")
+            log("444 onProviderDisabled")
             locationInfo.append("onProviderDisable. $provider")
         }
     }
 
-    private val gnssCb = @RequiresApi(Build.VERSION_CODES.N)
-    object : GnssNavigationMessage.Callback() {
+    @RequiresApi(Build.VERSION_CODES.N)
+    private val gnssCb = object : GnssNavigationMessage.Callback() {
 
         override fun onStatusChanged(status: Int) {
-            gnssInfo.append("\nonStatusChanged $status")
+            gnssInfo.append("\nonStatusChanged ${state2String(status)}")
         }
 
         override fun onGnssNavigationMessageReceived(event: GnssNavigationMessage?) {
             gnssInfo.append("\nGnss message: $event")
+        }
+    }
+
+    private fun state2String(status:Int):String{
+        return when(status){
+            GnssNavigationMessage.Callback.STATUS_READY -> "ready"
+            GnssNavigationMessage.Callback.STATUS_NOT_SUPPORTED ->"not support"
+            GnssNavigationMessage.Callback.STATUS_LOCATION_DISABLED -> "location disabled"
+            else -> "unknown"
         }
     }
 
@@ -133,7 +143,6 @@ class LocationFragment : androidx.fragment.app.Fragment(), OnClickListener, View
         if (loc.hasAccuracy())
             s.append(String.format("精确度 %.0f (米)", loc.accuracy))
         return s.toString()
-
     }
 
     override fun onStop() {

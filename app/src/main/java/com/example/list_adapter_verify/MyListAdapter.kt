@@ -10,7 +10,7 @@ import com.example.*
 import com.example.kotlindemo.ListFragment
 import com.example.kotlindemo.R
 
-class MyListAdapter constructor() :
+class MyListAdapter :
     ListAdapter<Pair<Int, String>, ListFragment.VH>(
         object : DiffUtil.ItemCallback<Pair<Int, String>>() {
             override fun areItemsTheSame(a: Pair<Int, String>, b: Pair<Int, String>): Boolean {

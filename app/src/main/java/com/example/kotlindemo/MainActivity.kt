@@ -1,71 +1,28 @@
 package com.example.kotlindemo
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.appcompat.app.AppCompatActivity
-import android.util.Pair
-import android.view.View
-import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.BaseAdapter
-import android.widget.TextView
-import com.example.coordinator.*
 import com.example.displayCut
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.log
 import java.text.SimpleDateFormat
 import java.util.*
 
 //import org.jetbrains.anko.toast
 
-class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActivity {
+private const val fragmentId = android.R.id.content
+
+class MainActivity : AppCompatActivity(), IActivity {
 
     lateinit var fm: FragmentManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         displayCut(this)
-        setContentView(R.layout.activity_main)
-        val list = listOf(
-                Pair("录屏Demo", "com.example.screenrecoder.RecorderFragment"),
-                Pair("临时测试页", "com.example.kotlindemo.TestFragment"),
-                Pair("列表", "com.example.kotlindemo.ListFragment"),
-                Pair("列表2", "com.example.kotlindemo.ListFragment2"),
-                Pair("设备信息", "com.example.device.DeviceInfo"),
-                Pair("ListAdapter测试", "com.example.list_adapter_verify.ListAdapterTestFragment"),
-                Pair("SoundPool", "com.example.soundpool.SoundFragment"),
-                Pair("谷歌Tinker加密", "com.example.tink.TinkerFragment"),
-                Pair("地理位置", "com.example.location.LocationFragment"),
-                Pair("U盘", "com.example.usb.UsbFragment"),
-                Pair("ROOM数据库", "com.example.room.RoomFragment"),
-                Pair("LauncherApp列表", "com.example.appinfo.AppListFragment"),
-                Pair("应用列表", "com.example.appinfo.PkgListFragment"),
-                Pair("Coordinator1", CoordinatorFragment2::class.java.name),
-                Pair("画中画", "com.example.pip.PiPFragment")
-        )
-        listView.onItemClickListener = this
         fm = supportFragmentManager
-        listView.adapter = object : BaseAdapter() {
-            override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                val tv = (convertView
-                        ?: layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false)) as TextView
-                tv.text = list[position].first
-                tv.tag = list[position]
-                return tv
-            }
-
-            override fun getItem(position: Int): Pair<String, String> {
-                return list[position]
-            }
-
-            override fun getItemId(position: Int): Long {
-                return position.toLong()
-            }
-
-            override fun getCount(): Int {
-                return list.size
-            }
+        if (savedInstanceState == null) {
+            fm.beginTransaction().replace(fragmentId, HomeFragment()).commit()
         }
-//        setContentView(R.layout.activity_main)
 //        val pi = packageManager.getPackageInfo(packageName, 0)
 //        val ai = packageManager.getApplicationInfo(packageName, 0)
 //        textView.text = getString(R.string.version_info, pi.versionName, pi.versionCode, ai.targetSdkVersion)
@@ -103,26 +60,24 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActi
 // current time : 2018-08-14 10:24:34, Tue Aug 14 18:24:34 GMT+08:00 2018,  parse date Tue Aug 14 17:00:00 GMT+08:00 2018
     }
 
-    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if (view == null) return
-        val tag = (view.tag as Pair<*, *>).second
-        val fragment = Fragment.instantiate(this, tag as String)
+    override fun toFragment(fragmentName: String) {
+        val fragment = fm.fragmentFactory.instantiate(classLoader, fragmentName)
         toFragment(fragment)
     }
 
     override fun toFragment(fragment: Fragment) {
         fm.beginTransaction()
-                .setCustomAnimations(
-                        R.anim.slide_in_right, R.anim.slide_out_right,
-                        R.anim.slide_in_right, R.anim.slide_out_right
-                )
-                .add(R.id.container, fragment)
-                .addToBackStack(fragment.toString())
-                .commit()
+            .setCustomAnimations(
+                R.anim.slide_in_right, R.anim.slide_out_left,
+                R.anim.slide_in_left, R.anim.slide_out_right
+            )
+            .replace(fragmentId, fragment)
+            .addToBackStack(fragment.toString())
+            .commit()
     }
 
     override fun onBackPressed() {
-        val f = fm.findFragmentById(R.id.container)
+        val f = fm.findFragmentById(fragmentId)
         if (f is IFragment) {
             if (!f.onBackPressed()) {
                 super.onBackPressed()
@@ -130,13 +85,5 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemClickListener, IActi
         } else {
             super.onBackPressed()
         }
-    }
-
-    private fun log(msg: String) {
-        android.util.Log.e("df", "Demo.MultiAppActivity] $msg")
-//        msg.javaClass
-//        msg::class.java
-//        msg::class.javaObjectType
-//        msg::class.javaPrimitiveType
     }
 }

@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    android:clickable="true"
     tools:ignore="KeyboardInaccessibleWidget">
 
     <com.google.android.material.appbar.AppBarLayout
