@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.os.Build
+import android.os.Looper
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
@@ -23,6 +24,10 @@ fun log(msg: String, tag: String = "df") {
 
 fun toast(context: Context, msg: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(context, msg, duration).show()
+}
+
+fun isMainThread(): Boolean {
+    return Looper.getMainLooper() == Looper.myLooper()
 }
 
 fun formatTimeNow() = formatTime(System.currentTimeMillis())

@@ -3,15 +3,19 @@ package com.example.screenrecoder
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity.RESULT_OK
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import com.example.kotlindemo.R
 import com.example.startService
 import kotlinx.android.synthetic.main.fragment_recorder.*
@@ -21,7 +25,23 @@ import pub.devrel.easypermissions.EasyPermissions
 const val PERMISSION_REQ = 1
 const val RECORD_REQUEST_CODE = 10
 
-class RecorderFragment : Fragment(), View.OnClickListener {
+@RequiresApi(21)
+class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
+
+    private val mServiceConnection = object : ServiceConnection {
+        override fun onServiceDisconnected(name: ComponentName?) {
+            onMessageInfo("service disconnected!\n")
+            mService = null
+        }
+
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            onMessageInfo("service connected!\n")
+            mService = (service as RecorderService.LocalBinder).getService()
+            mService!!.setListener(this@RecorderFragment)
+        }
+    }
+    private var mService: RecorderService? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,17 +53,39 @@ class RecorderFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         start.setOnClickListener(this)
         stop.setOnClickListener(this)
+        val context = requireContext()
+        context.bindService(
+            Intent(context, RecorderService::class.java),
+            mServiceConnection,
+            Context.BIND_AUTO_CREATE
+        )
+    }
+
+    override fun onDestroyView() {
+        if (mService != null) context?.unbindService(mServiceConnection)
+        mService?.setListener(null)
+        if (start.isEnabled) { //若当前不在录屏,则停了service..否则,保持service运行以便录屏.
+            context?.stopService(Intent(requireContext(), RecorderService::class.java))
+        }
+        super.onDestroyView()
+    }
+
+    override fun onMessageInfo(msg: String) {
+        text.text = msg
+    }
+
+    override fun onStateChange(recording: Boolean, mediaCodec: Boolean) {
+        start.isEnabled = !recording
+        stop.isEnabled = recording
+        spinner.setSelection(if (mediaCodec) 0 else 1)
     }
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.start -> startRecorder()
-            R.id.stop -> requireContext().stopService(
-                Intent(
-                    requireContext(),
-                    RecorderService::class.java
-                )
-            )
+            R.id.stop -> {
+                mService?.stopRecording()
+            }
         }
     }
 
@@ -63,9 +105,11 @@ class RecorderFragment : Fragment(), View.OnClickListener {
             startService(requireContext(), Intent(requireContext(), RecorderService::class.java)
                 .apply {
                     action = ACTION_START
+                    putExtra(EXTRA_CODEC, spinner.selectedItemPosition == 0)
                     putExtra(EXTRA_CODE, resultCode)
                     putExtra(EXTRA_DATA, data)
                 })
+
         }
     }
 

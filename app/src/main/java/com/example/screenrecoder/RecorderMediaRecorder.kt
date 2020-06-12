@@ -5,27 +5,30 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.ImageFormat
 import android.hardware.display.DisplayManager
-import android.hardware.display.VirtualDisplay
 import android.media.ImageReader
 import android.media.MediaRecorder
 import android.media.projection.MediaProjection
 import android.os.Environment
-import androidx.annotation.Keep
 import com.example.formatTime
 import com.example.formatTimeNow
 import com.example.log
-import com.example.toast
 import java.io.File
 import java.io.FileOutputStream
 
+/**
+ * 使用MediaRecorder实现 录制屏幕.(包含声音Audio)
+ * 参考android CTS  : AOSP/cts/tests/tests/media/src/android/media/cts/EncoderXX.java
+ * https://developer.android.google.cn/reference/android/media/MediaCodec
+ */
 @TargetApi(21)
-class RecorderTool(
+class RecorderMediaRecorder(
     private val context: Context,
-    private val mediaProjection: MediaProjection
-) : ImageReader.OnImageAvailableListener {
+    private val mediaProjection: MediaProjection,
+    private val listener: IRecorder.IMessageInfo
+) : ImageReader.OnImageAvailableListener, IRecorder {
     private val mMediaRecorder = MediaRecorder()
-    var mVirtualDisplay: VirtualDisplay? = null
-    var mRecording = false
+    private var mFilePath = ""
+    private var mRecording = false
     private val mMpCallback = object : MediaProjection.Callback() {
         override fun onStop() {
             log("MediaProjection.Callback.onStop()!!")
@@ -33,17 +36,17 @@ class RecorderTool(
     }
 
     //可配置 分辨率,画质(比特率),帧数,
-    fun startVideo(): Boolean {
+    override fun startVideo(): Boolean {
         val dm = context.resources.displayMetrics
         val width = dm.widthPixels
         val height = dm.heightPixels
         try {
             configMediaRecorder(width, height)
-        } catch (e: Exception) { // :TODO 部分手机 prepare失败. 换ExoPlayer?
-            toast(context, "prepare fail.${e.toString()}")
+        } catch (e: Exception) {
+            listener.onMessage("prepare. fail $e")
             return false
         }
-        mVirtualDisplay = mediaProjection.createVirtualDisplay(
+        mediaProjection.createVirtualDisplay(
             "video.", width, height, dm.densityDpi,
             DisplayManager.VIRTUAL_DISPLAY_FLAG_OWN_CONTENT_ONLY or DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC,
             mMediaRecorder.surface, null, null
@@ -61,6 +64,7 @@ class RecorderTool(
         val dir = context.getExternalFilesDir(null)//Environment.DIRECTORY_MOVIES)
         //Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)
         val path = dir!!.path + File.separator + "video-${formatTimeNow()}.mp4"
+        mFilePath = path
         log("config. video save path $path")
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER)
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE)
@@ -79,11 +83,20 @@ class RecorderTool(
 //            int rotation = getWindowManager().getDefaultDisplay().getRotation();
 //            int orientation = ORIENTATIONS.get(rotation + 90);
 //            mMediaRecorder.setOrientationHint(orientation);
-        mMediaRecorder.prepare()
+        try {
+            mMediaRecorder.prepare()
+        } catch (e: Exception) {
+            if (h * 1f / w > 16f / 9) { //这样会丢失底部的区域..
+                val fixH = (16f / 9 * w).toInt()
+                listener.onMessage("$w x $h prepare fail. use $w x $fixH")
+                mMediaRecorder.reset()
+                configMediaRecorder(w, fixH)
+            }
+        }
     }
 
-    @Keep
-    fun startImage() {
+    //截屏!
+    override fun startImage() {
         val dm = context.resources.displayMetrics
         val width = dm.widthPixels
         val height = dm.heightPixels
@@ -104,23 +117,30 @@ class RecorderTool(
             if (p != null && p.isNotEmpty()) {
                 val bitmap = Bitmap.createBitmap(image.width, image.height, Bitmap.Config.ARGB_8888)
                 bitmap.copyPixelsFromBuffer(p[0].buffer)
-                val dir =
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                val dir = context.filesDir
                 val file = File(dir, "image-" + formatTime(System.currentTimeMillis()) + ".jpg")
                 val os = FileOutputStream(file)
                 val r = bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os)
-                log("save bitmap $r :" + file.path)
                 bitmap.recycle()
-                stop()
+                log("save bitmap $r :" + file.path)
+                listener.onMessage("save Image: ${file.path}")
+                mediaProjection.stop()
             }
         }
     }
 
-    fun stop() {
-        if (!mRecording) return
+    override fun stop(): Boolean {
+        if (!mRecording) return false
+        mRecording = false
+        listener.onMessage("File: $mFilePath")
         mediaProjection.unregisterCallback(mMpCallback)
         mediaProjection.stop()
         mMediaRecorder.stop()
         log("stop MediaProjection. stop media recorder!")
+        return true
+    }
+
+    override fun name(): String {
+        return "MediaRecorder"
     }
 }

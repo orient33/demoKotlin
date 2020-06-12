@@ -7,6 +7,14 @@
     android:orientation="vertical"
     tools:ignore="HardcodedText">
 
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:entries="@array/recorders"
+        android:gravity="center" />
+
     <Button
         android:id="@+id/start"
         android:layout_width="match_parent"
@@ -24,8 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:textColor="#fff"
-        android:textSize="30sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         tools:text="log----------------" />
 
 </LinearLayout>

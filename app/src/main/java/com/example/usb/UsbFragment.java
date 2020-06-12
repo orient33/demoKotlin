@@ -43,7 +43,7 @@ public class UsbFragment extends Fragment {
     private Calendar mCalendar = Calendar.getInstance(TimeZone.getDefault(), Locale.UK);
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
     }
@@ -89,6 +89,7 @@ public class UsbFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mContext.unregisterReceiver(mediaReceiver);
         mContext.unregisterReceiver(usbReceiver);
     }
 

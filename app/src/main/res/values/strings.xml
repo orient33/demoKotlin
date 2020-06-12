@@ -13,6 +13,11 @@
     <string name="room_remove">删除</string>
     <string name="room_remove_all">删除全部</string>
 
+    <array name="recorders" translatable="false">
+        <item>MediaCodec</item>
+        <item>MediaRecorder</item>
+    </array>
+
     <!-- AppListFragment -->
     <string name="final_color">最终匹配颜色</string>
     <array name="filter">
@@ -23,7 +28,7 @@
         <!--item>~个税申报~</item-->
     </array>
 
-    <array name="xfmode">
+    <array name="xfmode"  translatable="false">
         <item>Clear</item>
         <item>Src</item>
         <item>Dst</item>
