@@ -4,6 +4,7 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
+import android.content.res.Configuration
 import android.media.projection.MediaProjectionManager
 import android.os.Binder
 import android.os.Build
@@ -13,24 +14,43 @@ import androidx.core.app.NotificationCompat
 import com.example.kotlindemo.MainActivity
 import com.example.kotlindemo.R
 
-const val ACTION_START = "action.start"
-const val EXTRA_CODE = "extra.code"
-const val EXTRA_DATA = "extra.data"
-const val EXTRA_CODEC = "extra.useMediaCodec"
 const val n_id = 1
 const val n_channel = "d"
 
+/**
+ * 参考下面的, 使得Service在bindService时,无需notification,,unbind后,若在录屏才开始startForeground.
+ * 而且 无需 context.startForegroundService()
+ * https://github.com/android/location-samples/blob/master/LocationUpdatesForegroundService
+*/
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class RecorderService : Service(), IRecorder.IMessageInfo {
+    private val EXTRA_FROM = "from.notification"
     lateinit var mNotification: Notification
     private var mRecorder: IRecorder? = null
+    private var mConfigChanged = false
+
     override fun onCreate() {
         super.onCreate()
+        val start = PendingIntent.getActivity(
+            this, 1, Intent(this, MainActivity::class.java)
+            , PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        val stop = PendingIntent.getService(this, 1,
+            Intent(this, RecorderService::class.java).apply {
+                putExtra(EXTRA_FROM, true)
+            }
+            , PendingIntent.FLAG_UPDATE_CURRENT)
         mNotification = NotificationCompat.Builder(this, n_channel)
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setChannelId(n_channel)
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.screen_recorder))
+            .addAction(
+                R.drawable.ic_launcher_foreground,
+                getString(R.string.show_recorder_page),
+                start
+            )
+            .addAction(android.R.drawable.ic_delete, getString(R.string.stop_recorder), stop)
             .setContentIntent(
                 PendingIntent.getActivity(
                     this, 1,
@@ -39,6 +59,9 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
                 )
             )
             .build()
+    }
+
+    private fun showNotification() {
         val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -60,26 +83,34 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent != null) {
-            if (ACTION_START == intent.action) {
-                val code = intent.getIntExtra(EXTRA_CODE, -111)
-                val data = intent.getParcelableExtra<Intent>(EXTRA_DATA)
-                val codec = intent.getBooleanExtra(EXTRA_CODEC, true)
-                if (data != null && code != -111) {
-                    val r = start(codec, code, data)
-                    if (!r) stopSelf()
-                    setState(r)
-                    updateMessage("${mRecorder!!.name()} ${if (r) "recording" else "init fail"} ,")
-                } else {
-                    updateMessage("code or data 无效!无法录屏.")
-                    stopSelf()
-                }
+            val cancel = intent.getBooleanExtra(EXTRA_FROM, false)
+            if (cancel) {
+                stopRecording()
+                stopSelf()
             }
         }
         return START_NOT_STICKY
     }
 
     override fun onBind(intent: Intent): IBinder? {
+        onRebind(intent)
         return binder
+    }
+
+    override fun onRebind(intent: Intent?) {
+        mConfigChanged = false
+        stopForeground(true)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        mConfigChanged = true
+    }
+
+    override fun onUnbind(intent: Intent?): Boolean {
+        if (!mConfigChanged && mRecorder != null) {
+            showNotification()// startForeground!
+        }
+        return true
     }
 
     override fun onDestroy() {
@@ -91,12 +122,15 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
         updateMessage(msg)
     }
 
-    private fun start(codec: Boolean, resultCode: Int, data: Intent): Boolean {
+    fun startRecording(codec: Boolean, resultCode: Int, data: Intent): Boolean {
         val pm = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
         val mp = pm.getMediaProjection(resultCode, data)
         mRecorder = if (codec) RecorderMediaCodec(this, mp, this)
-            else RecorderMediaRecorder(this, mp, this)
-        return mRecorder!!.startVideo()
+        else RecorderMediaRecorder(this, mp, this)
+        val success = mRecorder!!.startVideo()
+        setState(success)
+        updateMessage("${mRecorder!!.name()} ${if (success) "recording" else "init fail"} ,")
+        return success
     }
 
     private var recording = false
@@ -109,11 +143,12 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
             updateMessage("complete!")
             setState(false)
         }
+        stopSelf()
     }
 
     fun setListener(cb: IRecorderCallback?) {
         callback = cb
-        if(cb == null) return
+        if (cb == null) return
         if (recording) cb.onStateChange(recording, mRecorder is RecorderMediaCodec)
         if (message.isNotEmpty()) cb.onMessageInfo(message)
     }

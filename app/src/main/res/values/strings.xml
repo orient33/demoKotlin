@@ -8,6 +8,8 @@
     <string name="get_location">获取位置信息</string>
     <string name="gnss">GNSS</string>
     <string name="screen_recorder">录屏中…</string>
+    <string name="show_recorder_page">打开录屏页面</string>
+    <string name="stop_recorder">结束录屏</string>
 
     <string name="room_add">添加</string>
     <string name="room_remove">删除</string>

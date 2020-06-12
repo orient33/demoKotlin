@@ -17,7 +17,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import com.example.kotlindemo.R
-import com.example.startService
 import kotlinx.android.synthetic.main.fragment_recorder.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
@@ -64,9 +63,6 @@ class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
     override fun onDestroyView() {
         if (mService != null) context?.unbindService(mServiceConnection)
         mService?.setListener(null)
-        if (start.isEnabled) { //若当前不在录屏,则停了service..否则,保持service运行以便录屏.
-            context?.stopService(Intent(requireContext(), RecorderService::class.java))
-        }
         super.onDestroyView()
     }
 
@@ -102,14 +98,8 @@ class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
         super.onActivityResult(requestCode, resultCode, data)
         if (Build.VERSION.SDK_INT < 21) return
         if (requestCode == RECORD_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            startService(requireContext(), Intent(requireContext(), RecorderService::class.java)
-                .apply {
-                    action = ACTION_START
-                    putExtra(EXTRA_CODEC, spinner.selectedItemPosition == 0)
-                    putExtra(EXTRA_CODE, resultCode)
-                    putExtra(EXTRA_DATA, data)
-                })
-
+            requireContext().startService(Intent(requireContext(), RecorderService::class.java))
+            mService!!.startRecording(spinner.selectedItemPosition == 0, resultCode, data)
         }
     }
 

@@ -74,14 +74,6 @@ fun displayCut(activity: Activity) {
     }
 }
 
-fun startService(context: Context, intent: Intent) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        context.startForegroundService(intent)
-    } else {
-        context.startService(intent)
-    }
-}
-
 val PackageInfo.appName: String
     get() {
         return applicationInfo.loadLabel(App.sContext.packageManager).toString()
