@@ -2,13 +2,13 @@ package com.example
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageInfo
 import android.os.Build
 import android.os.Looper
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
+import java.lang.reflect.Method
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -78,6 +78,21 @@ val PackageInfo.appName: String
     get() {
         return applicationInfo.loadLabel(App.sContext.packageManager).toString()
     }
+
+fun <T> invoke(
+    method: Method,
+    instance: Any,
+    vararg args: Any
+): T? {
+    var result: T? = null
+    try {
+        method.isAccessible = true
+        result = method.invoke(instance, *args) as T
+    } catch (e: Exception) {
+        log("invoke Exception: $e")
+    }
+    return result
+}
 /**
  * Extensions
  *

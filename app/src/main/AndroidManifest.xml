@@ -42,6 +42,10 @@
         </activity>
 
         <service
+            android:name="com.example.job.DemoJobService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
             android:name="com.example.screenrecoder.RecorderService"
             android:enabled="true"
             android:foregroundServiceType="mediaProjection|mediaPlayback|dataSync" />
@@ -54,9 +58,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepath" />
-        </provider>
-
-        <!-- 双开app -->
+        </provider> <!-- 双开app -->
         <activity
             android:name="com.example.multiApp.MultiAppActivity"
             android:label="@string/multi_app_name">
