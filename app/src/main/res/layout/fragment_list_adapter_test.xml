@@ -16,7 +16,7 @@
         android:background="#000"
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
-        app:lottie_rawRes="@raw/dianzan" />
+        app:lottie_rawRes="@raw/daily" />
 
     <SeekBar
         android:id="@+id/seek"

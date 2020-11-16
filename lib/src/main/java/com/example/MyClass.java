@@ -17,11 +17,13 @@ public class MyClass {
 //        StringCodeUtil.test();
 //        TimerTest.test();
 
-        try {
-            ProcessLogCount2.count();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        String path = "/sdcard/MIUI/theme/MIUI/tmp.mtz"; //origin
+        log("after.. "+path.replaceFirst("/MIUI/", "/Download/"));
+//        try {
+//            ProcessLogCount2.count();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
 //        List<String> strList = Arrays.asList("0a", "1b", "2c", "3d", "4e", "5f", "6g");
 //        Collections.swap(strList, 6, 4);
 //        moveItem(6, 4, strList);
