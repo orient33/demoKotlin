@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.displayCut
+import com.example.imagetest.ImageHomeFragment
 import com.example.log
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity(), IActivity {
         displayCut(this)
         fm = supportFragmentManager
         if (savedInstanceState == null) {
-            fm.beginTransaction().replace(fragmentId, HomeFragment()).commit()
+            fm.beginTransaction().replace(fragmentId, ImageHomeFragment()).commit()
         }
 //        val pi = packageManager.getPackageInfo(packageName, 0)
 //        val ai = packageManager.getApplicationInfo(packageName, 0)
@@ -63,6 +64,19 @@ class MainActivity : AppCompatActivity(), IActivity {
     override fun toFragment(fragmentName: String) {
         val fragment = fm.fragmentFactory.instantiate(classLoader, fragmentName)
         toFragment(fragment)
+    }
+
+    override fun toFragmentWithArgs(fragmentName: String, args: Bundle) {
+        val fragment = fm.fragmentFactory.instantiate(classLoader, fragmentName)
+        fragment.arguments = args
+        fm.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_right, R.anim.slide_out_left,
+                R.anim.slide_in_left, R.anim.slide_out_right
+            )
+            .replace(fragmentId, fragment)
+            .addToBackStack(fragment.toString())
+            .commit()
     }
 
     override fun toFragment(fragment: Fragment) {

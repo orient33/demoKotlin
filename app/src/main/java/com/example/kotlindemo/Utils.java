@@ -18,9 +18,9 @@ import android.util.Log;
 import java.io.File;
 
 import android.util.TypedValue;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+//import io.reactivex.Observable;
+//import io.reactivex.android.schedulers.AndroidSchedulers;
+//import io.reactivex.schedulers.Schedulers;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
@@ -54,16 +54,16 @@ public class Utils {
     public static void patchAndInstall(Context context, String old, String pPath) {
         final String newApk = context.getExternalFilesDir("apk").getPath() + "/new.apk";
         Log.e("df", "start patch/合并. old :" + old + "\n patch:" + pPath + "\n new:" + newApk);
-        Observable.create(emitter -> {
-            Log.e("df", "patch-before .");
-//            patch(old, newApk, pPath);
-            Log.e("df", "patch-after/over/complete.");
-            emitter.onNext(newApk);
-            emitter.onComplete();
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((o) -> install(context, new File(newApk)));
+//        Observable.create(emitter -> {
+//            Log.e("df", "patch-before .");
+////            patch(old, newApk, pPath);
+//            Log.e("df", "patch-after/over/complete.");
+//            emitter.onNext(newApk);
+//            emitter.onComplete();
+//        })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe((o) -> install(context, new File(newApk)));
     }
 
     private static void install(Context c, File f) {

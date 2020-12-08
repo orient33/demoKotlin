@@ -12,6 +12,7 @@ import com.example.appinfo.AppListFragment
 import com.example.appinfo.PkgListFragment
 import com.example.coordinator.CoordinatorFragment2
 import com.example.device.DeviceInfo
+import com.example.imagetest.ImageHomeFragment
 import com.example.layout.ConstraintFragment
 import com.example.list_adapter_verify.ListAdapterTestFragment
 import com.example.location.LocationFragment
@@ -37,6 +38,7 @@ class HomeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val list = listOf(
+            Pair("图片列表demo-1", ImageHomeFragment::class.java.name),
             Pair("录屏Demo", RecorderFragment::class.java.name),
             Pair("ConstraintFragment", ConstraintFragment::class.java.name),
             Pair("临时测试页", TestFragment::class.java.name),

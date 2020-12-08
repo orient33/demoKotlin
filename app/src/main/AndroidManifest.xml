@@ -31,7 +31,7 @@
             android:resizeableActivity="true"
             android:screenOrientation="nosensor"
             android:supportsPictureInPicture="true"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             tools:targetApi="n">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

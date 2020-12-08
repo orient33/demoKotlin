@@ -56,6 +56,19 @@
         <item>个税</item>
         <item>净收入</item>
     </array>
+    <array name="themeHomePage">
+        <item>首页-推荐</item>
+        <item>首页-主题</item>
+        <item>首页-壁纸</item>
+        <item>首页-动态壁纸</item>
+    </array>
+    <array name="pageSize">
+        <item>加载页数 1</item>
+        <item>加载页数 2</item>
+        <item>加载页数 3</item>
+        <item>加载页数 4</item>
+        <item>加载页数 5</item>
+    </array>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

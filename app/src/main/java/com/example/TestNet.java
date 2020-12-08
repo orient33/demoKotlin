@@ -122,7 +122,7 @@ public class TestNet {
         }
     }
 
-    protected OkHttpClient createClient() {
+    public static OkHttpClient createClient() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -132,7 +132,7 @@ public class TestNet {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(new ParamInterceptor()) // 设置参数拦截器；优先级4，每个主题请求都要根据header中设置的request_flag增加公用参数或加解密
-//                .addInterceptor(loggingInterceptor)
+                .addInterceptor(loggingInterceptor)
                 .cache(mCache)
                 .build();
     }

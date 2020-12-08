@@ -82,14 +82,14 @@ public class ParamInterceptor implements Interceptor {
             finalParamsMap.put(PARAM_DEVICE, "dipper");
             finalParamsMap.put(PARAM_REGION, "cn");
             finalParamsMap.put(PARAM_IS_GLOBAL_BUILD, "false");
-            finalParamsMap.put(PARAM_SYSTEM_TYPE, "usereng");
-            finalParamsMap.put(PARAM_SYSTEM_VERSION, "9.0");
-            finalParamsMap.put(PARAM_MIUI_UI_VERSION, "12");
+            finalParamsMap.put(PARAM_SYSTEM_TYPE, "miui");
+            finalParamsMap.put(PARAM_SYSTEM_VERSION, "10_V12.1.2.3.6");
+            finalParamsMap.put(PARAM_MIUI_UI_VERSION, "V12");
             finalParamsMap.put(PARAM_SYSTEM_ALPHA, "false");
             finalParamsMap.put(PARAM_LANGUAGE, "zh-cn");
             finalParamsMap.put(PARAM_CAPABILITY, getCapability());
-            finalParamsMap.put(PARAM_APK_VERSION, "809");
-            finalParamsMap.put(PARAM_DEVICE_PIXEL, "1080x1920");
+            finalParamsMap.put(PARAM_APK_VERSION, "900");
+            finalParamsMap.put(PARAM_DEVICE_PIXEL, "1080");
 //            finalParamsMap.put(PARAM_HWVERSION, "");
         }
 
@@ -97,19 +97,19 @@ public class ParamInterceptor implements Interceptor {
 //            finalParamsMap.put(PARAM_IMEI, DeviceUtils.getImei(AppContextManager.getContext()));
 //        }
 //        if (!TextUtils.isEmpty(DeviceUtils.getOaid())) {
-//            finalParamsMap.put(PARAM_OAID, DeviceUtils.getOaid());
+//            finalParamsMap.put(PARAM_OAID, "62cc85286268661d");
 //        } else if (!TextUtils.isEmpty(DeviceUtils.getVaid())) {
 //            finalParamsMap.put(PARAM_VAID, DeviceUtils.getVaid());
 //        }
 
         // 是否携带广告相关参数
-//        if ((requestFlag & ThemeNetworkManager.REQUEST_FLAG_ADD_AD_INFO) != 0) {
-//            finalParamsMap.put(PARAM_MODEL, DeviceUtils.getModel());
-//            finalParamsMap.put(PARAM_AD_COUNTRY, DeviceUtils.getCountry());
-//            finalParamsMap.put(PARAM_PACKAGE_NAME, PackageUtils.getPackageName(AppContextManager.getContext()));
-//            finalParamsMap.put(PARAM_NETWORK_TYPE, String.valueOf(NetworkUtils.getNetworkType(AppContextManager.getContext())));
-//            finalParamsMap.put(PARAM_RESTRICT_IMEI, String.valueOf(DeviceUtils.isRestrictImei()));
-//        }
+        if ((requestFlag & REQUEST_FLAG_ADD_AD_INFO) != 0) {
+            finalParamsMap.put(PARAM_MODEL, "MI 8");
+            finalParamsMap.put(PARAM_AD_COUNTRY, "CN");
+            finalParamsMap.put(PARAM_PACKAGE_NAME, "com.android.thememanager");
+            finalParamsMap.put(PARAM_NETWORK_TYPE, "1");
+            finalParamsMap.put(PARAM_RESTRICT_IMEI, "false");
+        }
 
         // 如果没有说明不加参数，统一加上analysis参数
 //        if (requestFlag != ThemeNetworkManager.REQUEST_FLAG_NONE) {
