@@ -22,6 +22,7 @@ class Image1Fragment : Fragment() {
         const val KEY_LOCAL = "localImage"
         const val KEY_RESET = "resetVH"
         const val KEY_ROUND = "round"
+        const val KEY_CARD_VIEW = "cardView"
         const val KEY_IGNORE_GIF = "ignore_gif"
         const val KEY_PAGE = "page"
         const val KEY_PAGE_SIZE = "page-size"
@@ -64,7 +65,9 @@ class Image1Fragment : Fragment() {
         })
         val adapter = ImageAdapter(
             view.context, getBooleanArg(KEY_RESET),
-            getBooleanArg(KEY_ROUND), stag
+            getBooleanArg(KEY_ROUND),
+            getBooleanArg(KEY_CARD_VIEW),
+            stag
         )
         recyclerView.adapter = adapter
         viewModel.getImageData(

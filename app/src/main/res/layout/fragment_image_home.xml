@@ -78,6 +78,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rounded" />
 
+    <CheckBox
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:checked="false"
+        android:text="是否用CardView实现圆角"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ignoreGif" />
+
     <Button
         android:id="@+id/ok"
         android:layout_width="match_parent"

@@ -49,6 +49,7 @@ class ImageHomeFragment : Fragment(), View.OnClickListener {
                 putBoolean(Image1Fragment.KEY_LOCAL, local)
                 putBoolean(Image1Fragment.KEY_RESET, reset)
                 putBoolean(Image1Fragment.KEY_ROUND, rounded.isChecked)
+                putBoolean(Image1Fragment.KEY_CARD_VIEW, cardView.isChecked)
                 putBoolean(Image1Fragment.KEY_IGNORE_GIF, ignoreGif.isChecked)
                 putInt(Image1Fragment.KEY_PAGE_SIZE, spinner2.selectedItemPosition)
                 putString(Image1Fragment.KEY_PAGE, page)
