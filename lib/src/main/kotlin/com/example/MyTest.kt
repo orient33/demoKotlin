@@ -8,6 +8,9 @@ import kotlin.concurrent.thread
 object MyTest {
     @JvmStatic
     fun main(args: Array<String>) {
+        val now = Calendar.getInstance();
+        Calendar.DAY_OF_YEAR;
+        mylog(" $now, ${now.get(Calendar.DAY_OF_YEAR)}")
         val job = GlobalScope.launch {
             delay(1000)
             mylog("协程 done! " + Thread.currentThread().id)

@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="50dp"
-        android:text="随机产生数据"
+        android:text="打开theme壁纸设置picker页"
         android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
 </LinearLayout>

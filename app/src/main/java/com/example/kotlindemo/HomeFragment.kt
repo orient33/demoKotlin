@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.example.appinfo.AppListFragment
 import com.example.appinfo.PkgListFragment
 import com.example.coordinator.CoordinatorFragment2
+import com.example.coroutines.KorFragment
 import com.example.device.DeviceInfo
 import com.example.imagetest.ImageHomeFragment
 import com.example.layout.ConstraintFragment
@@ -41,6 +42,7 @@ class HomeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLi
             Pair("图片列表demo-1", ImageHomeFragment::class.java.name),
             Pair("录屏Demo", RecorderFragment::class.java.name),
             Pair("ConstraintFragment", ConstraintFragment::class.java.name),
+            Pair("kotlin协程", KorFragment::class.java.name),
             Pair("临时测试页", TestFragment::class.java.name),
             Pair("列表", ListFragment::class.java.name),
             Pair("设备信息", DeviceInfo::class.java.name),

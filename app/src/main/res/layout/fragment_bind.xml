@@ -17,10 +17,11 @@
         tools:ignore="UnusedAttribute" />
 
     <Button
-        android:id="@+id/getLocation"
+        android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:text="doSome"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:ignore="HardcodedText" />
 
 </LinearLayout>

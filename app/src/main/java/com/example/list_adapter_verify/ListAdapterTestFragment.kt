@@ -1,5 +1,6 @@
 package com.example.list_adapter_verify
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -78,12 +79,8 @@ class ListAdapterTestFragment : Fragment() {
     }
 
     private fun doRandom() {
-        adapter?.commitList(mutableListOf(Pair(876, ""), Pair(900, ""), Pair(905, "")))
-        rv.postDelayed({
-            val list2 = mutableListOf(
-                Pair(876, "北京文艺"), Pair(900, "音乐之声"), Pair(905, "环球资讯")
-            )
-            adapter?.commitList(list2)
-        }, 1000)
+        activity?.startActivity(Intent("miui.intent.action.WALLPAPER_PICKER_PAGE")
+            .apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
+        )
     }
 }

@@ -19,7 +19,7 @@ import java.util.*
  */
 
 fun log(msg: String, tag: String = "df") {
-    Log.d(tag, msg)
+    Log.i(tag, msg)
 }
 
 fun toast(context: Context, msg: String, duration: Int = Toast.LENGTH_SHORT) {
