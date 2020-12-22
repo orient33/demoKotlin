@@ -6,12 +6,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.kotlindemo.IActivity
 import com.example.kotlindemo.R
 import com.example.log
 
-class ImageVH(root: View) : RecyclerView.ViewHolder(root), View.OnClickListener {
+class ImageVH(root: View) : RecyclerView.ViewHolder(root), View.OnClickListener,
+    View.OnLongClickListener {
     private val imageView = root.findViewById<ImageView>(R.id.image)
     private val nameView = root.findViewById<TextView>(R.id.title)
+    private var url: String? = null
 
     fun bind(pos: Int, imageData: ImageData, resetLayoutParamsL: Boolean, round: Boolean) {
         var rr = Glide.with(itemView).load(imageData.imageUrl)
@@ -23,6 +26,7 @@ class ImageVH(root: View) : RecyclerView.ViewHolder(root), View.OnClickListener 
         rr.into(imageView)
         val name = "($pos), ${imageData.name}"
         imageView.setOnClickListener(this)
+        imageView.setOnLongClickListener(this)
         nameView.tag = "$name\n  ${imageData.des} \nreset高度 = $resetLayoutParamsL"
         nameView?.text = if (name.length > 12) name.substring(0, 12) else name
         if (resetLayoutParamsL) {
@@ -35,6 +39,7 @@ class ImageVH(root: View) : RecyclerView.ViewHolder(root), View.OnClickListener 
                 log("$name, width = $width")//初始是width 0, 滑动后才行
             }
         }
+        url = imageData.videoUrl
     }
 
     private fun setImageHeight(pos: Int, height: Int) {
@@ -55,6 +60,15 @@ class ImageVH(root: View) : RecyclerView.ViewHolder(root), View.OnClickListener 
                 showImageInfo(v)
             }
         }
+    }
+
+    override fun onLongClick(v: View): Boolean {
+        val ctx = v.context
+        if (ctx is IActivity) {
+            val fragment = VideoFragment.newInstance(url);
+            ctx.toFragment(fragment)
+        }
+        return true
     }
 
     private fun showImageInfo(v: View) {

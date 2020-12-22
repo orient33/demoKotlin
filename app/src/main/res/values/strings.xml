@@ -63,11 +63,11 @@
         <item>首页-动态壁纸</item>
     </array>
     <array name="pageSize">
-        <item>加载页数 1</item>
-        <item>加载页数 2</item>
         <item>加载页数 3</item>
         <item>加载页数 4</item>
         <item>加载页数 5</item>
+        <item>加载页数 6</item>
+        <item>加载页数 7</item>
     </array>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">

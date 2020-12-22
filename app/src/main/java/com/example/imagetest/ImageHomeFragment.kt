@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.kotlindemo.IActivity
 import com.example.kotlindemo.R
-import com.example.log
 import kotlinx.android.synthetic.main.fragment_image_home.*
-
 
 class ImageHomeFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(
@@ -51,7 +49,7 @@ class ImageHomeFragment : Fragment(), View.OnClickListener {
                 putBoolean(Image1Fragment.KEY_ROUND, rounded.isChecked)
                 putBoolean(Image1Fragment.KEY_CARD_VIEW, cardView.isChecked)
                 putBoolean(Image1Fragment.KEY_IGNORE_GIF, ignoreGif.isChecked)
-                putInt(Image1Fragment.KEY_PAGE_SIZE, spinner2.selectedItemPosition)
+                putInt(Image1Fragment.KEY_PAGE_SIZE, 2 + spinner2.selectedItemPosition)
                 putString(Image1Fragment.KEY_PAGE, page)
             })
         }

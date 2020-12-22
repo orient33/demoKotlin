@@ -53,7 +53,7 @@ public class HomeResponse {
                 int w = Integer.parseInt(wh[0]), h = Integer.parseInt(wh[1]);
                 ratio = h * 1f / w;
             }
-            return new ImageData(title, url, ratio, toString());
+            return new ImageData(title, url, ratio, videoUrl, toString());
         }
 
         @Override
