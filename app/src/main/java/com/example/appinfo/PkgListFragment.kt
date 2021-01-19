@@ -1,52 +1,53 @@
 package com.example.appinfo
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.appName
 import com.example.kotlindemo.R
 import com.example.toast
 import kotlinx.android.synthetic.main.fragment_applist.*
 
+const val FILTER_DATA = 0
+const val FILTER_SYS = 1
+const val FILTER_ALL = 2
+const val FILTER_UPDATE_SYS = 3
 class PkgListFragment : androidx.fragment.app.Fragment() {
-    val FILTER_DATA = 0
-    val FILTER_SYS = 1
-    val FILTER_ALL = 2
-    val FILTER_UPDATE_SYS = 3
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_applist, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val la = context?.packageManager?.getInstalledPackages(0)
         val adapter = AAdapter(la)
-        list_view.adapter = adapter
-        list_view.onItemClickListener = AdapterView.OnItemClickListener { _, v, position, _ ->
-            run {
-                val pi = adapter.getItem(position).applicationInfo.packageName
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                intent.data = Uri.parse("package:$pi")
-                if (intent.resolveActivity(v.context.packageManager) != null) {
-                    v.context.startActivity(intent)
-                } else {
-                    toast(v.context, "click $position, can not resolve intent!")
-                }
-//                Settings.ACTION_App
-            }
-        }
+        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        recyclerView.adapter = adapter
+//        recyclerView.onItemClickListener = AdapterView.OnItemClickListener { _, v, position, _ ->
+//            run {
+//                val pi = adapter.getItem(position).applicationInfo.packageName
+//                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+//                intent.data = Uri.parse("package:$pi")
+//                if (intent.resolveActivity(v.context.packageManager) != null) {
+//                    v.context.startActivity(intent)
+//                } else {
+//                    toast(v.context, "click $position, can not resolve intent!")
+//                }
+//            }
+//        }
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 adapter.setFilter(position)
@@ -58,8 +59,12 @@ class PkgListFragment : androidx.fragment.app.Fragment() {
             }
         }
     }
-
-    inner class AAdapter(var all: List<PackageInfo>?) : BaseAdapter() {
+    internal class VH(v: View) : RecyclerView.ViewHolder(v) {
+        val icon: ImageView? = v.findViewById(R.id.icon)
+        val name: TextView = v.findViewById(R.id.name)
+        val pkg: TextView =v.findViewById(R.id.pkg)
+    }
+    internal class AAdapter(var all: List<PackageInfo>?) : RecyclerView.Adapter<VH>() {
         val data = mutableListOf<PackageInfo>()
         fun setFilter(filter: Int) {
             val t = all?.filter {
@@ -86,39 +91,23 @@ class PkgListFragment : androidx.fragment.app.Fragment() {
             }
         }
 
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+            return VH(LayoutInflater.from(parent.context).inflate(R.layout.item_pack_info, parent, false))
+        }
+
         @SuppressLint("SetTextI18n")
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            var view = convertView
-            if (view == null) {
-                view = View.inflate(context, R.layout.item_pack_info, null)
-//                view.setOnClickListener(this)
-            }
-            val info = getItem(position)
+        override fun onBindViewHolder(holder: VH, position: Int) {
+            val info = data[position]
             val title = info.applicationInfo.packageName
-            val name = view!!.findViewById<TextView>(R.id.name)
-            name.text = "${1 + position}) ${info.appName}"
-            val cn = view.findViewById<TextView>(R.id.pkg)
-            cn.text = "$title \n targetSdk: ${info.applicationInfo.targetSdkVersion}"
+            holder.name.text = "${1 + position}) ${info.appName}"
+            holder.pkg.text = "$title \n targetSdk: ${info.applicationInfo.targetSdkVersion}"
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                cn.append(", minSdk: ${info.applicationInfo.minSdkVersion}, uid:${info.applicationInfo.uid}")
+                holder.pkg.append(", minSdk: ${info.applicationInfo.minSdkVersion}, uid:${info.applicationInfo.uid}")
             }
-
-            view.tag = info
-            view.setTag(R.id.name, position)
-            return view
         }
 
-        override fun getItem(position: Int): PackageInfo {
-            return data[position]
-        }
-
-        override fun getItemId(position: Int): Long {
-            return position.toLong()
-        }
-
-        override fun getCount(): Int {
+        override fun getItemCount(): Int {
             return data.size
         }
-
     }
 }

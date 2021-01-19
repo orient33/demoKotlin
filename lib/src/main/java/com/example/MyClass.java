@@ -1,6 +1,5 @@
 package com.example;
 
-import java.io.FileNotFoundException;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -17,11 +16,9 @@ public class MyClass {
 //        StringCodeUtil.test();
 //        TimerTest.test();
 
-<<<<<<< Updated upstream
+        AA.test();
         String path = "/sdcard/MIUI/theme/MIUI/tmp.mtz"; //origin
         log("after.. "+path.replaceFirst("/MIUI/", "/Download/"));
-=======
->>>>>>> Stashed changes
 //        try {
 //            ProcessLogCount2.count();
 //        } catch (FileNotFoundException e) {

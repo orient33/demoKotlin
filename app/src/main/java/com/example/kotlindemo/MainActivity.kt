@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), IActivity {
         displayCut(this)
         fm = supportFragmentManager
         if (savedInstanceState == null) {
-            fm.beginTransaction().replace(fragmentId, ImageHomeFragment()).commit()
+            fm.beginTransaction().replace(fragmentId, HomeFragment()).commit()
         }
 //        val pi = packageManager.getPackageInfo(packageName, 0)
 //        val ai = packageManager.getApplicationInfo(packageName, 0)
