@@ -12,9 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.IdRes;
@@ -76,18 +74,6 @@ public class AppListFragment extends Fragment {
             }
         });
         return root;
-    }
-
-    static class VH extends RecyclerView.ViewHolder {
-        final ImageView icon;
-        final TextView name, cn;
-
-        VH(View v) {
-            super(v);
-            icon = v.findViewById(R.id.icon);
-            name = v.findViewById(R.id.name);
-            cn = v.findViewById(R.id.cn);
-        }
     }
 
     class AppAdapter extends RecyclerView.Adapter<VH> implements View.OnClickListener {
