@@ -18,9 +18,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import com.example.kotlindemo.R
+import com.example.kotlindemo.databinding.FragmentLocationBinding
 import com.example.log
-import kotlinx.android.synthetic.main.fragment_location.*
 
 /**
  * 定位fragment示例. LocationManager
@@ -28,20 +27,36 @@ import kotlinx.android.synthetic.main.fragment_location.*
  */
 class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
     private lateinit var lm: LocationManager
-    private val permissions = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_location, container, false)
+    private val permissions = arrayOf(
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION
+    )
+    private var _binding: FragmentLocationBinding? = null
+    private val binding get() = _binding!!
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentLocationBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         lm = view.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        getLocation.setOnClickListener(this)
-        getLocation.setOnLongClickListener(this)
+        binding.getLocation.setOnClickListener(this)
+        binding.getLocation.setOnLongClickListener(this)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         Log.d("df", "onRequestPermissionResult. $requestCode , $permissions,$grantResults")
         if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             reqLocation(false)
@@ -56,7 +71,11 @@ class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
     override fun onClick(v: View) {
         val c = context ?: return
         val act = activity ?: return
-        if (ActivityCompat.checkSelfPermission(c, permissions[1]) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                c,
+                permissions[1]
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             log("has no location permission.")
             if (ActivityCompat.shouldShowRequestPermissionRationale(act, permissions[0])) {
                 Log.d("df", "应当解释为何需要权限!")
@@ -75,17 +94,17 @@ class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
 
     @SuppressLint("MissingPermission")
     private fun reqLocation(gps: Boolean) {
-        locationInfo.text = ""
+        binding.locationInfo.text = ""
         val cr = Criteria()
         cr.powerRequirement = Criteria.POWER_LOW
         lm.allProviders.forEach {
-            locationInfo.append("$it , ")
+            binding.locationInfo.append("$it , ")
         }
         val it = if (gps) "gps" else lm.getBestProvider(cr, true)
         log("provider : $it")
-        locationInfo.append("\n ------ provider: $it ---------\n")
+        binding.locationInfo.append("\n ------ provider: $it ---------\n")
         val location = lm.getLastKnownLocation(it)
-        locationInfo.append("最后位置: ${location2String(location)}\n")
+        binding.locationInfo.append("最后位置: ${location2String(location)}\n")
         lm.requestSingleUpdate(it, /*8000L, 1000f,*/ ll, Looper.getMainLooper())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             lm.registerGnssNavigationMessageCallback(gnssCb, Handler())
@@ -95,22 +114,22 @@ class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
     private val ll = object : LocationListener {
         override fun onLocationChanged(location: Location?) {
             log("111 onLocationChanged")
-            locationInfo.append("onLocationChanged. ${location2String(location)}\n\n")
+            binding.locationInfo.append("onLocationChanged. ${location2String(location)}\n\n")
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
             log("222 onStatusChanged")
-            locationInfo.append("onStateChange $provider, $status, $extras")
+            binding.locationInfo.append("onStateChange $provider, $status, $extras")
         }
 
         override fun onProviderEnabled(provider: String?) {
             log("333 onProviderEnabled")
-            locationInfo.append("onProviderEnable. $provider")
+            binding.locationInfo.append("onProviderEnable. $provider")
         }
 
         override fun onProviderDisabled(provider: String?) {
             log("444 onProviderDisabled")
-            locationInfo.append("onProviderDisable. $provider")
+            binding.locationInfo.append("onProviderDisable. $provider")
         }
     }
 
@@ -118,18 +137,18 @@ class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
     private val gnssCb = object : GnssNavigationMessage.Callback() {
 
         override fun onStatusChanged(status: Int) {
-            gnssInfo.append("\nonStatusChanged ${state2String(status)}")
+            binding.gnssInfo.append("\nonStatusChanged ${state2String(status)}")
         }
 
         override fun onGnssNavigationMessageReceived(event: GnssNavigationMessage?) {
-            gnssInfo.append("\nGnss message: $event")
+            binding.gnssInfo.append("\nGnss message: $event")
         }
     }
 
-    private fun state2String(status:Int):String{
-        return when(status){
+    private fun state2String(status: Int): String {
+        return when (status) {
             GnssNavigationMessage.Callback.STATUS_READY -> "ready"
-            GnssNavigationMessage.Callback.STATUS_NOT_SUPPORTED ->"not support"
+            GnssNavigationMessage.Callback.STATUS_NOT_SUPPORTED -> "not support"
             GnssNavigationMessage.Callback.STATUS_LOCATION_DISABLED -> "location disabled"
             else -> "unknown"
         }

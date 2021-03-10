@@ -40,6 +40,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- 屏幕方向改变 -->
+        <activity
+            android:name="com.example.imagetest.RotateActivity"
+            android:configChanges="screenSize|orientation|screenLayout|mnc|mcc"
+            android:label="旋转测试"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <service
             android:name="com.example.job.DemoJobService"

@@ -17,7 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import com.example.kotlindemo.R
-import kotlinx.android.synthetic.main.fragment_recorder.*
+import com.example.kotlindemo.databinding.FragmentRecorderBinding
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -40,18 +40,20 @@ class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
         }
     }
     private var mService: RecorderService? = null
-
+    private var _binding : FragmentRecorderBinding?=null
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_recorder, container, false)
+    ): View {
+        _binding = FragmentRecorderBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        start.setOnClickListener(this)
-        stop.setOnClickListener(this)
+        binding.start.setOnClickListener(this)
+        binding.stop.setOnClickListener(this)
         val context = requireContext()
         context.bindService(
             Intent(context, RecorderService::class.java),
@@ -64,16 +66,17 @@ class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
         if (mService != null) context?.unbindService(mServiceConnection)
         mService?.setListener(null)
         super.onDestroyView()
+        _binding = null
     }
 
     override fun onMessageInfo(msg: String) {
-        text.text = msg
+        binding.text.text = msg
     }
 
     override fun onStateChange(recording: Boolean, mediaCodec: Boolean) {
-        start.isEnabled = !recording
-        stop.isEnabled = recording
-        spinner.setSelection(if (mediaCodec) 0 else 1)
+        binding.start.isEnabled = !recording
+        binding.stop.isEnabled = recording
+        binding.spinner.setSelection(if (mediaCodec) 0 else 1)
     }
 
     override fun onClick(v: View) {
@@ -96,10 +99,9 @@ class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (Build.VERSION.SDK_INT < 21) return
         if (requestCode == RECORD_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             requireContext().startService(Intent(requireContext(), RecorderService::class.java))
-            mService!!.startRecording(spinner.selectedItemPosition == 0, resultCode, data)
+            mService!!.startRecording(binding.spinner.selectedItemPosition == 0, resultCode, data)
         }
     }
 

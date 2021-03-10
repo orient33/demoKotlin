@@ -1,11 +1,13 @@
 package com.example.kotlindemo
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.displayCut
 import com.example.imagetest.ImageHomeFragment
+import com.example.imagetest.RotateActivity
 import com.example.log
 import java.text.SimpleDateFormat
 import java.util.*
@@ -57,6 +59,7 @@ class MainActivity : AppCompatActivity(), IActivity {
 
         val date = df.parse("2018-08-14 09:00:00")
 
+        startActivity(Intent(this, RotateActivity::class.java))
         log("current time : $time, $current,  parse date $date") //2018-08-01 13:00:00
 // current time : 2018-08-14 10:24:34, Tue Aug 14 18:24:34 GMT+08:00 2018,  parse date Tue Aug 14 17:00:00 GMT+08:00 2018
     }

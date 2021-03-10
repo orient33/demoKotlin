@@ -1,20 +1,20 @@
 package com.example.imagetest
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.kotlindemo.R
-import kotlinx.android.synthetic.main.fragment_image1.*
+import com.example.kotlindemo.databinding.FragmentImage1Binding
+import com.example.log
 
 class Image1Fragment : Fragment() {
     companion object {
@@ -28,6 +28,8 @@ class Image1Fragment : Fragment() {
         const val KEY_PAGE_SIZE = "page-size"
     }
 
+    private var _binding: FragmentImage1Binding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel: ImageVM
 
     override fun onAttach(context: Context) {
@@ -38,8 +40,26 @@ class Image1Fragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_image1, container, false)
+    ): View {
+        _binding = FragmentImage1Binding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        val orient = newConfig.orientation
+        log("$this, ${binding.root}.onConfigChange. orient= $orient")
+        val lm: RecyclerView.LayoutManager =
+            StaggeredGridLayoutManager(
+                if (orient == Configuration.ORIENTATION_PORTRAIT) 2 else 4,
+                LinearLayoutManager.VERTICAL
+            )
+        binding.recyclerView.layoutManager = lm
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,8 +71,8 @@ class Image1Fragment : Fragment() {
             )
             else GridLayoutManager(context, 2)
 
-        recyclerView.layoutManager = lm
-        recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+        binding.recyclerView.layoutManager = lm
+        binding.recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
                 outRect: Rect,
                 view: View,
@@ -69,14 +89,14 @@ class Image1Fragment : Fragment() {
             getBooleanArg(KEY_CARD_VIEW),
             stag
         )
-        recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
         viewModel.getImageData(
             getBooleanArg(KEY_LOCAL),
             getBooleanArg(KEY_IGNORE_GIF),
             arguments?.getInt(KEY_PAGE_SIZE),
             arguments?.getString(KEY_PAGE)
         )
-            .observe(viewLifecycleOwner, Observer<List<ImageData>> {
+            .observe(viewLifecycleOwner, {
                 adapter.setData(it)
             })
     }

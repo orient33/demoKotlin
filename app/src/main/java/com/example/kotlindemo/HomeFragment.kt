@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.BaseAdapter
+import android.widget.ListView
 import android.widget.TextView
 import com.example.appinfo.AppListFragment
 import com.example.appinfo.PkgListFragment
@@ -23,7 +24,6 @@ import com.example.screenrecoder.RecorderFragment
 import com.example.soundpool.SoundFragment
 import com.example.tink.TinkerFragment
 import com.example.usb.UsbFragment
-import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
  * @author dundongfang on 2018/4/26.
@@ -43,7 +43,6 @@ class HomeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLi
             Pair("录屏Demo", RecorderFragment::class.java.name),
             Pair("ConstraintFragment", ConstraintFragment::class.java.name),
             Pair("kotlin协程", KorFragment::class.java.name),
-            Pair("临时测试页", TestFragment::class.java.name),
             Pair("列表", ListFragment::class.java.name),
             Pair("设备信息", DeviceInfo::class.java.name),
             Pair("ListAdapter测试", ListAdapterTestFragment::class.java.name),
@@ -57,6 +56,7 @@ class HomeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLi
             Pair("Coordinator1", CoordinatorFragment2::class.java.name),
             Pair("画中画", PiPFragment::class.java.name)
         )
+        val listView = view.findViewById<ListView>(R.id.listView)
         listView.onItemClickListener = this
         listView.adapter = object : BaseAdapter() {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {

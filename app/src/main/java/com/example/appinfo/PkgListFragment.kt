@@ -16,29 +16,43 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appName
 import com.example.kotlindemo.R
+import com.example.kotlindemo.databinding.FragmentApplistBinding
 import com.example.toast
-import kotlinx.android.synthetic.main.fragment_applist.*
 
 const val FILTER_DATA = 0
 const val FILTER_SYS = 1
 const val FILTER_ALL = 2
 const val FILTER_UPDATE_SYS = 3
+
 class PkgListFragment : androidx.fragment.app.Fragment() {
+    private var _binding: FragmentApplistBinding? = null
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_applist, container, false)
+    ): View {
+        _binding = FragmentApplistBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val la = context?.packageManager?.getInstalledPackages(0)
         val adapter = AAdapter(la)
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
-        recyclerView.adapter = adapter
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+        binding.recyclerView.layoutManager = LinearLayoutManager(view.context)
+        binding.recyclerView.adapter = adapter
+        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
                 adapter.setFilter(position)
                 toast(view.context, "onItemSelected=$position", 0)
             }

@@ -2,35 +2,14 @@ package com.example.soundpool
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.hardware.usb.UsbManager
 import android.media.AudioAttributes
-import android.media.AudioDeviceInfo
-import android.media.AudioManager
 import android.media.SoundPool
-import android.net.Uri
-import android.os.AsyncTask
-import android.os.Build
 import android.os.Bundle
-import android.os.storage.StorageManager
-import android.os.storage.StorageVolume
-import androidx.fragment.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.*
 import com.example.kotlindemo.R
-import kotlinx.android.synthetic.main.fragment_sound.*
-
-import java.io.File
-import java.util.Calendar
-import java.util.Locale
-import java.util.TimeZone
 
 /**
  * @author dundongfang on 2018/9/28.
@@ -57,6 +36,8 @@ class SoundFragment : androidx.fragment.app.Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         soundId = wheelSound.load(context, R.raw.wheel_sound, 1)
+        val play = view.findViewById<View>(R.id.play)
+        val text = view.findViewById<TextView>(R.id.text)
         play.setOnClickListener {
             if (soundId == -1) {
                 text.append("load not complete! \n")
@@ -68,16 +49,16 @@ class SoundFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun array2String(s: Array<String>?): String {
-        if (s == null)
-            return "null"
-        else if (s.size == 0)
-            return "空"
-        else {
-            val sb = StringBuilder()
-            for (sub in s) {
-                sb.append(sub).append(",")
+        return when {
+            s == null -> "null"
+            s.isEmpty() -> "空"
+            else -> {
+                val sb = StringBuilder()
+                for (sub in s) {
+                    sb.append(sub).append(",")
+                }
+                sb.toString()
             }
-            return sb.toString()
         }
     }
 

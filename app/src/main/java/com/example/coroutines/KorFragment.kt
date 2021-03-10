@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.kotlindemo.R
-import kotlinx.android.synthetic.main.fragment_bind.*
 
 class KorFragment : Fragment(), View.OnClickListener {
     lateinit var vm: KorVM
@@ -26,7 +26,7 @@ class KorFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        button.setOnClickListener(this)
+        view.findViewById<Button>(R.id.button).setOnClickListener(this)
     }
 
     override fun onClick(v: View) {

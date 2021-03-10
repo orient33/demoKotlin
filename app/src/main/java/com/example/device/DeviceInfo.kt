@@ -11,9 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlindemo.CommonAdapter
 import com.example.kotlindemo.R
-import kotlinx.android.synthetic.main.fragment_list2.*
 import java.lang.reflect.Method
 
 class DeviceInfo : Fragment() {
@@ -28,6 +28,7 @@ class DeviceInfo : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = CommonAdapter()
+        val rv = view.findViewById<RecyclerView>(R.id.rv)
         rv.layoutManager = LinearLayoutManager(context)
         rv.adapter = adapter
     }
@@ -36,7 +37,7 @@ class DeviceInfo : Fragment() {
         super.onStart()
         if (context == null) return
         val view = activity?.window?.decorView
-        val dm = context!!.resources?.displayMetrics
+        val dm = requireContext().resources?.displayMetrics
         val displayValue =
             "density = ${dm?.density}, densityDpi = ${dm?.densityDpi}, scaledDensity=${dm?.scaledDensity}," +
                     "widthPx=${dm?.widthPixels}, heightPx=${dm?.heightPixels}, xdpi=${dm?.xdpi},ydpi=${dm?.ydpi}" +
@@ -60,11 +61,15 @@ class DeviceInfo : Fragment() {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                 "null"
             } else {
-                val clz: Class<*> =
-                    Class.forName("com.android.id.IdentifierManager")
-                val ins: Any = clz.newInstance()
-                val oaidMethod: Method = clz.getMethod("getOAID", Context::class.java)
-                oaidMethod.invoke(ins, context)
+                try {
+                    val clz: Class<*> =
+                        Class.forName("com.android.id.IdentifierManager")
+                    val ins: Any = clz.newInstance()
+                    val oaidMethod: Method = clz.getMethod("getOAID", Context::class.java)
+                    oaidMethod.invoke(ins, context)
+                } catch (e: Exception) {
+                    android.util.Log.w("df", "invoke oaid fail.$e")
+                }
             }
 
         val am = requireActivity().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager

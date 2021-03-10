@@ -5,7 +5,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
-class CommonAdapter<T> : androidx.recyclerview.widget.RecyclerView.Adapter<CommonVH>() {
+class CommonAdapter<T> : RecyclerView.Adapter<CommonVH>() {
     val list = mutableListOf<T>()
     fun setData(data: List<T>) {
         list.clear()

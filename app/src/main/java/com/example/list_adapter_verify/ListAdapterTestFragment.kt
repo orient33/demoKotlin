@@ -10,34 +10,42 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-import com.example.kotlindemo.R
 import com.example.kotlindemo.RecognizeBgDrawable
-import kotlinx.android.synthetic.main.fragment_list_adapter_test.*
+import com.example.kotlindemo.databinding.FragmentListAdapterTestBinding
 
 class ListAdapterTestFragment : Fragment() {
+    private var _binding :FragmentListAdapterTestBinding?=null
+    private val binding = _binding!!
     private var adapter: MyListAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_list_adapter_test, container, false)
+    ): View {
+        _binding = FragmentListAdapterTestBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = MyListAdapter()
-        rv.layoutManager = LinearLayoutManager(
+        binding.rv.layoutManager = LinearLayoutManager(
             view.context,
             LinearLayoutManager.HORIZONTAL,
             false
         )
-        rv.adapter = adapter
+        binding.rv.adapter = adapter
 
-        random.setOnClickListener {
+        binding.random.setOnClickListener {
             run {
                 doRandom()
             }
         }
+        val lottie = binding.lottie
         lottie.setOnClickListener {
             run {
                 if (lottie.isAnimating) {
@@ -56,9 +64,9 @@ class ListAdapterTestFragment : Fragment() {
         val bg = RecognizeBgDrawable(Color.RED)
         bg.setBounds(0, 0, 1000, 200)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            imageDemo.setImageDrawable(bg)
+            binding.imageDemo.setImageDrawable(bg)
         }
-        seek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.seek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
             }
 

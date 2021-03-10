@@ -3,11 +3,10 @@ package com.example.imagetest
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import com.example.kotlindemo.R
-import com.example.log
-import kotlinx.android.synthetic.main.fragment_video.*
 
 private const val ARG_PARAM1 = "video-url"
 
@@ -33,6 +32,7 @@ class VideoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val url = param1
+        val textureView = view.findViewById<TextureView>(R.id.textureView)
         if (url != null) {
             player.setUrl(url, textureView)
         }

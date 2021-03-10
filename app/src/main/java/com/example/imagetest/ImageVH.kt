@@ -9,10 +9,11 @@ import com.bumptech.glide.Glide
 import com.example.kotlindemo.IActivity
 import com.example.kotlindemo.R
 import com.example.log
+import com.example.widget.RoundImageView
 
 class ImageVH(root: View) : RecyclerView.ViewHolder(root), View.OnClickListener,
     View.OnLongClickListener {
-    private val imageView = root.findViewById<ImageView>(R.id.image)
+    private val imageView = root.findViewById<RoundImageView>(R.id.image)
     private val nameView = root.findViewById<TextView>(R.id.title)
     private var url: String? = null
 
@@ -24,6 +25,7 @@ class ImageVH(root: View) : RecyclerView.ViewHolder(root), View.OnClickListener,
             rr = rr.transform(GlideRoundedWithBorderTransform())
         }
         rr.into(imageView)
+        imageView.setDebug(pos == 2)
         val name = "($pos), ${imageData.name}"
         imageView.setOnClickListener(this)
         imageView.setOnLongClickListener(this)
@@ -48,7 +50,7 @@ class ImageVH(root: View) : RecyclerView.ViewHolder(root), View.OnClickListener,
             if (lp.height == height) return
             lp.height = height
             imageView.layoutParams = lp
-            log("$pos, reset height $height")
+//            log("$pos, reset height $height")
         } else {
             log("lp is null")
         }

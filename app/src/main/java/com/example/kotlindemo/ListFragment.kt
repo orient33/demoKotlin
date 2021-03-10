@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.Keep
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.LayoutInflater
@@ -15,7 +13,6 @@ import android.widget.TextView
 import com.example.list2String
 import com.example.log
 import com.example.toast
-import kotlinx.android.synthetic.main.fragment_test.*
 
 /**
  * @author dundongfang on 2018/4/26.
@@ -27,6 +24,9 @@ class ListFragment : androidx.fragment.app.Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val rv = view.findViewById<RecyclerView>(R.id.rv)
+        val rv1 = view.findViewById<RecyclerView>(R.id.rv1)
+        val text1 = view.findViewById<View>(R.id.text1)
         setupRecyclerView(view.context, rv)
         setupRecyclerView(view.context, rv1)
         text1.setOnClickListener { v ->

@@ -31,9 +31,9 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.kotlindemo.R
+import com.example.kotlindemo.databinding.FragmentPipBinding
 import com.example.log
 import com.example.toast
-import kotlinx.android.synthetic.main.fragment_pip.*
 import java.io.File
 import java.util.*
 
@@ -42,18 +42,26 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener, AdapterView.OnI
 
     private var width: Int = 1920
     private var height: Int = 720
+    private var _binding :FragmentPipBinding?=null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_pip, container, false)
+        _binding = FragmentPipBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        videoView.setMediaController(MediaController(context))
-        listView.onItemClickListener = this
-        listView.onItemLongClickListener = this
-        listView.adapter = object : BaseAdapter() {
+        binding.videoView.setMediaController(MediaController(context))
+        binding.listView.onItemClickListener = this
+        binding.listView.onItemLongClickListener = this
+        binding.listView.adapter = object : BaseAdapter() {
             @SuppressLint("SetTextI18n")
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
                 val tv = (convertView
@@ -91,7 +99,7 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener, AdapterView.OnI
                 return data.size
             }
         }
-        findVideo(true, activity!!)
+        findVideo(true, requireActivity())
 
         val dm = resources.displayMetrics
         width = dm.widthPixels
@@ -100,7 +108,7 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener, AdapterView.OnI
 
     private fun enterPip(): Boolean {
         return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
-            if (videoView.visibility != View.VISIBLE) {
+            if (binding.videoView.visibility != View.VISIBLE) {
                 return false
             }
             val h = 300
@@ -110,7 +118,7 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener, AdapterView.OnI
                     .setSourceRectHint(rect)
                     .setAspectRatio(Rational(16, 9))
                     .build()
-            toast(context!!, "进入画中画")
+            toast(requireContext(), "进入画中画")
             activity?.enterPictureInPictureMode(b)
             true
         } else {
@@ -130,9 +138,9 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener, AdapterView.OnI
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val tag = view?.tag as VideoInfo
-        videoView.setVideoURI(Uri.fromFile(File(tag.path)))
-        videoView.visibility = View.VISIBLE
-        videoView.start()
+        binding.videoView.setVideoURI(Uri.fromFile(File(tag.path)))
+        binding.videoView.visibility = View.VISIBLE
+        binding.videoView.start()
     }
 
     override fun onItemLongClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long): Boolean {
@@ -144,9 +152,9 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener, AdapterView.OnI
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == 1) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                findVideo(false, activity!!)
+                findVideo(false, requireActivity())
             } else {
-                toast(activity!!, "无法读取存储")
+                toast(requireContext(), "无法读取存储")
             }
         }
     }
@@ -204,7 +212,7 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener, AdapterView.OnI
                         if (result.isEmpty()) {
                             toast(activity!!, "未找到视频")
                         } else {
-                            val a = listView.adapter as BaseAdapter
+                            val a = binding.listView.adapter as BaseAdapter
                             a.notifyDataSetChanged()
                         }
                     }
