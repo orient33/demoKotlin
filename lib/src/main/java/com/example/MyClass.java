@@ -16,7 +16,7 @@ public class MyClass {
 //        StringCodeUtil.test();
 //        TimerTest.test();
 
-        AA.test();
+//        OO_994.test();
         String path = "/sdcard/MIUI/theme/MIUI/tmp.mtz"; //origin
         log("after.. "+path.replaceFirst("/MIUI/", "/Download/"));
 //        try {

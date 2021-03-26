@@ -11,7 +11,7 @@ import static com.example.TestNet.*;
  * 推荐模块请求列表
  */
 public interface RecommendRequestInterface {
-    String BASE_URL = "https://api.";//v9 url hmm
+    String BASE_URL = "https://api.zhuti.xx.com/app/v9/";//v9 url hmm
 //          HYBRID
 //         THEME
 //        WALLPAPER

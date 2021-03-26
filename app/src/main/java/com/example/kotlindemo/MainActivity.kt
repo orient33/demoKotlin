@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), IActivity {
 
         val date = df.parse("2018-08-14 09:00:00")
 
-        startActivity(Intent(this, RotateActivity::class.java))
+//        startActivity(Intent(this, RotateActivity::class.java))
         log("current time : $time, $current,  parse date $date") //2018-08-01 13:00:00
 // current time : 2018-08-14 10:24:34, Tue Aug 14 18:24:34 GMT+08:00 2018,  parse date Tue Aug 14 17:00:00 GMT+08:00 2018
     }
