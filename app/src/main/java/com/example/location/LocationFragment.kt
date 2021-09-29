@@ -103,7 +103,7 @@ class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
         val it = if (gps) "gps" else lm.getBestProvider(cr, true)
         log("provider : $it")
         binding.locationInfo.append("\n ------ provider: $it ---------\n")
-        val location = lm.getLastKnownLocation(it)
+        val location = lm.getLastKnownLocation(it!!)
         binding.locationInfo.append("最后位置: ${location2String(location)}\n")
         lm.requestSingleUpdate(it, /*8000L, 1000f,*/ ll, Looper.getMainLooper())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -112,7 +112,7 @@ class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
     }
 
     private val ll = object : LocationListener {
-        override fun onLocationChanged(location: Location?) {
+        override fun onLocationChanged(location: Location) {
             log("111 onLocationChanged")
             binding.locationInfo.append("onLocationChanged. ${location2String(location)}\n\n")
         }
@@ -122,12 +122,12 @@ class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
             binding.locationInfo.append("onStateChange $provider, $status, $extras")
         }
 
-        override fun onProviderEnabled(provider: String?) {
+        override fun onProviderEnabled(provider: String) {
             log("333 onProviderEnabled")
             binding.locationInfo.append("onProviderEnable. $provider")
         }
 
-        override fun onProviderDisabled(provider: String?) {
+        override fun onProviderDisabled(provider: String) {
             log("444 onProviderDisabled")
             binding.locationInfo.append("onProviderDisable. $provider")
         }

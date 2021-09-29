@@ -48,7 +48,7 @@ class ListFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    private fun setupRecyclerView(context: Context, v: androidx.recyclerview.widget.RecyclerView) {
+    private fun setupRecyclerView(context: Context, v: RecyclerView) {
         val adapter = Adapter(25)
         val lm = androidx.recyclerview.widget.LinearLayoutManager(
             context,
@@ -62,7 +62,7 @@ class ListFragment : androidx.fragment.app.Fragment() {
             .attachToRecyclerView(v)
     }
 
-    class Adapter(size: Int) : androidx.recyclerview.widget.RecyclerView.Adapter<VH>(), SwapAdapter {
+    class Adapter(size: Int) : RecyclerView.Adapter<VH>(), SwapAdapter {
         private val list = mutableListOf<Int>()
 
         init {
@@ -100,7 +100,7 @@ class ListFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    class VH(v: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(v) {
+    class VH(v: View) : RecyclerView.ViewHolder(v) {
         val text: TextView = v as TextView
     }
 

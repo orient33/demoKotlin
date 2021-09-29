@@ -1,13 +1,10 @@
 package com.example.kotlindemo
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.displayCut
-import com.example.imagetest.ImageHomeFragment
-import com.example.imagetest.RotateActivity
 import com.example.log
 import java.text.SimpleDateFormat
 import java.util.*

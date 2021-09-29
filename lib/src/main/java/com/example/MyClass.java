@@ -11,6 +11,7 @@ public class MyClass {
         //test RxJava
 //        RxJavaDemo.test();
 //        GsonTest.test();
+        PatternTest.test();
         log("1小时等于 多少 毫秒ms"+ TimeUnit.HOURS.toMillis(1));
         log(String.format(Locale.CHINA, "%.2f,%.2f", 39.2222d, 116.3333d));
 //        StringCodeUtil.test();

@@ -5,6 +5,9 @@ import android.content.Context
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
+import android.os.Process
+import android.os.UserHandle
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -68,13 +71,36 @@ class DeviceInfo : Fragment() {
                     val oaidMethod: Method = clz.getMethod("getOAID", Context::class.java)
                     oaidMethod.invoke(ins, context)
                 } catch (e: Exception) {
-                    android.util.Log.w("df", "invoke oaid fail.$e")
+                    Log.w("df", "invoke oaid fail.$e")
                 }
             }
+        val vaid =
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                "null"
+            } else {
+                try {
+                    val clz: Class<*> =
+                        Class.forName("com.android.id.IdentifierManager")
+                    val ins: Any = clz.newInstance()
+                    val oaidMethod: Method = clz.getMethod("getVAID", Context::class.java)
+                    oaidMethod.invoke(ins, context)
+                } catch (e: Exception) {
+                    Log.w("df", "invoke oaid fail.$e")
+                }
+            }
+        val uid = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            "${Process.myUserHandle()}, ${
+                UserHandle.getUserHandleForUid(-2).hashCode()
+            }, uid=${Process.myUid()}"
+        } else {
+            "-1000"
+        }
+
 
         val am = requireActivity().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val lowMem = am.isLowRamDevice
-        val list = listOf(displayValue, screenValue, displayCutout, "oaid=$oaid", "低内存设备=$lowMem")
+        val list = listOf(displayValue, screenValue, displayCutout, "oaid=$oaid , vaid=$vaid", "低内存设备=$lowMem","uid=$uid")
+        Log.w("df", "oaid= $oaid , vaid= $vaid")
         adapter.setData(list)
     }
 

@@ -1,7 +1,8 @@
 package com.example.coroutines
 
+import android.app.Application
 import android.os.SystemClock
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.log
 import kotlinx.coroutines.Dispatchers
@@ -15,8 +16,7 @@ sealed class Result<out R> {
 
 //主线程安全: 如果在主线程执行,不会导致 阻塞界面更新
 //协程与线程关系 如同 线程与进程关系
-class KorVM(
-) : ViewModel() {
+class KorVM(val app: Application) : AndroidViewModel(app) {
     var job: Job? = null
     fun login() {
         // Create a new coroutine to move the execution off the UI thread
