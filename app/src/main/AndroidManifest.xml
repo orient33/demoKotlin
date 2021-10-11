@@ -40,6 +40,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".IntentActivity"
+            android:exported="true">
+            <intent-filter
+                android:autoVerify="true"
+                tools:ignore="UnusedAttribute">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.douyin.com"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
         <!-- 屏幕方向改变 -->
         <activity
             android:name="com.example.imagetest.RotateActivity"
