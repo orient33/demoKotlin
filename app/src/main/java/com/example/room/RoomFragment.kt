@@ -1,6 +1,7 @@
 package com.example.room
 
 import android.content.Context
+import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -52,10 +53,14 @@ class RoomFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.add -> {
-                dao.insertAll(User(UUID.randomUUID().toString()))
+                AsyncTask.THREAD_POOL_EXECUTOR.execute {
+                    dao.insertAll(User(UUID.randomUUID().toString()))
+                }
             }
             R.id.removeAll -> {
-                dao.deleteAll()
+                AsyncTask.THREAD_POOL_EXECUTOR.execute {
+                    dao.deleteAll()
+                }
             }
             R.id.remove -> {
                 val c = context
