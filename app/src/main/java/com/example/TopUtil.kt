@@ -8,6 +8,9 @@ import android.os.Looper
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import java.lang.reflect.Method
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -17,6 +20,9 @@ import java.util.*
 /**
  * @author dundongfang on 2018/9/25.
  */
+//https://developer.android.google.cn/topic/libraries/architecture/datastore?hl=zh-cn
+// 用于取代 SharedPreference的数据存储
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 fun log(msg: String, tag: String = "df") {
     Log.i(tag, msg)

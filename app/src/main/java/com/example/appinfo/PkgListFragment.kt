@@ -1,22 +1,26 @@
 package com.example.appinfo
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.net.Uri
-import android.os.Build
+import android.os.AsyncTask
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.AsyncDifferConfig
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.appName
+import androidx.recyclerview.widget.ListAdapter
 import com.example.kotlindemo.R
 import com.example.kotlindemo.databinding.FragmentApplistBinding
+import com.example.log
 import com.example.toast
 
 const val FILTER_DATA = 0
@@ -27,6 +31,12 @@ const val FILTER_UPDATE_SYS = 3
 class PkgListFragment : androidx.fragment.app.Fragment() {
     private var _binding: FragmentApplistBinding? = null
     private val binding get() = _binding!!
+    private lateinit var vm: PkgListVM
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        vm = ViewModelProvider(this)[PkgListVM::class.java]
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,8 +52,49 @@ class PkgListFragment : androidx.fragment.app.Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val la = context?.packageManager?.getInstalledPackages(0)
-        val adapter = AAdapter(la)
+        val diff = AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<PackageInfo>() {
+            override fun areItemsTheSame(oldItem: PackageInfo, newItem: PackageInfo): Boolean {
+                return oldItem.packageName == newItem.packageName
+            }
+
+            override fun areContentsTheSame(oldItem: PackageInfo, newItem: PackageInfo): Boolean {
+                return oldItem.packageName == newItem.packageName
+                        && oldItem.lastUpdateTime == newItem.lastUpdateTime
+//                      && oldItem.appName == newItem.appName
+            }
+
+        }).setBackgroundThreadExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+            .build()
+
+        val adapter = AAdapter(diff)
+        vm.getAppsList().observe(this) {
+            adapter.setAppList(it)
+        }
+        vm.doQuery(null).observe(this) {
+            adapter.setAppList(it)
+        }
+        vm.getConfigKey().observe(this) {
+            if (it != null) {
+                binding.searchView.queryHint = it
+            }
+        }
+        vm.getConfigFilter().observe(this) {
+            if (it != null && binding.spinner.tag == null) {
+                binding.spinner.tag = it
+                binding.spinner.setSelection(it)
+            }
+        }
+        binding.searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                vm.doQuery(newText)
+                return true
+            }
+        })
         binding.recyclerView.layoutManager = LinearLayoutManager(view.context)
         binding.recyclerView.adapter = adapter
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -53,7 +104,7 @@ class PkgListFragment : androidx.fragment.app.Fragment() {
                 position: Int,
                 id: Long
             ) {
-                adapter.setFilter(position)
+                vm.doFilter(position)
                 toast(view.context, "onItemSelected=$position", 0)
             }
 
@@ -63,32 +114,10 @@ class PkgListFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    internal class AAdapter(var all: List<PackageInfo>?) : RecyclerView.Adapter<VH>(),
-        View.OnClickListener {
-        val data = mutableListOf<PackageInfo>()
-        fun setFilter(filter: Int) {
-            val t = all?.filter {
-                when (filter) {
-                    FILTER_SYS -> {
-                        0 != it.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM
-                    }
-                    FILTER_DATA -> {
-                        0 == it.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM
-                    }
-                    FILTER_UPDATE_SYS -> {
-                        0 != it.applicationInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP
-                    }
-                    else -> true
-                }
-            }
-            if (t != null) {
-                data.clear()
-                data.addAll(t)
-                data.sortBy {
-                    it.applicationInfo.packageName
-                }
-                notifyDataSetChanged()
-            }
+    internal class AAdapter(diff: AsyncDifferConfig<PackageInfo>) :
+        ListAdapter<PackageInfo, VH>(diff), View.OnClickListener {
+        fun setAppList(list: List<PackageInfo>) {
+            submitList(list)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -99,17 +128,8 @@ class PkgListFragment : androidx.fragment.app.Fragment() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: VH, position: Int) {
-            val info = data[position]
-            val title = info.applicationInfo.packageName
-            val d = info.applicationInfo.loadIcon(holder.itemView.context.packageManager)
-            holder.icon.setImageDrawable(d)
-            holder.name.text = "${1 + position}) ${info.appName}"
-            holder.cn.text = "$title \n targetSdk: ${info.applicationInfo.targetSdkVersion}"
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                holder.cn.append(", minSdk: ${info.applicationInfo.minSdkVersion}, uid:${info.applicationInfo.uid}")
-            }
-            holder.itemView.tag = title
-            holder.itemView.setOnClickListener(this)
+            val info = getItem(position)
+            holder.bindPackageInfo(position, this, info)
         }
 
         override fun onClick(v: View) {
@@ -123,10 +143,6 @@ class PkgListFragment : androidx.fragment.app.Fragment() {
                     toast(v.context, "click $tag, can not resolve intent!")
                 }
             }
-        }
-
-        override fun getItemCount(): Int {
-            return data.size
         }
     }
 }

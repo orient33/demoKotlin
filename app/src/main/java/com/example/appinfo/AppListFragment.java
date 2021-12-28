@@ -136,13 +136,8 @@ public class AppListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull VH holder, int position) {
             final LauncherActivityInfo info = data.get(position);
-            Drawable drawable = info.getIcon(dm);
-            String cnn = info.getComponentName().toShortString();
-            holder.icon.setImageDrawable(drawable);
-            holder.name.setText(++position + ")  " + info.getLabel());
-            holder.cn.setText(cnn);
+            holder.bindLauncherInfo(position, this, info);
             holder.itemView.setTag(info);
-            holder.itemView.setOnClickListener(this);
         }
 
         @Override
