@@ -44,9 +44,12 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener, AdapterView.OnI
     private var height: Int = 720
     private var _binding :FragmentPipBinding?=null
     private val binding get() = _binding!!
+    private var player: MediaCodecPlayer? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentPipBinding.inflate(inflater)
+        player = MediaCodecPlayer(_binding!!.surfaceView)
+        lifecycle.addObserver(player!!)
         return binding.root
     }
 
@@ -108,7 +111,8 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener, AdapterView.OnI
 
     private fun enterPip(): Boolean {
         return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
-            if (binding.videoView.visibility != View.VISIBLE) {
+            val surfaceShow = binding.surfaceView.visibility != View.VISIBLE
+            if (binding.videoView.visibility != View.VISIBLE && !surfaceShow) {
                 return false
             }
             val h = 300
@@ -138,6 +142,11 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener, AdapterView.OnI
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val tag = view?.tag as VideoInfo
+        val p = player
+        if (p != null) {
+            p.play(tag.path)
+            return
+        }
         binding.videoView.setVideoURI(Uri.fromFile(File(tag.path)))
         binding.videoView.visibility = View.VISIBLE
         binding.videoView.start()
