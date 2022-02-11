@@ -30,6 +30,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.example.kotlindemo.MainActivity
 import com.example.kotlindemo.R
 import com.example.kotlindemo.databinding.FragmentPipBinding
 import com.example.log
@@ -144,7 +145,10 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener, AdapterView.OnI
         val tag = view?.tag as VideoInfo
         val p = player
         if (p != null) {
-            p.play(tag.path)
+            val pf = PlayerFragment.newInstance(tag.path)
+            val ma = requireActivity() as MainActivity
+            ma.toFragment(pf)
+//            p.play(tag.path)
             return
         }
         binding.videoView.setVideoURI(Uri.fromFile(File(tag.path)))
