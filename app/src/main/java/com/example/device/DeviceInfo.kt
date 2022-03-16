@@ -56,8 +56,10 @@ class DeviceInfo : Fragment() {
 
         val physicalX = screenWidth / dm.xdpi
         val physicalY = screenHeight / dm.ydpi
+
+        val wm2 = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(requireActivity())
         val screenValue = "屏幕信息androidx.window.bounds = ${wm.bounds},  swWidth=${screenWidth / dm.density}," +
-                    " sHeight = ${screenHeight / dm.density} , physical= ($physicalX $physicalY)"
+                    " sHeight = ${screenHeight / dm.density} , physical= ($physicalX $physicalY),,当前(小窗)${wm2.bounds}"
 //        DisplayCutout dc
         var displayCutout = ""
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
