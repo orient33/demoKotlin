@@ -22,6 +22,7 @@ import com.example.pip.PiPFragment
 import com.example.room.RoomFragment
 import com.example.screenrecoder.RecorderFragment
 import com.example.soundpool.SoundFragment
+import com.example.tab.TabFragment
 import com.example.tink.TinkerFragment
 import com.example.usb.UsbFragment
 
@@ -44,6 +45,7 @@ class HomeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLi
             Pair("ConstraintFragment", ConstraintFragment::class.java.name),
             Pair("kotlin协程", KorFragment::class.java.name),
             Pair("列表", ListFragment::class.java.name),
+            Pair("TabFragment", TabFragment::class.java.name),
             Pair("设备信息", DeviceInfo::class.java.name),
             Pair("ListAdapter测试", ListAdapterTestFragment::class.java.name),
             Pair("SoundPool", SoundFragment::class.java.name),

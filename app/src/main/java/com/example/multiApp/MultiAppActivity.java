@@ -46,7 +46,7 @@ public class MultiAppActivity extends Activity {
             }
         }
         UserHandle uh = Process.myUserHandle();
-        Log.e("df", "current user : " + uh);
+        Log.e("df", "current user : " + uh + ",resource = " + getResources());
     }
 
     private void showSetupProfile() {

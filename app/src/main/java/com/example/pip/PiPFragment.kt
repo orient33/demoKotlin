@@ -144,13 +144,13 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener, AdapterView.OnI
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val tag = view?.tag as VideoInfo
         val p = player
-        if (p != null) {
-            val pf = PlayerFragment.newInstance(tag.path)
-            val ma = requireActivity() as MainActivity
-            ma.toFragment(pf)
+//        if (p != null) {
+////            val pf = PlayerFragment.newInstance(tag.path)
+////            val ma = requireActivity() as MainActivity
+////            ma.toFragment(pf)
 //            p.play(tag.path)
-            return
-        }
+//            return
+//        }
         binding.videoView.setVideoURI(Uri.fromFile(File(tag.path)))
         binding.videoView.visibility = View.VISIBLE
         binding.videoView.start()

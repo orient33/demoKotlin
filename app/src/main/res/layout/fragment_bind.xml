@@ -16,6 +16,15 @@
         android:textSize="40sp"
         tools:ignore="UnusedAttribute" />
 
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:hint="延迟时间- 秒"
+        android:inputType="number"
+        android:minWidth="100dp" />
+
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"

@@ -2,7 +2,6 @@ package com.example.device
 
 import android.app.ActivityManager
 import android.content.Context
-import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
 import android.os.Process
@@ -15,6 +14,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.window.layout.WindowMetricsCalculator
 import com.example.kotlindemo.CommonAdapter
 import com.example.kotlindemo.R
 import java.lang.reflect.Method
@@ -40,20 +40,24 @@ class DeviceInfo : Fragment() {
         super.onStart()
         if (context == null) return
         val view = activity?.window?.decorView
-        val dm = requireContext().resources?.displayMetrics
+        val dm = requireContext().resources?.displayMetrics!!
         val displayValue =
-            "density = ${dm?.density}, densityDpi = ${dm?.densityDpi}, scaledDensity=${dm?.scaledDensity}," +
-                    "widthPx=${dm?.widthPixels}, heightPx=${dm?.heightPixels}, xdpi=${dm?.xdpi},ydpi=${dm?.ydpi}" +
+            "density = ${dm.density}, densityDpi = ${dm.densityDpi}, scaledDensity=${dm.scaledDensity}," +
+                    "widthPx=${dm.widthPixels}, heightPx=${dm.heightPixels}, xdpi=${dm.xdpi},ydpi=${dm.ydpi}" +
                     " '160dp' is '${(TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
                         160f,
                         dm
                     ))}px'"
 
-        val display = activity?.windowManager?.defaultDisplay
-        val point = Point()
-        display?.getRealSize(point)
-        val screenValue = "screenPx= $point, name=${display?.name}, "
+        val wm = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(requireActivity())
+        val screenWidth = wm.bounds.width()
+        val screenHeight = wm.bounds.height()
+
+        val physicalX = screenWidth / dm.xdpi
+        val physicalY = screenHeight / dm.ydpi
+        val screenValue = "屏幕信息androidx.window.bounds = ${wm.bounds},  swWidth=${screenWidth / dm.density}," +
+                    " sHeight = ${screenHeight / dm.density} , physical= ($physicalX $physicalY)"
 //        DisplayCutout dc
         var displayCutout = ""
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
