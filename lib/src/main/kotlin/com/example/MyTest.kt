@@ -24,7 +24,7 @@ object MyTest {
 //        list.forEach {
 //            File(it).deleteOnExit()
 //        }
-        autoDensity()
+        autoDensity2()
 //        readLog()
 //        RemoveDup.removeDupDrawable()
 //        RemoveDup.removeDupDimen()

@@ -83,7 +83,7 @@ fun autoDensity(dir: String = "") {
             }
 
             log("diff default with ${it.key}, same=$countSame, count1=$count1, count2=$count2, much=$countMuch")
-            mergeSame(default, it,sameDimenList)
+            mergeSame(default, it, sameDimenList)
         }
     }
 }
@@ -107,7 +107,7 @@ fun checkDefault(list: List<DimenFile>, map: Map<String, String>) {
 //read dimens.xml from folder/dir
 fun findDimenFileList(dir: String): List<DimenFile> {
     val dimenList = RunShell.runCmd("find ", arrayOf(dir, " -name ", "dimen*.xml"))
-    val list = dimenList.split("\n").filter { it.endsWith("xml") }
+    val list = dimenList.split("\n").filter { it.endsWith("xml") && !it.contains("build") }
     // /home/...module/src/main/res/values/dimens.xml
     val fileList = mutableListOf<DimenFile>()
     list.forEach {
