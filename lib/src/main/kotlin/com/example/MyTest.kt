@@ -18,11 +18,18 @@ object MyTest {
 //            mylog("协程 done! " + Thread.currentThread().id)
 //        }
 //        mylog("main ..hello ," + Thread.currentThread().id)
-        readLog()
+
+//        val dimenList = RunShell.runCmd("find ", arrayOf(THEME_ROOT, " -name ", "dimen*.xml.txt"))
+//        val list = dimenList.split("\n").filter { it.endsWith("xml.txt") }
+//        list.forEach {
+//            File(it).deleteOnExit()
+//        }
+        autoDensity()
+//        readLog()
 //        RemoveDup.removeDupDrawable()
 //        RemoveDup.removeDupDimen()
 //        RemoveDup.renamePngWebp()
-        RemoveDup.removeDupColor()
+//        RemoveDup.removeDupColor()
 
 //        compareFile()
 //        Thread.sleep(1888)
