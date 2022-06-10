@@ -11,15 +11,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            app:layout_scrollFlags="scroll|enterAlways" />
+<!--        <com.google.android.material.appbar.CollapsingToolbarLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            app:layout_scrollFlags="scroll"-->
+<!--            android:layout_height="wrap_content">-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:background="@drawable/asset"
+                app:layout_scrollFlags="scroll"
+                app:layout_collapseMode="parallax"/>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:collapseIcon="@drawable/ic_launcher_foreground"
+                app:layout_collapseMode="none"  />
+<!--        </com.google.android.material.appbar.CollapsingToolbarLayout>-->
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listView"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
