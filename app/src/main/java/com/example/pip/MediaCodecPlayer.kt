@@ -47,13 +47,14 @@ class MediaCodecPlayer(val view: SurfaceView) : DefaultLifecycleObserver, Handle
         }
         format = videoFormat
         val frameRate = videoFormat.getInteger(MediaFormat.KEY_FRAME_RATE)
+        val count = videoFormat.getInteger(MediaFormat.KEY_MAX_INPUT_SIZE);
         frameInterval = 1000 / frameRate
         val mediaCodec = //PUtil.createCodec(videoFormat)
             MediaCodec.createDecoderByType(videoFormat.getString(MediaFormat.KEY_MIME)!!)
         logg("createDecoder. $mediaCodec , ${mediaCodec.name} , frameRate= $frameRate")
         mediaCodec.setCallback(callback)
         mediaCodec.configure(videoFormat, view.holder.surface, null, 0)
-        logg("configure done. ")
+        logg("configure done. rate=$frameRate,, count = $count")
         mCodec = mediaCodec
 
         start()

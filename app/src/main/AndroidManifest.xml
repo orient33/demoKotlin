@@ -26,8 +26,14 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
+            android:name="com.example.MD3Activity"
+            android:exported="false"
+            android:theme="@style/Theme.Material3.DynamicColors.DayNight" />
+
+        <activity
             android:name=".MainActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout"
+            android:exported="true"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true"
@@ -40,7 +46,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".IntentActivity"
             android:exported="true">
@@ -56,8 +61,7 @@
                     android:host="www.douyin.com"
                     android:scheme="http" />
             </intent-filter>
-        </activity>
-        <!-- 屏幕方向改变 -->
+        </activity> <!-- 屏幕方向改变 -->
         <activity
             android:name="com.example.imagetest.RotateActivity"
             android:configChanges="screenSize|orientation|screenLayout|mnc|mcc"

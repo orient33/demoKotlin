@@ -35,7 +35,7 @@ class KorVM(val app: Application) : AndroidViewModel(app) {
             SystemClock.sleep(1000)
             log("KorVM.login.launch. 3")
             SystemClock.sleep(1000)
-            val addDelay = delay?.toInt() ?: 3000 - 3000
+            val addDelay = if (!delay.isNullOrEmpty()) delay.toInt() else 0
             if (addDelay > 0) {
                 log("sleep .$addDelay s")
                 SystemClock.sleep(addDelay * 1000L)

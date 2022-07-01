@@ -30,7 +30,7 @@ class VH internal constructor(v: View) : RecyclerView.ViewHolder(v) {
         name.text = "${1 + pos}) ${info.appName}"
         cn.text = "$title \n targetSdk: ${info.applicationInfo.targetSdkVersion}"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            cn.append(", minSdk: ${info.applicationInfo.minSdkVersion}, uid:${info.applicationInfo.uid}")
+            cn.append(", minSdk: ${info.applicationInfo.minSdkVersion}, uid:${info.applicationInfo.uid},vCode:${info.versionCode},vName:${info.versionName}")
         }
         itemView.tag = title
         itemView.setOnClickListener(listener)

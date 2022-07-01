@@ -46,6 +46,7 @@ class ListFragment : androidx.fragment.app.Fragment() {
                 )
             }
         }
+        log("..onViewCreated. $this")
     }
 
     private fun setupRecyclerView(context: Context, v: RecyclerView) {

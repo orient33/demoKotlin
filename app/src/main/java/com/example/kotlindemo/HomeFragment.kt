@@ -1,5 +1,7 @@
 package com.example.kotlindemo
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Pair
 import android.view.LayoutInflater
@@ -9,6 +11,8 @@ import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
+import com.example.MD3Activity
+import com.example.a13.PhotoPickerDemo
 import com.example.appinfo.AppListFragment
 import com.example.appinfo.PkgListFragment
 import com.example.coordinator.CoordinatorFragment2
@@ -25,6 +29,7 @@ import com.example.soundpool.SoundFragment
 import com.example.tab.TabFragment
 import com.example.tink.TinkerFragment
 import com.example.usb.UsbFragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * @author dundongfang on 2018/4/26.
@@ -58,6 +63,11 @@ class HomeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLi
             Pair("Coordinator1", CoordinatorFragment2::class.java.name),
             Pair("画中画", PiPFragment::class.java.name)
         )
+        val fab = view.findViewById<FloatingActionButton>(R.id.fab)
+        fab.setOnClickListener {
+//            startActivity(Intent(requireContext(), MD3Activity::class.java))
+            PhotoPickerDemo.startPhotoPickerSingle(this, requireActivity())
+        }
         val listView = view.findViewById<ListView>(R.id.listView)
         listView.onItemClickListener = this
         listView.adapter = object : BaseAdapter() {
@@ -85,6 +95,11 @@ class HomeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLi
                 return list.size
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        PhotoPickerDemo.onPhotoResult(requestCode, resultCode, data)
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

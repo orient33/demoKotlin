@@ -1,9 +1,12 @@
 package com.example.kotlindemo
 
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.window.layout.WindowMetricsCalculator
 import com.example.displayCut
 import com.example.log
 import java.text.SimpleDateFormat
@@ -16,14 +19,18 @@ private const val fragmentId = android.R.id.content
 class MainActivity : AppCompatActivity(), IActivity {
 
     lateinit var fm: FragmentManager
+    var config: Configuration? = null
+    var large: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        updateOrient()
         displayCut(this)
         fm = supportFragmentManager
         if (savedInstanceState == null) {
             fm.beginTransaction().replace(fragmentId, HomeFragment()).commit()
         }
-        log("resource is $resources")
+        log("onCreate.resource is $resources, $this")
+        config = resources.configuration
 //        val pi = packageManager.getPackageInfo(packageName, 0)
 //        val ai = packageManager.getApplicationInfo(packageName, 0)
 //        textView.text = getString(R.string.version_info, pi.versionName, pi.versionCode, ai.targetSdkVersion)
@@ -60,6 +67,24 @@ class MainActivity : AppCompatActivity(), IActivity {
 //        startActivity(Intent(this, RotateActivity::class.java))
 //        log("current time : $time, $current,  parse date $date") //2018-08-01 13:00:00
 // current time : 2018-08-14 10:24:34, Tue Aug 14 18:24:34 GMT+08:00 2018,  parse date Tue Aug 14 17:00:00 GMT+08:00 2018
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        log("onConfig change $newConfig , \ndiff ${newConfig.diff(config)}")
+        config = newConfig
+        updateOrient()
+        log("onConfig. update orientation $requestedOrientation")
+    }
+
+    fun updateOrient() {
+        val wmc = WindowMetricsCalculator.getOrCreate()
+        val bounds = wmc.computeCurrentWindowMetrics(this).bounds
+        val ratio = 1f * bounds.height() / bounds.width()
+        large = ratio < 2f && ratio > 0.5f
+        log("update orient. ratio=$ratio, large =$large")
+        requestedOrientation = if (large) ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        else ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     override fun toFragment(fragmentName: String) {

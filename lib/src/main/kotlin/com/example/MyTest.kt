@@ -3,8 +3,11 @@ package com.example
 import com.example.RemoveDup.firstNonAZ
 import kotlinx.coroutines.*
 import java.io.File
+import java.net.URLDecoder
 import java.util.*
 import java.util.concurrent.atomic.AtomicLong
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
 import kotlin.concurrent.thread
 
 object MyTest {
@@ -35,6 +38,11 @@ object MyTest {
 //        Thread.sleep(1888)
 //        threadTest(false)
 //        threadTest(true)
+//        compareUrl(
+//            "http://dev.market.n.xiaomi.com/thm/page/v3/theme/1abaee12-a1cd-4449-a34d-ca67b4c5a8d6?adCountry=CN&xPrevRef=&language=zh_CN&xRef=&capability=w%2Cb%2Cs%2Cm%2Ch5%2Ca%3A2%2Cv%3A15%2Cvw&isPersonalizedAdEnabled=true&alpha=false&testGroup=main_tab_sort_g1&model=2201123C&packageName=com.android.thememanager&restrictImei=false&miuiUIVersion=V130&apk=3301&oaid=c768b7c39c5e31d7&deviceType=MIPHONE&devicePixel=1080&entryType=thirdapp&isMiuiLiteAndStoke=false&version=12_21.12.29-internal&hwVersion=2.1.2&aodGray=true&system=miui&isGlobal=false&region=CN&device=cupid",
+//            "http://dev.market.n.xiaomi.com/thm/page/v3/theme/1abaee12-a1cd-4449-a34d-ca67b4c5a8d6?adCountry=CN&xPrevRef=&language=zh_CN&xRef=LocalTrackId_Page_1a181483-f843-4ad4-9beb-0ccd4ca8f430&capability=w%2Cb%2Cs%2Cm%2Ch5%2Ca%3A2%2Cv%3A15%2Cvw&isPersonalizedAdEnabled=true&alpha=false&testGroup=main_tab_sort_g1&model=M2007J1SC&packageName=com.android.thememanager&restrictImei=false&miuiUIVersion=V130&apk=3110&oaid=67b822dcba56252b&deviceType=MIFOLD&devicePixel=1080&entryType=thememanager&isMiuiLiteAndStoke=false&version=12_V13.0.0.3.SJJCNXM&hwVersion=7.2.0&aodGray=true&system=miui&isGlobal=false&region=CN&device=cas&networkType=-1"
+//        )
+
     }
 
     //[drawable-xhdpi-v4/retry_n] /home/dun/code.mi/ThemeManager/app/src/main/res/drawable-xhdpi/retry_n.9.png
