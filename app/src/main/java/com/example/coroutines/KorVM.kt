@@ -1,11 +1,14 @@
 package com.example.coroutines
 
 import android.app.Application
+import android.app.WallpaperInfo
 import android.app.WallpaperManager
 import android.content.Intent
 import android.os.Build
 import android.os.SystemClock
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.kotlindemo.R
 import com.example.log
@@ -21,13 +24,23 @@ sealed class Result<out R> {
 //主线程安全: 如果在主线程执行,不会导致 阻塞界面更新
 //协程与线程关系 如同 线程与进程关系
 class KorVM(val app: Application) : AndroidViewModel(app) {
+    val textLiveData = MutableLiveData<String>()
     var job: Job? = null
+    fun getText(): LiveData<String> {
+        return textLiveData
+    }
+
     fun login(delay: String?) {
         // Create a new coroutine to move the execution off the UI thread
         //如果不加 IO 则会在UI线程执行 协程
         log("KorVM.login. 111111111")
         val repository = Repository()
         job = viewModelScope.launch(Dispatchers.IO) {
+            val wallpaperManager = WallpaperManager.getInstance(app)
+            val wallpaperInfo: WallpaperInfo? = wallpaperManager.wallpaperInfo
+            textLiveData.postValue(wallpaperInfo.toString())
+            log("KorVM.wallpaperInfo : $wallpaperInfo")
+
             //do network request.
             log("KorVM.login.launch. 1")
             SystemClock.sleep(1000)
@@ -41,8 +54,7 @@ class KorVM(val app: Application) : AndroidViewModel(app) {
                 SystemClock.sleep(addDelay * 1000L)
             }
             val id = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                WallpaperManager.getInstance(app)
-                    .setResource(R.raw.wallpaper, WallpaperManager.FLAG_SYSTEM)
+                wallpaperManager.setResource(R.raw.wallpaper, WallpaperManager.FLAG_SYSTEM)
             } else {
                 -100
             }

@@ -19,6 +19,7 @@ import com.example.coordinator.CoordinatorFragment2
 import com.example.coroutines.KorFragment
 import com.example.device.DeviceInfo
 import com.example.imagetest.ImageHomeFragment
+import com.example.imagetest.ImageMatrixFragment
 import com.example.layout.ConstraintFragment
 import com.example.list_adapter_verify.ListAdapterTestFragment
 import com.example.location.LocationFragment
@@ -60,6 +61,7 @@ class HomeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLi
             Pair("ROOM数据库", RoomFragment::class.java.name),
             Pair("LauncherApp列表", AppListFragment::class.java.name),
             Pair("应用列表", PkgListFragment::class.java.name),
+            Pair("图片缩放", ImageMatrixFragment::class.java.name),
             Pair("Coordinator1", CoordinatorFragment2::class.java.name),
             Pair("画中画", PiPFragment::class.java.name)
         )

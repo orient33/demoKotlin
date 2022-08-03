@@ -33,4 +33,12 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:ignore="HardcodedText" />
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="startLiveWallpaperPicker"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:ignore="HardcodedText" />
+
 </LinearLayout>
