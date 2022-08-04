@@ -3,4 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="splash_screen_background">#009909</color>
+    <color name="splash_screen_icon_background">#0066ee</color>
+    <color name="w9">#ffdb2c1f</color>
 </resources>

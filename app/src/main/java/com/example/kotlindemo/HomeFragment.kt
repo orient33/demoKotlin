@@ -66,7 +66,7 @@ class HomeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLi
             Pair("画中画", PiPFragment::class.java.name)
         )
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener {
+        fab?.setOnClickListener {
 //            startActivity(Intent(requireContext(), MD3Activity::class.java))
             PhotoPickerDemo.startPhotoPickerSingle(this, requireActivity())
         }
