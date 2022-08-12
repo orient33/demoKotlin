@@ -27,7 +27,7 @@ class VH internal constructor(v: View) : RecyclerView.ViewHolder(v) {
         val title = info.applicationInfo.packageName
         val d = info.applicationInfo.loadIcon(itemView.context.packageManager)
         icon.setImageDrawable(d)
-        name.text = "${1 + pos}) ${info.appName}"
+        name.text = "${1 + pos}) ${info.appName}, ${d.javaClass.simpleName}"
         cn.text = "$title \n targetSdk: ${info.applicationInfo.targetSdkVersion}"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             cn.append(", minSdk: ${info.applicationInfo.minSdkVersion}, uid:${info.applicationInfo.uid},vCode:${info.versionCode},vName:${info.versionName}")
@@ -39,10 +39,10 @@ class VH internal constructor(v: View) : RecyclerView.ViewHolder(v) {
     @SuppressLint("SetTextI18n")
     fun bindLauncherInfo(pos: Int, listener: View.OnClickListener, info: LauncherActivityInfo) {
         val drawable: Drawable = info.getIcon(densityDpi)
-        val cnn: String = info.getComponentName().toShortString()
+        val cnn: String = info.componentName.toShortString()
         icon.setImageDrawable(drawable)
-        name.text = (1 + pos).toString() + ")  " + info.getLabel()
-        cn.text = cnn
+        name.text = (1 + pos).toString() + ")  " + info.label
+        cn.text = cnn +"\n" + drawable.javaClass.simpleName
         itemView.setOnClickListener(listener)
     }
 }

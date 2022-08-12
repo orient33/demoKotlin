@@ -1,17 +1,13 @@
 package com.example.kotlindemo
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Pair
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.BaseAdapter
-import android.widget.ListView
-import android.widget.TextView
-import com.example.MD3Activity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.RvClickListener
 import com.example.a13.PhotoPickerDemo
 import com.example.appinfo.AppListFragment
 import com.example.appinfo.PkgListFragment
@@ -35,17 +31,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 /**
  * @author dundongfang on 2018/4/26.
  */
-class HomeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickListener {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
+class HomeFragment : androidx.fragment.app.Fragment(R.layout.fragment_home) {
 
+    var mList: List<Pair<String, String>>? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val list = listOf(
+        mList = listOf(
             Pair("图片列表demo-1", ImageHomeFragment::class.java.name),
             Pair("录屏Demo", RecorderFragment::class.java.name),
             Pair("ConstraintFragment", ConstraintFragment::class.java.name),
@@ -70,45 +60,27 @@ class HomeFragment : androidx.fragment.app.Fragment(), AdapterView.OnItemClickLi
 //            startActivity(Intent(requireContext(), MD3Activity::class.java))
             PhotoPickerDemo.startPhotoPickerSingle(this, requireActivity())
         }
-        val listView = view.findViewById<ListView>(R.id.listView)
-        listView.onItemClickListener = this
-        listView.adapter = object : BaseAdapter() {
-            override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                val tv = (convertView
-                    ?: layoutInflater.inflate(
-                        android.R.layout.simple_list_item_1,
-                        parent,
-                        false
-                    )) as TextView
-                tv.text = list[position].first
-                tv.tag = list[position]
-                return tv
-            }
-
-            override fun getItem(position: Int): Pair<String, String> {
-                return list[position]
-            }
-
-            override fun getItemId(position: Int): Long {
-                return position.toLong()
-            }
-
-            override fun getCount(): Int {
-                return list.size
-            }
+        val rv = view.findViewById<RecyclerView>(R.id.recyclerView)
+        rv.layoutManager = LinearLayoutManager(view.context)
+        rv.addItemDecoration(DividerItemDecoration(view.context, LinearLayoutManager.VERTICAL))
+        rv.adapter = CommonAdapter<String>().apply {
+            setData(mList!!.map { it.first })
         }
+        rv.addOnItemTouchListener(object : RvClickListener(rv) {
+            override fun onItemClick(vh: RecyclerView.ViewHolder, v: View) {
+                val list = mList ?: return
+                val position = vh.bindingAdapterPosition
+                if (position < 0) return
+                val tag = list[position].second
+                val activity = requireActivity()
+                if (activity is IActivity)
+                    activity.toFragment(tag as String)
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         PhotoPickerDemo.onPhotoResult(requestCode, resultCode, data)
-    }
-
-    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if (view == null) return
-        val tag = (view.tag as Pair<*, *>).second
-        val activity = requireActivity()
-        if (activity is IActivity)
-            activity.toFragment(tag as String)
     }
 }

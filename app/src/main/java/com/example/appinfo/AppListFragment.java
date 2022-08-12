@@ -65,7 +65,7 @@ public class AppListFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 aa.setFilter(position);
-                TopUtilKt.toast(view.getContext(), "onItemSelected=" + position, 0);
+                TopUtilKt.toast(parent.getContext(), "onItemSelected=" + position, 0);
             }
 
             @Override
@@ -142,8 +142,6 @@ public class AppListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            String tag = v.getTag().toString();
-            Toast.makeText(v.getContext(), tag, Toast.LENGTH_SHORT).show();
             toDetail((LauncherActivityInfo) v.getTag());
         }
     }

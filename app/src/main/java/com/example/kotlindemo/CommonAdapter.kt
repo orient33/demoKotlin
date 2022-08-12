@@ -1,9 +1,9 @@
 package com.example.kotlindemo
 
-import androidx.recyclerview.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 
 class CommonAdapter<T> : RecyclerView.Adapter<CommonVH>() {
     val list = mutableListOf<T>()
