@@ -4,6 +4,7 @@ import com.example.RemoveDup.firstNonAZ
 import kotlinx.coroutines.*
 import java.io.File
 import java.net.URLDecoder
+import java.time.LocalDateTime
 import java.util.*
 import java.util.concurrent.atomic.AtomicLong
 import java.util.zip.ZipEntry
@@ -27,7 +28,8 @@ object MyTest {
 //        list.forEach {
 //            File(it).deleteOnExit()
 //        }
-        autoDensity2()
+//        autoDensity2()
+        readMemory("thememanager")
 //        readLog()
 //        RemoveDup.removeDupDrawable()
 //        RemoveDup.removeDupDimen()
@@ -105,11 +107,12 @@ object MyTest {
         return set
     }
 
+    private val myScope = CoroutineScope(Dispatchers.IO)
     private fun threadTest(use: Boolean) {
         val c = AtomicLong()
         for (i in 1..100000L) {
             if (use) {
-                GlobalScope.launch {
+                myScope.launch {
                     c.addAndGet(i)
                 }
             } else {
@@ -121,7 +124,7 @@ object MyTest {
         mylog(c.get().toString())
     }
 
-    private fun mylog(msg: String) {
-        println(Date(System.currentTimeMillis()).toString() + ":" + msg)
+    fun mylog(msg: String) {
+        println(LocalDateTime.now().toString() + ":" + msg)
     }
 }
