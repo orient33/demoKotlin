@@ -12,7 +12,7 @@ android {
         versionName "1.0"
     }
     //https://blog.jetbrains.com/kotlin/2021/02/the-jvm-backend-is-in-beta-let-s-make-it-stable-together/
-    kotlinOptions.useIR = true
+//    kotlinOptions.useIR = true
     //https://developer.android.com/topic/libraries/view-binding
     buildFeatures {
         viewBinding true

@@ -20,10 +20,6 @@ import java.lang.reflect.Method
 // test Material You , / dynamic color
 class MD3Activity : AppCompatActivity() {
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DynamicColors.applyIfAvailable(this)
