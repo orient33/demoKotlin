@@ -7,6 +7,7 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.MD3Activity
 import com.example.RvClickListener
 import com.example.a13.PhotoPickerDemo
 import com.example.appinfo.AppListFragment
@@ -56,9 +57,19 @@ class HomeFragment : androidx.fragment.app.Fragment(R.layout.fragment_home) {
             Pair("画中画", PiPFragment::class.java.name)
         )
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)
-        fab?.setOnClickListener {
-//            startActivity(Intent(requireContext(), MD3Activity::class.java))
-            PhotoPickerDemo.startPhotoPickerSingle(this, requireActivity())
+        fab?.let { fabBtn ->
+            fabBtn.setOnClickListener {
+                startActivity(
+                    Intent(
+                        it.context,
+                        MD3Activity::class.java
+                    )
+                )
+            }
+            fabBtn.setOnLongClickListener {
+                PhotoPickerDemo.startPhotoPickerSingle(this, requireActivity())
+                true
+            }
         }
         val rv = view.findViewById<RecyclerView>(R.id.recyclerView)
         rv.layoutManager = LinearLayoutManager(view.context)

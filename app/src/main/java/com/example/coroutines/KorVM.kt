@@ -41,11 +41,8 @@ class KorVM(val app: Application) : AndroidViewModel(app) {
             textLiveData.postValue(wallpaperInfo.toString())
             log("KorVM.wallpaperInfo : $wallpaperInfo")
 
-            val rr = app.packageManager.getResourcesForApplication("com.netease.cloudmusic")
-            val color = rr.getColor(0x7f0604d2, null)
-
             //do network request.
-            log("KorVM.login.launch. 1 $color")
+            log("KorVM.login.launch. 1 ")
             SystemClock.sleep(1000)
             log("KorVM.login.launch. 2")
             SystemClock.sleep(1000)

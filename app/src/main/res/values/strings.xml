@@ -70,6 +70,11 @@
         <item>加载页数 7</item>
     </array>
     <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="md3Desc">"谷歌壁纸动态色\n\n"
+        "壁纸变化时,生成一套新的颜色.供app使用.这里切换2张图片壁纸,来观测activity重启现象\n"
+        "不重启的有 (pixel4. TP1A.220905.004)(一加. androidS)\n"
+        "重启的有 (MIUI13, S,T)(模拟器pixel4-api33)"
+    </string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
