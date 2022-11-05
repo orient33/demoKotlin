@@ -110,6 +110,10 @@
             android:name="com.example.multiApp.EnableProfileActivity"
             android:label="@string/multi_app_name" />
 
+        <service
+            android:name="com.example.media.PlayService"
+            android:exported="false" />
+
         <receiver
             android:name="com.example.multiApp.BasicDeviceAdminReceiver"
             android:description="@string/multi_app_name"

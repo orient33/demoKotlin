@@ -20,6 +20,7 @@ import com.example.imagetest.ImageMatrixFragment
 import com.example.layout.ConstraintFragment
 import com.example.list_adapter_verify.ListAdapterTestFragment
 import com.example.location.LocationFragment
+import com.example.media.MediaFragment
 import com.example.pip.PiPFragment
 import com.example.room.RoomFragment
 import com.example.screenrecoder.RecorderFragment
@@ -54,6 +55,7 @@ class HomeFragment : androidx.fragment.app.Fragment(R.layout.fragment_home) {
             Pair("应用列表", PkgListFragment::class.java.name),
             Pair("图片缩放", ImageMatrixFragment::class.java.name),
             Pair("Coordinator1", CoordinatorFragment2::class.java.name),
+            Pair("MediaCompat", MediaFragment::class.java.name),
             Pair("画中画", PiPFragment::class.java.name)
         )
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)

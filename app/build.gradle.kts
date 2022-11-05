@@ -9,7 +9,7 @@ android {
     compileSdk = 33
     defaultConfig {
         applicationId = "com.example.kotlindemo"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 28
         versionCode = 1
         versionName = "1.0"
@@ -64,6 +64,15 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-livedata-core-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+
+    implementation("androidx.media:media:1.6.0")
+//    val media2_version = "1.2.1"
+//    // Interacting with MediaSessions
+//    implementation("androidx.media2:media2-session:$media2_version")
+//    // optional - UI widgets for VideoView and MediaControlView
+//    implementation("androidx.media2:media2-widget:$media2_version")
+//    // optional - Implementation of a SessionPlayer
+//    implementation("androidx.media2:media2-player:$media2_version")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("com.google.crypto.tink:tink-android:1.2.2")
