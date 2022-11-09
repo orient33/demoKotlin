@@ -76,9 +76,9 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("com.google.crypto.tink:tink-android:1.2.2")
-    implementation("com.github.bumptech.glide:glide:4.14.0")
-    kapt("com.github.bumptech.glide:compiler:4.14.0")
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.7")
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+    kapt("com.github.bumptech.glide:compiler:4.14.2")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
     api("com.squareup.retrofit2:retrofit:2.9.0")
     api("com.squareup.retrofit2:converter-gson:2.9.0")
     api("com.squareup.okhttp3:okhttp:4.10.0")

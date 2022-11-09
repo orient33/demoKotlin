@@ -126,7 +126,7 @@ public class TestNet {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        Cache mCache = new Cache(new File(App.sContext.getCacheDir(), "response"), 10 * 1024 * 1024); // 设置缓存目录为 /data/data/$package_name/cache/response,缓存大小10M
+        Cache mCache = new Cache(new File(Injector.sContext.getCacheDir(), "response"), 10 * 1024 * 1024); // 设置缓存目录为 /data/data/$package_name/cache/response,缓存大小10M
         return new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS) // 常见超时时间设置
                 .readTimeout(30, TimeUnit.SECONDS)

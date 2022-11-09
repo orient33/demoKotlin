@@ -82,7 +82,7 @@ fun displayCut(activity: Activity) {
 
 val PackageInfo.appName: String
     get() {
-        return applicationInfo.loadLabel(App.sContext.packageManager).toString()
+        return applicationInfo.loadLabel(Injector.sContext.packageManager).toString()
     }
 
 fun <T> invoke(

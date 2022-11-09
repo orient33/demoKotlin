@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.App
+import com.example.Injector
 import com.example.kotlindemo.R
 import com.example.log
 import com.example.toast
@@ -21,7 +22,7 @@ class RoomFragment : Fragment(), View.OnClickListener {
     private lateinit var adapter: AdapterUser
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        dao = AppDb.getIns(App.sContext).userDao()
+        dao = AppDb.getIns(Injector.sContext).userDao()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

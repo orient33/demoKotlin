@@ -2,6 +2,9 @@ package com.example;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
+
+import androidx.annotation.NonNull;
 
 import com.google.crypto.tink.Aead;
 import com.google.crypto.tink.Config;
@@ -25,18 +28,26 @@ public class App extends Application {
     private static final String MASTER_KEY_URI = "android-keystore://hello_world_master_key";
     public Aead aead;
 
-    public static Context sContext;
+    private final Configuration mConfig = new Configuration();
 
     @Override
     public final void onCreate() {
         super.onCreate();
-        sContext = getApplicationContext();
+        Injector.sContext = getApplicationContext();
         try {
             Config.register(TinkConfig.LATEST);
             aead = AeadFactory.getPrimitive(getOrGenerateNewKeysetHandle());
         } catch (GeneralSecurityException | IOException e) {
             throw new RuntimeException(e);
         }
+        mConfig.updateFrom(getResources().getConfiguration());
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        int diff = mConfig.updateFrom(newConfig);
+        TopUtilKt.log("onConfig Change. 0x" + Integer.toHexString(diff), "df");
     }
 
     private KeysetHandle getOrGenerateNewKeysetHandle() throws IOException, GeneralSecurityException {

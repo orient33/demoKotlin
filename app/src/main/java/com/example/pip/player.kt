@@ -3,6 +3,7 @@ package com.example.pip
 import android.net.Uri
 import android.view.SurfaceView
 import com.example.App
+import com.example.Injector
 import com.example.log
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -23,7 +24,7 @@ class EPlayerImpl() : IPlayer, Player.Listener {
     var surfaceView: SurfaceView? = null
     var ePlayer: ExoPlayer? = null
     override fun createPlayer(): IPlayer {
-        val player = ExoPlayer.Builder(App.sContext).build()
+        val player = ExoPlayer.Builder(Injector.sContext).build()
         player.addListener(this)
         ePlayer = player
         log("build player $player")
