@@ -99,6 +99,8 @@ fun <T> invoke(
     }
     return result
 }
+
+fun atLeast(api: Int) = Build.VERSION.SDK_INT >= api
 /**
  * Extensions
  *

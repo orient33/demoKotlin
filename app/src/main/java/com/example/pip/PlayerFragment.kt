@@ -7,11 +7,6 @@ import com.example.kotlindemo.R
 
 private const val ARG_PATH = "path"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PlayerFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PlayerFragment : Fragment(R.layout.fragment_player) {
     private var path: String? = null
     private var mPlayer: IPlayer? = null

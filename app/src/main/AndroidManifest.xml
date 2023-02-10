@@ -3,8 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <!-- Required only if your app needs to access images or photos
+     that other apps created. -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <!-- Required only if your app needs to access videos
+         that other apps created. -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+
+    <!-- Required only if your app needs to access audio files
+         that other apps created. -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -36,8 +52,7 @@
             android:launchMode="singleTask"
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true"
-            android:theme="@style/AppTheme"
-            tools:targetApi="n">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,6 +79,7 @@
         <activity
             android:name="com.example.imagetest.RotateActivity"
             android:configChanges="screenSize|orientation|screenLayout|mnc|mcc"
+            android:exported="false"
             android:label="旋转测试"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
@@ -99,6 +115,7 @@
         </provider> <!-- 双开app -->
         <activity
             android:name="com.example.multiApp.MultiAppActivity"
+            android:exported="false"
             android:label="@string/multi_app_name">
 
             <!-- <intent-filter> -->
@@ -108,6 +125,7 @@
         </activity>
         <activity
             android:name="com.example.multiApp.EnableProfileActivity"
+            android:exported="false"
             android:label="@string/multi_app_name" />
 
         <service
@@ -117,6 +135,7 @@
         <receiver
             android:name="com.example.multiApp.BasicDeviceAdminReceiver"
             android:description="@string/multi_app_name"
+            android:exported="true"
             android:label="@string/multi_app_name"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data

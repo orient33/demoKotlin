@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "com.example.kotlindemo"
         minSdk = 26
-        targetSdk = 28
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 //        minSdkVersion(21)
@@ -19,8 +19,11 @@ android {
     //https://blog.jetbrains.com/kotlin/2021/02/the-jvm-backend-is-in-beta-let-s-make-it-stable-together/
 //    kotlinOptions.useIR = true
     //https://developer.android.com/topic/libraries/view-binding
-    buildFeatures {
-        viewBinding = true
+//    buildFeatures {
+//        viewBinding = true
+//    }
+    viewBinding {
+        enable = true
     }
     buildTypes {
         release {
@@ -40,22 +43,22 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10")
     implementation("androidx.window:window:1.0.0")
     implementation("androidx.core:core-splashscreen:1.0.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("androidx.fragment:fragment-ktx:1.5.3")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.fragment:fragment-ktx:1.5.5")
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.android.material:material:1.6.1")
+    implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.annotation:annotation:1.5.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
-    implementation("androidx.room:room-runtime:2.4.3")
+    implementation("androidx.room:room-runtime:2.5.0")
+    kapt("androidx.room:room-compiler:2.5.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
 //    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    kapt("androidx.room:room-compiler:2.4.3")
     // ViewModel and LiveData
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
 //    kapt("androidx.lifecycle:lifecycle-compiler:2.2.0")

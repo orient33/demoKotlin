@@ -22,7 +22,6 @@ const val n_channel = "d"
  * 而且 无需 context.startForegroundService()
  * https://github.com/android/location-samples/blob/master/LocationUpdatesForegroundService
 */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class RecorderService : Service(), IRecorder.IMessageInfo {
     private val EXTRA_FROM = "from.notification"
     lateinit var mNotification: Notification
@@ -33,13 +32,13 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
         super.onCreate()
         val start = PendingIntent.getActivity(
             this, 1, Intent(this, MainActivity::class.java)
-            , PendingIntent.FLAG_UPDATE_CURRENT
+            , PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         val stop = PendingIntent.getService(this, 1,
             Intent(this, RecorderService::class.java).apply {
                 putExtra(EXTRA_FROM, true)
             }
-            , PendingIntent.FLAG_UPDATE_CURRENT)
+            , PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         mNotification = NotificationCompat.Builder(this, n_channel)
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setChannelId(n_channel)
@@ -55,7 +54,7 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
                 PendingIntent.getActivity(
                     this, 1,
                     Intent(this, MainActivity::class.java),
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
             )
             .build()
@@ -63,21 +62,17 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
 
     private fun showNotification() {
         val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                n_channel, getString(R.string.screen_recorder),
-                NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(
+            n_channel, getString(R.string.screen_recorder),
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
+        nm.createNotificationChannel(channel)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(
+                n_id, mNotification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION
             )
-            nm.createNotificationChannel(channel)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                startForeground(
-                    n_id, mNotification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION
-                )
-            } else {
-                startForeground(n_id, mNotification)
-            }
         } else {
-            nm.notify(n_id, mNotification)
+            startForeground(n_id, mNotification)
         }
     }
 

@@ -15,7 +15,7 @@ import com.example.kotlindemo.databinding.FragmentListAdapterTestBinding
 
 class ListAdapterTestFragment : Fragment() {
     private var _binding :FragmentListAdapterTestBinding?=null
-    private val binding = _binding!!
+    private val binding get() = _binding!!
     private var adapter: MyListAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater,
