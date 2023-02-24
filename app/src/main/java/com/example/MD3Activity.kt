@@ -50,7 +50,7 @@ class MD3Activity : AppCompatActivity() {
         btn.setOnClickListener { viewModel.setWallpaper() }
 
         val tv: TextView = findViewById(R.id.editText)
-        val assetss = resources.assets
+//        val assetss = resources.assets
 //        tv.text = assetss.toString()
         /* ApkAssets如下
         0 = {ApkAssets@21968} "ApkAssets{path=<empty> and /system/framework/framework-res.apk}"
@@ -74,12 +74,14 @@ class MD3Activity : AppCompatActivity() {
         viewModel.updateAppend("onCreate- ${System.currentTimeMillis()}")
 
         val color: TextView = findViewById(R.id.wallpaperColor)
-        val color1 = ContextCompat.getColor(this, android.R.color.system_accent1_500)
-        val color2 = ContextCompat.getColor(this, android.R.color.system_accent2_500)
-        val color3 = ContextCompat.getColor(this, android.R.color.system_accent3_500)
-        color.text = "0x${Integer.toHexString(color1)}," +
-                "0x${Integer.toHexString(color2)}," +
-                "0x${Integer.toHexString(color3)}"
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val color1 = ContextCompat.getColor(this, android.R.color.system_accent1_500)
+            val color2 = ContextCompat.getColor(this, android.R.color.system_accent2_500)
+            val color3 = ContextCompat.getColor(this, android.R.color.system_accent3_500)
+            color.text = "0x${Integer.toHexString(color1)}," +
+                    "0x${Integer.toHexString(color2)}," +
+                    "0x${Integer.toHexString(color3)}"
+        }
         val image: ImageView = findViewById(R.id.wallpaper)
         viewModel.wallpaper.observe(this) {
             if (it == null) {

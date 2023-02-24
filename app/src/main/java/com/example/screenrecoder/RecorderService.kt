@@ -40,7 +40,7 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
             }
             , PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         mNotification = NotificationCompat.Builder(this, n_channel)
-            .setSmallIcon(R.mipmap.ic_launcher_round)
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setChannelId(n_channel)
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.screen_recorder))
