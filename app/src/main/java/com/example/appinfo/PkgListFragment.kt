@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import com.example.kotlindemo.R
 import com.example.kotlindemo.databinding.FragmentApplistBinding
-import com.example.log
 import com.example.toast
 
 const val FILTER_DATA = 0
@@ -67,18 +65,18 @@ class PkgListFragment : androidx.fragment.app.Fragment() {
             .build()
 
         val adapter = AAdapter(diff)
-        vm.getAppsList().observe(this) {
+        vm.getAppsList().observe(viewLifecycleOwner) {
             adapter.setAppList(it)
         }
-        vm.doQuery(null).observe(this) {
+        vm.doQuery(null).observe(viewLifecycleOwner) {
             adapter.setAppList(it)
         }
-        vm.getConfigKey().observe(this) {
+        vm.getConfigKey().observe(viewLifecycleOwner) {
             if (it != null) {
                 binding.searchView.queryHint = it
             }
         }
-        vm.getConfigFilter().observe(this) {
+        vm.getConfigFilter().observe(viewLifecycleOwner) {
             if (it != null && binding.spinner.tag == null) {
                 binding.spinner.tag = it
                 binding.spinner.setSelection(it)

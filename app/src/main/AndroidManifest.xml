@@ -27,9 +27,21 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <uses-permission
         android:name="android.permission.INSTALL_LOCATION_PROVIDER"
         tools:ignore="ProtectedPermissions" />
+
+    <!--target 升高后 查询不到all app了  -->
+    <queries>
+        <package android:name="com.miui.securitycenter" />
+        <package android:name="com.miui.securitycore" />
+        <package android:name="com.xiaomi.smarthome" />
+
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
 
     <application
         android:name="com.example.App"
