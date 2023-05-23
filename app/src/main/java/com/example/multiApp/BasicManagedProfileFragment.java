@@ -145,48 +145,30 @@ public class BasicManagedProfileFragment extends Fragment
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.set_chrome_restrictions: {
-                setChromeRestrictions();
-                break;
-            }
-            case R.id.clear_chrome_restrictions: {
-                clearChromeRestrictions();
-                break;
-            }
-            case R.id.enable_forwarding: {
-                enableForwarding();
-                break;
-            }
-            case R.id.disable_forwarding: {
-                disableForwarding();
-                break;
-            }
-            case R.id.send_intent: {
-                sendIntent();
-                break;
-            }
-            case R.id.remove_profile: {
-                mButtonRemoveProfile.setEnabled(false);
-                removeProfile();
-                break;
-            }
+        if (view.getId() == R.id.set_chrome_restrictions) {
+            setChromeRestrictions();
+        } else if (view.getId() == R.id.clear_chrome_restrictions) {
+            clearChromeRestrictions();
+        } else if (view.getId() == R.id.enable_forwarding) {
+            enableForwarding();
+        } else if (view.getId() == R.id.disable_forwarding) {
+            disableForwarding();
+        } else if (view.getId() == R.id.send_intent) {
+            sendIntent();
+        } else if (view.getId() == R.id.remove_profile) {
+            mButtonRemoveProfile.setEnabled(false);
+            removeProfile();
         }
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-        switch (compoundButton.getId()) {
-            case R.id.toggle_calculator: {
-                setAppEnabled(PACKAGE_NAME_CALCULATOR, checked);
-                mCalculatorEnabled = checked;
-                break;
-            }
-            case R.id.toggle_chrome: {
-                setAppEnabled(PACKAGE_NAME_CHROME, checked);
-                mChromeEnabled = checked;
-                break;
-            }
+        if (compoundButton.getId() == R.id.toggle_calculator) {
+            setAppEnabled(PACKAGE_NAME_CALCULATOR, checked);
+            mCalculatorEnabled = checked;
+        } else if (compoundButton.getId() == R.id.toggle_chrome) {
+            setAppEnabled(PACKAGE_NAME_CHROME, checked);
+            mChromeEnabled = checked;
         }
     }
 

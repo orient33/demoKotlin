@@ -55,13 +55,10 @@ public class EnableProfileActivity extends Activity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.icon: {
-                // Opens up the main screen
-                startActivity(new Intent(this, MultiAppActivity.class));
-                finish();
-                break;
-            }
+        if (view.getId() == R.id.icon) {
+            // Opens up the main screen
+            startActivity(new Intent(this, MultiAppActivity.class));
+            finish();
         }
     }
 

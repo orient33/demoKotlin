@@ -55,11 +55,8 @@ public class SetupProfileFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.set_up_profile: {
-                provisionManagedProfile();
-                break;
-            }
+        if (view.getId() == R.id.set_up_profile) {
+            provisionManagedProfile();
         }
     }
 
