@@ -25,12 +25,14 @@
         <!-- 启动画面背景颜色 -->
         <item name="android:windowSplashScreenBackground">@color/splash_screen_background</item>
         <!-- 启动画面中间显示的图标，默认使用应用图标 -->
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/g8c</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <!-- 启动画面中间显示的图标的背景，如果图标背景不透明则无效 -->
         <item name="android:windowSplashScreenIconBackgroundColor">@color/splash_screen_icon_background</item>
         <!-- 启动画面启动画面底部的图片。 -->
         <!--        <item name="android:windowSplashScreenBrandingImage">@mipmap/iv_splash_screen_brandingimage</item>-->
         <!-- 启动画面在关闭之前显示的时长。最长时间为 1000 毫秒。 -->
-        <item name="android:windowSplashScreenAnimationDuration">500</item>
+        <item name="android:windowSplashScreenAnimationDuration">5000</item>
+
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
     </style>
 </resources>

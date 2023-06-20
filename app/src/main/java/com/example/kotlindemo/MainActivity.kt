@@ -3,7 +3,9 @@ package com.example.kotlindemo
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
+import android.window.SplashScreen
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.window.layout.WindowMetricsCalculator
@@ -22,6 +24,7 @@ class MainActivity : AppCompatActivity(), IActivity {
     var config: Configuration? = null
     var large: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splachScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         updateOrient()
         displayCut(this)
