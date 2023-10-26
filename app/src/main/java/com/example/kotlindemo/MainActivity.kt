@@ -9,6 +9,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.window.layout.WindowMetricsCalculator
+import com.example.BaseActivity
 import com.example.displayCut
 import com.example.log
 import java.text.SimpleDateFormat
@@ -18,7 +19,7 @@ import java.util.*
 
 private const val fragmentId = android.R.id.content
 
-class MainActivity : AppCompatActivity(), IActivity {
+class MainActivity : BaseActivity(), IActivity {
 
     lateinit var fm: FragmentManager
     var config: Configuration? = null

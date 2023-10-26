@@ -12,11 +12,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
+import com.example.appName
+import com.example.drawableToString
 import com.example.kotlindemo.R
 import com.example.kotlindemo.databinding.FragmentApplistBinding
 import com.example.toast
@@ -26,6 +30,8 @@ const val FILTER_SYS = 1
 const val FILTER_ALL = 2
 const val FILTER_UPDATE_SYS = 3
 
+// PackageInfo 范围更广泛. 比如rro的apk是一个Package但不是application.
+// 且其包含ApplicationInfo.
 class PkgListFragment : androidx.fragment.app.Fragment() {
     private var _binding: FragmentApplistBinding? = null
     private val binding get() = _binding!!
@@ -113,7 +119,7 @@ class PkgListFragment : androidx.fragment.app.Fragment() {
     }
 
     internal class AAdapter(diff: AsyncDifferConfig<PackageInfo>) :
-        ListAdapter<PackageInfo, VH>(diff), View.OnClickListener {
+        ListAdapter<PackageInfo, VH>(diff), View.OnClickListener, View.OnLongClickListener {
         fun setAppList(list: List<PackageInfo>) {
             submitList(list)
         }
@@ -127,20 +133,34 @@ class PkgListFragment : androidx.fragment.app.Fragment() {
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: VH, position: Int) {
             val info = getItem(position)
-            holder.bindPackageInfo(position, this, info)
+            holder.bindPackageInfo(position, this, this, info)
         }
 
         override fun onClick(v: View) {
             val tag = v.tag
-            if (tag is String) {
+            if (tag is PackageInfo) {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                intent.data = Uri.parse("package:$tag")
+                intent.data = Uri.parse("package:${tag.packageName}")
                 if (intent.resolveActivity(v.context.packageManager) != null) {
                     v.context.startActivity(intent)
                 } else {
                     toast(v.context, "click $tag, can not resolve intent!")
                 }
             }
+        }
+
+        override fun onLongClick(v: View): Boolean {
+            val tag = v.tag
+            if (tag is PackageInfo) {
+                val img: ImageView = (v as ViewGroup).findViewById(R.id.icon)
+                val d = img.drawable
+                val dialog = AlertDialog.Builder(v.context)
+                    .setTitle("${tag.appName}.")
+                    .setMessage(drawableToString(d))
+                    .create()
+                dialog.show()
+            }
+            return true
         }
     }
 }

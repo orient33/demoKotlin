@@ -9,19 +9,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.annotation.IdRes
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.appName
+import com.example.drawableToString
 import com.example.kotlindemo.IActivity
 import com.example.kotlindemo.R
 import com.example.toast
 
 // https://github.com/orient33/getAppInfo
-class AppListFragment : Fragment() {
+class LauncherAppListFragment : Fragment() {
     var root: View? = null
     var mRecyclerView: RecyclerView? = null
     var mSpinner: Spinner? = null
@@ -71,7 +75,7 @@ class AppListFragment : Fragment() {
     }
 
     internal inner class AppAdapter(val context: Context) :
-        RecyclerView.Adapter<VH>(), View.OnClickListener {
+        RecyclerView.Adapter<VH>(), View.OnClickListener, View.OnLongClickListener {
         val data: MutableList<LauncherActivityInfo> = ArrayList()
 
         fun setList(list:List<LauncherActivityInfo>){
@@ -97,12 +101,24 @@ class AppListFragment : Fragment() {
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: VH, position: Int) {
             val info = data[position]
-            holder.bindLauncherInfo(position, this, info)
+            holder.bindLauncherInfo(position, this, this, info)
             holder.itemView.tag = info
         }
 
         override fun onClick(v: View) {
             toDetail(v.tag as LauncherActivityInfo)
+        }
+
+        override fun onLongClick(v: View): Boolean {
+            val lai = v.tag as LauncherActivityInfo
+            val img: ImageView = (v as ViewGroup).findViewById(R.id.icon)
+            val d = img.drawable
+            val dialog = AlertDialog.Builder(v.context)
+                .setTitle("${lai.label}.")
+                .setMessage(drawableToString(d))
+                .create()
+            dialog.show()
+            return true
         }
     }
 

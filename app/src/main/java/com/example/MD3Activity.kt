@@ -14,7 +14,6 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmapOrNull
@@ -29,7 +28,7 @@ import kotlinx.coroutines.launch
 import java.lang.reflect.Method
 
 // test Material You , / dynamic color
-class MD3Activity : AppCompatActivity() {
+class MD3Activity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +47,10 @@ class MD3Activity : AppCompatActivity() {
         btn.append("$this, isDynamicColorAvailable: ${DynamicColors.isDynamicColorAvailable()}")
         log("onCreate .$this ,theme = $theme")
         btn.setOnClickListener { viewModel.setWallpaper() }
+        btn.setOnLongClickListener {
+            viewModel.clearWallpaper()
+            true
+        }
 
         val tv: TextView = findViewById(R.id.editText)
 //        val assetss = resources.assets
@@ -119,6 +122,18 @@ class TestVM(val app: Application) : AndroidViewModel(app) {
                     null
                 } else wm.drawable.toBitmapOrNull()
                 wallpaper.postValue(b)
+            }
+        }
+    }
+
+    fun clearWallpaper() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val wm = WallpaperManager.getInstance(app)
+            log("clear wallpaper. reset default!")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                wm.clearWallpaper()
+            } else {
+                wm.clear()
             }
         }
     }

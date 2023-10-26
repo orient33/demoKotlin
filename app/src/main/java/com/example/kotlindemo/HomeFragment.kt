@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.MD3Activity
 import com.example.RvClickListener
 import com.example.a13.PhotoPickerDemo
-import com.example.appinfo.AppListFragment
+import com.example.appinfo.LauncherAppListFragment
 import com.example.appinfo.PkgListFragment
 import com.example.coordinator.CoordinatorFragment2
 import com.example.coroutines.KorFragment
@@ -51,7 +51,7 @@ class HomeFragment : androidx.fragment.app.Fragment(R.layout.fragment_home) {
             Pair("地理位置", LocationFragment::class.java.name),
             Pair("U盘", UsbFragment::class.java.name),
             Pair("ROOM数据库", RoomFragment::class.java.name),
-            Pair("LauncherApp列表", AppListFragment::class.java.name),
+            Pair("LauncherApp列表", LauncherAppListFragment::class.java.name),
             Pair("应用列表", PkgListFragment::class.java.name),
             Pair("图片缩放", ImageMatrixFragment::class.java.name),
             Pair("Coordinator1", CoordinatorFragment2::class.java.name),

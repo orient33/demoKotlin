@@ -3,6 +3,12 @@ package com.example
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageInfo
+import android.graphics.drawable.AdaptiveIconDrawable
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.VectorDrawable
 import android.os.Build
 import android.os.Looper
 import android.util.Log
@@ -84,6 +90,42 @@ val PackageInfo.appName: String
     get() {
         return applicationInfo.loadLabel(Injector.sContext.packageManager).toString()
     }
+
+fun drawableToString(d: Drawable): String {
+    return when (d) {
+        is AdaptiveIconDrawable -> {
+            var text =
+                "分层图标 AdaptiveIconDrawable, size=${d.intrinsicWidth}px\n" +
+                        " 背景 size= ${d.background.intrinsicWidth}, ${drawableToString(d.background)}\n" +
+                        " 前景 size=${d.foreground.intrinsicWidth}, ${drawableToString(d.foreground)}\n"
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val mono = d.monochrome
+                if (mono != null) {
+                    text += "单色图层 size = ${mono.intrinsicWidth} , ${drawableToString(mono)}"
+                }
+            }
+            text
+        }
+
+        is BitmapDrawable -> {
+            "单层图标 ${d.intrinsicWidth}x${d.intrinsicHeight}px. bitmap ${d.bitmap.width}x${d.bitmap.height},density=${d.bitmap.density} "
+        }
+
+        is LayerDrawable -> {
+            val size = d.numberOfLayers
+            val sb = StringBuilder()
+            for (i in 0 until size) {
+                val c = d.getDrawable(i)
+                sb.append("$i, ${drawableToString(c)}\n")
+            }
+            "LayerDrawable. $size: \n$sb"
+        }
+
+        is ColorDrawable -> "纯颜色 color=0x${Integer.toHexString(d.color)}"
+        is VectorDrawable -> "矢量图 ${d.javaClass.simpleName}"
+        else -> d.javaClass.toString()
+    }
+}
 
 fun <T> invoke(
     method: Method,
