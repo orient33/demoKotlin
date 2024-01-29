@@ -4,9 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
+import com.example.kotlindemo.MainActivity
 import com.example.log
+import com.example.render.KEY_URL
+import com.example.render.RenderFragment
 
 //https://developer.android.google.cn/about/versions/13/features/photopicker?hl=zh-cn
 const val PHOTO_PICKER_REQUEST_CODE = 11
@@ -31,7 +35,7 @@ object PhotoPickerDemo {
         }
     }
 
-    fun onPhotoResult(requestCode: Int, resultCode: Int, data: Intent?):Boolean {
+    fun onPhotoResult(ctx:MainActivity, requestCode: Int, resultCode: Int, data: Intent?):Boolean {
         if (resultCode != Activity.RESULT_OK) return false
         when (requestCode) {
             PHOTO_PICKER_REQUEST_CODE -> {
@@ -39,6 +43,11 @@ object PhotoPickerDemo {
                 val currentUri: Uri = data?.data!!
                 log("onPhotoResult. $currentUri")
                 // Do stuff with the photo/video URI.
+                ctx.toFragment(RenderFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(KEY_URL, currentUri.toString())
+                    }
+                })
                 return true
             }
             REQUEST_PHOTO_PICKER_MULTI_SELECT -> {

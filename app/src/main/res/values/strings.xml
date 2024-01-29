@@ -29,7 +29,12 @@
         <item>更新的系统app</item>
         <!--item>~个税申报~</item-->
     </array>
-
+    <array name="blendMode">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </array>
     <array name="xfmode" translatable="false">
         <item>Clear</item>
         <item>Src</item>

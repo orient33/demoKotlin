@@ -94,6 +94,6 @@ class HomeFragment : androidx.fragment.app.Fragment(R.layout.fragment_home) {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        PhotoPickerDemo.onPhotoResult(requestCode, resultCode, data)
+        PhotoPickerDemo.onPhotoResult(requireActivity() as MainActivity, requestCode, resultCode, data)
     }
 }
