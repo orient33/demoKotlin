@@ -2,6 +2,15 @@ package com.example
 
 import com.example.RemoveDup.firstNonAZ
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.transformLatest
 import java.io.File
 import java.net.URLDecoder
 import java.time.LocalDateTime
@@ -14,14 +23,23 @@ import kotlin.concurrent.thread
 object MyTest {
     @JvmStatic
     fun main(args: Array<String>) {
-//        val now = Calendar.getInstance();
-//        Calendar.DAY_OF_YEAR;
-//        mylog(" $now, ${now.get(Calendar.DAY_OF_YEAR)}")
-//        val job = GlobalScope.launch {
-//            delay(1000)
-//            mylog("协程 done! " + Thread.currentThread().id)
-//        }
-//        mylog("main ..hello ," + Thread.currentThread().id)
+        val now = Calendar.getInstance();
+        Calendar.DAY_OF_YEAR;
+        mylog("start $now, ${now.get(Calendar.DAY_OF_YEAR)}")
+        val job = GlobalScope.launch {
+            flow1()
+//            flow2()
+            mylog("协程 done! tid=" + Thread.currentThread().id)
+        }
+
+        try {
+            do {
+                Thread.sleep(1000)
+            } while (job.isActive)
+            mylog("main ..hello , job : ${job.isCompleted}  . tid=" + Thread.currentThread().id)
+        } catch (e:Exception){
+            mylog("error $e")
+        }
 
 //        val dimenList = RunShell.runCmd("find ", arrayOf(THEME_ROOT, " -name ", "dimen*.xml.txt"))
 //        val list = dimenList.split("\n").filter { it.endsWith("xml.txt") }
@@ -29,7 +47,7 @@ object MyTest {
 //            File(it).deleteOnExit()
 //        }
 //        autoDensity2()
-        readMemory("thememanager")
+//        readMemory("thememanager")
 //        readLog()
 //        RemoveDup.removeDupDrawable()
 //        RemoveDup.removeDupDimen()
@@ -50,6 +68,62 @@ object MyTest {
     //[drawable-xhdpi-v4/retry_n] /home/dun/code.mi/ThemeManager/app/src/main/res/drawable-xhdpi/retry_n.9.png
 // [drawable-xhdpi-v4/retry_n] /home/dun/code.mi/ThemeManager/module_recommend/src/main/res/drawable-xhdpi/retry_n.9.png
 // : Resource and asset merger: Duplicate resources
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private suspend fun flow1() {
+        val flowA = flowOf(1,2,3,4,5,6)
+//        flow {
+//            emit(1)
+//            delay(111)
+//            emit(2)
+//            delay(12)
+//            emit(3)
+//            delay(3111)
+//            emit(4)
+//            delay(2222)
+//            emit(5)
+//        }
+
+        flowA.transformLatest {
+            if (it == 3) {
+                delay(2000)
+                emit(it)
+            } else {
+                emit(it)
+            }
+        }
+            .collect {
+                mylog("1: collect $it")
+            }
+    }
+
+    @OptIn(FlowPreview::class)
+    private suspend fun flow2() {
+        var sent4 = false
+        (1..5).asFlow()
+            .onEach { delay(110) }
+            .flatMapConcat { value ->
+                if (value == 3) {
+                    flow {
+                        try {
+                            delay(1000)
+                            if (!sent4) {
+                                emit(value)
+                            }
+                        } finally {
+                            sent4 = false
+                        }
+                    }//.flowCancellable()
+                } else {
+                    sent4 = true
+                    flowOf(value)
+                }
+            }
+            .collect { value ->
+                mylog("2: collect $value")
+            }
+    }
+
     private fun readLog() {
         val logFile = File("/home/dun/code.open/demoKotlin/lib/theme2.txt")
         val map = mutableMapOf<String, Int>()
