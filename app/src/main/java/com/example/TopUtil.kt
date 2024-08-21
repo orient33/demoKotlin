@@ -1,6 +1,7 @@
 package com.example
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.graphics.drawable.AdaptiveIconDrawable
@@ -17,11 +18,17 @@ import android.widget.Toast
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.asCoroutineDispatcher
 import java.lang.reflect.Method
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Collections
+import java.util.Date
+import java.util.Locale
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author dundongfang on 2018/9/25.
@@ -29,6 +36,34 @@ import java.util.*
 //https://developer.android.google.cn/topic/libraries/architecture/datastore?hl=zh-cn
 // 用于取代 SharedPreference的数据存储
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
+private val threadPool: Executor
+    get() {
+        return Executors.newFixedThreadPool(3) {
+            val poolNumber = AtomicInteger(1)
+            Thread(it).apply {
+                name = "T.${poolNumber.getAndIncrement()}"
+            }
+        }
+    }
+
+val workerDispatcher = threadPool.asCoroutineDispatcher()
+
+//val Application.appScope : CoroutineScope
+//  get() {
+//    val scope: CoroutineScope? = this.getTag(JOB_KEY)
+//    if (scope != null) {
+//        return scope
+//    }
+//    return setTagIfAbsent(
+//        JOB_KEY,
+//        CloseableCoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+//    )
+//}
+
+fun runInWork(r:Runnable) {
+    threadPool.execute(r)
+}
 
 fun log(msg: String, tag: String = "df") {
     Log.i(tag, msg)

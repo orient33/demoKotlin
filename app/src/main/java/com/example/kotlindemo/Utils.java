@@ -4,15 +4,20 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.os.Build;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.graphics.drawable.IconCompat;
+
 import android.util.Log;
 
 import java.io.File;
@@ -128,17 +133,24 @@ public class Utils {
         NotificationManager nm = (NotificationManager) context.getSystemService(
                 NOTIFICATION_SERVICE);
         String channelId = "upgrade";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelName = "升级11";
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        String channelName = "升级11";
+        if (nm.getNotificationChannel(channelId) == null) {
             NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
             nm.createNotificationChannel(channel);
         }
-        Notification notification = new NotificationCompat.Builder(context, "upgrade")
+//        }
+        Notification notification = new NotificationCompat.Builder(context, channelId)
                 .setContentTitle(title)
                 .setContentText(msg)
                 .setSmallIcon(R.mipmap.ic_launcher)
 //                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setAutoCancel(true)
+                .addAction(new NotificationCompat.Action(
+                        IconCompat.createWithResource(context, R.drawable.g8c),
+                        "open demo app",
+                        PendingIntent.getActivity(context, 1, new Intent(context, MainActivity.class), PendingIntent.FLAG_IMMUTABLE)
+                ))
                 .build();
         nm.notify(title.hashCode(), notification);
     }

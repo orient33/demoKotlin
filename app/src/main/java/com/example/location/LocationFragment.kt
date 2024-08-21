@@ -18,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import com.example.kotlindemo.Utils
 import com.example.kotlindemo.databinding.FragmentLocationBinding
 import com.example.log
 
@@ -114,12 +115,10 @@ class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
     private val ll = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             log("111 onLocationChanged")
-            binding.locationInfo.append("onLocationChanged. ${location2String(location)}\n\n")
-        }
-
-        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-            log("222 onStatusChanged")
-            binding.locationInfo.append("onStateChange $provider, $status, $extras")
+            val title = "onLocationChanged"
+            val str = location2String(location)
+            binding.locationInfo.append("onLocationChanged. $str\n\n")
+            Utils.sendNotification(requireContext(), title, str)
         }
 
         override fun onProviderEnabled(provider: String) {
@@ -137,7 +136,7 @@ class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
     private val gnssCb = object : GnssNavigationMessage.Callback() {
 
         override fun onStatusChanged(status: Int) {
-            binding.gnssInfo.append("\nonStatusChanged ${state2String(status)}")
+            binding.gnssInfo.append("\nGNSS statusChanged ${state2String(status)}")
         }
 
         override fun onGnssNavigationMessageReceived(event: GnssNavigationMessage?) {
