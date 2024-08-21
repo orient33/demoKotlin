@@ -29,6 +29,17 @@
         <item>更新的系统app</item>
         <!--item>~个税申报~</item-->
     </array>
+    <array name="sbMode">
+        <item>用户应用</item>
+        <item>系统应用</item>
+        <item>所有应用</item>
+        <item>更新的系统app</item>
+        <!--item>~个税申报~</item-->
+    </array>
+    <string name="accessibility_service_description">for cts test</string>
+    <string name="accessibility_description">"
+        1 使用系统无障碍服务进行快捷操作\n
+        2 使用SpeechRecognizer识别语音输入 然后转为文字"</string>
     <array name="blendMode">
         <item>1</item>
         <item>2</item>

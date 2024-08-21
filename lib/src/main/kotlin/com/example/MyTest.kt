@@ -1,34 +1,68 @@
 package com.example
 
 import com.example.RemoveDup.firstNonAZ
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transformLatest
+import kotlinx.coroutines.launch
 import java.io.File
-import java.net.URLDecoder
 import java.time.LocalDateTime
-import java.util.*
+import java.util.Calendar
 import java.util.concurrent.atomic.AtomicLong
-import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
 import kotlin.concurrent.thread
 
 object MyTest {
-    @JvmStatic
+
+    val mainScope = CoroutineScope(Dispatchers.Default)
+//    val ioScope = CoroutineScope(Dispatchers.IO)
+
+    val sf = flow {
+        for (i in 1..3) {
+            delay(1111)
+            emit(i)
+//            mylog("emit sf $i=========================")
+        }
+    }.stateIn(mainScope, SharingStarted.WhileSubscribed(), 0)
+
+
+    val wifi = flow {
+        for (i in 1..5) {
+            delay(1122)
+            emit(i % 2 == 0)
+//            mylog("emit wifi : ${i % 2 == 0}------------------")
+        }
+    }.stateIn(mainScope, SharingStarted.WhileSubscribed(), false)
+
+     @JvmStatic
     fun main(args: Array<String>) {
-        val now = Calendar.getInstance();
-        Calendar.DAY_OF_YEAR;
+        val now = Calendar.getInstance()
         mylog("start $now, ${now.get(Calendar.DAY_OF_YEAR)}")
-        val job = GlobalScope.launch {
-            flow1()
-//            flow2()
+
+        val list2 = listOf(6,5,4)
+        mylog("list2 is $list2")
+        mylog("list2 sorted: is ${list2.sorted()}")
+        mylog("list2 after sorted: is $list2")
+
+        val job = mainScope.launch {
+            sf.combineTransform(wifi) { a, b ->
+                if (a == 3 && b ){
+                    emit("$a $b")
+                }
+            }.collect{
+                mylog(" collect----$it")
+            }
+
             mylog("协程 done! tid=" + Thread.currentThread().id)
         }
 
@@ -37,7 +71,7 @@ object MyTest {
                 Thread.sleep(1000)
             } while (job.isActive)
             mylog("main ..hello , job : ${job.isCompleted}  . tid=" + Thread.currentThread().id)
-        } catch (e:Exception){
+        } catch (e: Exception) {
             mylog("error $e")
         }
 
@@ -71,7 +105,7 @@ object MyTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun flow1() {
-        val flowA = flowOf(1,2,3,4,5,6)
+        val flowA = flowOf(1, 2, 3, 4, 5, 6)
 //        flow {
 //            emit(1)
 //            delay(111)

@@ -1,7 +1,10 @@
 package com.example.kotlindemo
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.annotation.Keep
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +13,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.example.list2String
 import com.example.log
 import com.example.toast
@@ -29,6 +34,10 @@ class ListFragment : androidx.fragment.app.Fragment() {
         val text1 = view.findViewById<View>(R.id.text1)
         setupRecyclerView(view.context, rv)
         setupRecyclerView(view.context, rv1)
+
+        val lunch = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            if (it) onPermissionOk()
+        }
         text1.setOnClickListener { v ->
             run {
                 val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -39,14 +48,21 @@ class ListFragment : androidx.fragment.app.Fragment() {
                 } else {
                     toast(v.context, "can not find Activity for $intent")
                 }
-                Utils.sendNotification(
-                    v.context,
-                    "text+ " + System.currentTimeMillis(),
-                    "start audio."
-                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    lunch.launch(Manifest.permission.POST_NOTIFICATIONS)
+                } else {
+                    onPermissionOk()
+                }
             }
         }
         log("..onViewCreated. $this")
+    }
+    private fun onPermissionOk(){
+        Utils.sendNotification(
+            requireContext(),
+            "text+ " + System.currentTimeMillis(),
+            "start audio."
+        )
     }
 
     private fun setupRecyclerView(context: Context, v: RecyclerView) {

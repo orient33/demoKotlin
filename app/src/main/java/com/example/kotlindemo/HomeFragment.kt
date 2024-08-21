@@ -17,7 +17,9 @@ import com.example.coroutines.KorFragment
 import com.example.device.DeviceInfo
 import com.example.imagetest.ImageHomeFragment
 import com.example.imagetest.ImageMatrixFragment
+import com.example.layout.AccessFragment
 import com.example.layout.ConstraintFragment
+import com.example.layout.StatusBarTestFragment
 import com.example.list_adapter_verify.ListAdapterTestFragment
 import com.example.location.LocationFragment
 import com.example.media.MediaFragment
@@ -40,6 +42,8 @@ class HomeFragment : androidx.fragment.app.Fragment(R.layout.fragment_home) {
         mList = listOf(
             Pair("图片列表demo-1", ImageHomeFragment::class.java.name),
             Pair("录屏Demo", RecorderFragment::class.java.name),
+            Pair("状态栏test", StatusBarTestFragment::class.java.name),
+            Pair("无障碍,语音识别", AccessFragment::class.java.name),
             Pair("ConstraintFragment", ConstraintFragment::class.java.name),
             Pair("kotlin协程", KorFragment::class.java.name),
             Pair("列表", ListFragment::class.java.name),
