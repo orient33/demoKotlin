@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.example.StatusBarTool
 import com.example.list2String
 import com.example.log
 import com.example.toast
@@ -29,6 +30,7 @@ class ListFragment : androidx.fragment.app.Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
         val rv = view.findViewById<RecyclerView>(R.id.rv)
         val rv1 = view.findViewById<RecyclerView>(R.id.rv1)
         val text1 = view.findViewById<View>(R.id.text1)

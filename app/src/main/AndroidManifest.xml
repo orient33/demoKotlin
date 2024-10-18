@@ -65,6 +65,7 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
+            android:theme="@style/AppTheme.Start"
             android:supportsPictureInPicture="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

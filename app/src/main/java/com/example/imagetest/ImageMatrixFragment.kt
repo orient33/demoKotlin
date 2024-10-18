@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
+import com.example.StatusBarTool
 import com.example.kotlindemo.databinding.FragmentImage1Binding
 import com.example.kotlindemo.databinding.FragmentImageMatrixBinding
 
@@ -34,6 +35,7 @@ class ImageMatrixFragment : Fragment(), OnSeekBarChangeListener {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
         matrix.reset()
         binding.imageView.scaleType = ImageView.ScaleType.MATRIX
         binding.imageView.imageMatrix = matrix

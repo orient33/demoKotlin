@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.StatusBarTool
 import com.example.appName
 import com.example.drawableToString
 import com.example.kotlindemo.IActivity
@@ -47,6 +48,7 @@ class LauncherAppListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.fragment_applist, container, false)
+        StatusBarTool.adaptSysBar(root!!)
         mSpinner = findViewById<Spinner>(R.id.spinner)
         mRecyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 

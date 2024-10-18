@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
+import com.example.StatusBarTool
 import com.example.kotlindemo.R
 import com.example.kotlindemo.databinding.FragmentConstraintBinding
 
@@ -27,6 +28,7 @@ class ConstraintFragment : androidx.fragment.app.Fragment(), View.OnClickListene
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
         binding.start.setOnClickListener(this)
         binding.end.setOnClickListener(this)
     }

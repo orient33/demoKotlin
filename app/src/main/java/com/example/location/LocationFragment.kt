@@ -18,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import com.example.StatusBarTool
 import com.example.kotlindemo.Utils
 import com.example.kotlindemo.databinding.FragmentLocationBinding
 import com.example.log
@@ -48,6 +49,7 @@ class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
         lm = view.context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         binding.getLocation.setOnClickListener(this)
         binding.getLocation.setOnLongClickListener(this)

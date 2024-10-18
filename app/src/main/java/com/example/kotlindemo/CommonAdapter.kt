@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class CommonAdapter<T> : RecyclerView.Adapter<CommonVH>() {
     val list = mutableListOf<T>()
-    fun setData(data: List<T>) {
+    var index = false
+    fun setData(data: List<T>, showIndex:Boolean = true) {
         list.clear()
         for (it in data) {
             if (TextUtils.isEmpty(it?.toString())) {
@@ -15,6 +16,7 @@ class CommonAdapter<T> : RecyclerView.Adapter<CommonVH>() {
             }
             list.add(it)
         }
+        index = showIndex
         notifyDataSetChanged()
     }
 
@@ -28,6 +30,8 @@ class CommonAdapter<T> : RecyclerView.Adapter<CommonVH>() {
 
     override fun onBindViewHolder(holder: CommonVH, position: Int) {
         val t = list[position]
-        holder.text.text = t.toString()
+        if (t.toString().isNotBlank()) {
+            holder.text.text = "$position: $t"
+        }
     }
 }

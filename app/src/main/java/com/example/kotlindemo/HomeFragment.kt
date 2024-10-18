@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.MD3Activity
 import com.example.RvClickListener
+import com.example.StatusBarTool
 import com.example.a13.PhotoPickerDemo
 import com.example.appinfo.LauncherAppListFragment
 import com.example.appinfo.PkgListFragment
@@ -40,6 +41,7 @@ class HomeFragment : androidx.fragment.app.Fragment(R.layout.fragment_home) {
     var mList: List<Pair<String, String>>? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mList = listOf(
+            Pair(" ", Unit::class.java.name),//Header, avoid overlay with status bar.
             Pair("图片列表demo-1", ImageHomeFragment::class.java.name),
             Pair("录屏Demo", RecorderFragment::class.java.name),
             Pair("状态栏test", StatusBarTestFragment::class.java.name),
@@ -60,7 +62,8 @@ class HomeFragment : androidx.fragment.app.Fragment(R.layout.fragment_home) {
             Pair("图片缩放", ImageMatrixFragment::class.java.name),
             Pair("Coordinator1", CoordinatorFragment2::class.java.name),
             Pair("MediaCompat", MediaFragment::class.java.name),
-            Pair("画中画", PiPFragment::class.java.name)
+            Pair("画中画", PiPFragment::class.java.name),
+            Pair(" ", Unit::class.java.name),//Footer, avoid overlay with Nav bar.
         )
         val fab = view.findViewById<FloatingActionButton>(R.id.fab)
         fab?.let { fabBtn ->

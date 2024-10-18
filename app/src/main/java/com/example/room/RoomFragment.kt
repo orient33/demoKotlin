@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.App
 import com.example.Injector
+import com.example.StatusBarTool
 import com.example.kotlindemo.R
 import com.example.log
 import com.example.toast
@@ -42,6 +42,7 @@ class RoomFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
         adapter = AdapterUser(view.context)
         val listView = view.findViewById<RecyclerView>(R.id.listView)
         listView.layoutManager = LinearLayoutManager(view.context)

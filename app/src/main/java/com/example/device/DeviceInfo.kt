@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.window.layout.WindowMetricsCalculator
+import com.example.StatusBarTool
 import com.example.kotlindemo.CommonAdapter
 import com.example.kotlindemo.R
 import java.lang.reflect.Method
@@ -30,6 +31,7 @@ class DeviceInfo : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
         adapter = CommonAdapter()
         val rv = view.findViewById<RecyclerView>(R.id.rv)
         rv.layoutManager = LinearLayoutManager(context)

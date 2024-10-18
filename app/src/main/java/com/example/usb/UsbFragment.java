@@ -23,6 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.StatusBarTool;
 import com.example.TopUtilKt;
 import com.example.kotlindemo.R;
 
@@ -57,6 +59,7 @@ public class UsbFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        StatusBarTool.adaptSysBar(view);
         text = view.findViewById(R.id.text);
         text.setText("--------U盘相关action-----------");
         IntentFilter filter = new IntentFilter(Intent.ACTION_MEDIA_MOUNTED);

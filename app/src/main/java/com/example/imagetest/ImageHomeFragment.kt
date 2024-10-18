@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.StatusBarTool
 import com.example.kotlindemo.IActivity
 import com.example.kotlindemo.R
 import com.example.kotlindemo.databinding.FragmentImageHomeBinding
@@ -28,6 +29,7 @@ class ImageHomeFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
         binding.ok.setOnClickListener(this)
     }
 

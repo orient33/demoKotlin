@@ -9,11 +9,13 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.example.StatusBarTool
 import com.example.kotlindemo.R
 
 class TabFragment() : Fragment(R.layout.fragment_tab) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPager2)
         /*
         viewPager.adapter =

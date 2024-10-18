@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.StatusBarTool
 import com.example.kotlindemo.R
 
 /**
@@ -35,6 +36,7 @@ class SoundFragment : androidx.fragment.app.Fragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
         soundId = wheelSound.load(context, R.raw.wheel_sound, 1)
         val play = view.findViewById<View>(R.id.play)
         val text = view.findViewById<TextView>(R.id.text)

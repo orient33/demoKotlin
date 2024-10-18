@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
+import com.example.StatusBarTool
 import com.example.appName
 import com.example.drawableToString
 import com.example.kotlindemo.R
@@ -56,6 +57,7 @@ class PkgListFragment : androidx.fragment.app.Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
         val diff = AsyncDifferConfig.Builder(object : DiffUtil.ItemCallback<PackageInfo>() {
             override fun areItemsTheSame(oldItem: PackageInfo, newItem: PackageInfo): Boolean {
                 return oldItem.packageName == newItem.packageName

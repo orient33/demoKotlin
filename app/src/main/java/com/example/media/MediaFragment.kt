@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.StatusBarTool
 import com.example.kotlindemo.R
 import com.example.kotlindemo.databinding.FragmentMediaBinding
 import com.example.log
@@ -92,8 +93,9 @@ class MediaFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMediaBinding.inflate(LayoutInflater.from(requireContext()))
+        StatusBarTool.adaptSysBar(binding.root)
         mBrowser = MediaBrowserCompat(
             requireContext(),
             ComponentName(requireContext(), PlayService::class.java),

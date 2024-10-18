@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.StatusBarTool
 import com.example.kotlindemo.R
 
 class KorFragment : Fragment(), View.OnClickListener {
@@ -32,6 +33,7 @@ class KorFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
         view.findViewById<Button>(R.id.button).setOnClickListener(this)
         view.findViewById<Button>(R.id.button2).setOnClickListener(this)
         textView = view.findViewById(R.id.text)

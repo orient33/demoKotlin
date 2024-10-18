@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.SpeechTool
+import com.example.StatusBarTool
 import com.example.TAG
 import com.example.kotlindemo.ACTION
 import com.example.kotlindemo.R
@@ -32,7 +33,7 @@ class StatusBarTestFragment : androidx.fragment.app.Fragment(), View.OnClickList
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        StatusBarTool.adaptSysBar(view)
     }
 
     override fun onClick(v: View) {

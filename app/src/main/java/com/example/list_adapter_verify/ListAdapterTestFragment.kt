@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import com.example.StatusBarTool
 import com.example.kotlindemo.RecognizeBgDrawable
 import com.example.kotlindemo.databinding.FragmentListAdapterTestBinding
 
@@ -32,6 +33,7 @@ class ListAdapterTestFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
         adapter = MyListAdapter()
         binding.rv.layoutManager = LinearLayoutManager(
             view.context,

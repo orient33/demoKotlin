@@ -27,6 +27,7 @@ import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.StatusBarTool
 import com.example.atLeast
 import com.example.kotlindemo.R
 import com.example.kotlindemo.databinding.FragmentPipBinding
@@ -65,6 +66,7 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        StatusBarTool.adaptSysBar(view)
         binding.videoView.setMediaController(MediaController(context))
         binding.listView.onItemClickListener = this
         binding.listView.onItemLongClickListener = this

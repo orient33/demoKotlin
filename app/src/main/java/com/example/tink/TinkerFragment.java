@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.App;
+import com.example.StatusBarTool;
 import com.example.kotlindemo.R;
 
 import java.nio.charset.StandardCharsets;
@@ -39,6 +40,7 @@ public class TinkerFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        StatusBarTool.adaptSysBar(view);
         if (getActivity() == null) return;
         mApplication = (App) getActivity().getApplicationContext();
         mPlaintextView = view.findViewById(R.id.plaintext);

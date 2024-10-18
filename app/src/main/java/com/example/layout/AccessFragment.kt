@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.SpeechTool
+import com.example.StatusBarTool
 import com.example.TAG
 import com.example.kotlindemo.ACTION
 import com.example.kotlindemo.R
@@ -33,6 +34,7 @@ class AccessFragment : androidx.fragment.app.Fragment(), View.OnClickListener {
         binding.quick.setOnClickListener(this)
         val vm = ViewModelProvider(this)[ViewModelA::class.java]
         vm.listen(binding.output)
+        StatusBarTool.adaptSysBar(binding.root)
         return binding.root
     }
 

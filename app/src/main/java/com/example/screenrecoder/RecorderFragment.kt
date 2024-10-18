@@ -16,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import com.example.StatusBarTool
 import com.example.kotlindemo.R
 import com.example.kotlindemo.databinding.FragmentRecorderBinding
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -52,6 +53,7 @@ class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
         binding.start.setOnClickListener(this)
         binding.stop.setOnClickListener(this)
         val context = requireContext()

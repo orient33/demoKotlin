@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.StatusBarTool
 import com.example.kotlindemo.R
 import com.example.kotlindemo.databinding.FragmentCoordinator2Binding
 
@@ -28,6 +29,7 @@ class CoordinatorFragment2 : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        StatusBarTool.adaptSysBar(view)
 //        toolbar.navigationIcon = null
 //        toolbar.setLogo(R.drawable.ic_launcher_foreground)
         val toolbar = binding2!!.toolbar
