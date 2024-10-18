@@ -120,7 +120,7 @@ class TestVM(val app: Application) : AndroidViewModel(app) {
                 ) {
                     log("no permission for get wallpaper bitmap.")
                     null
-                } else wm.drawable.toBitmapOrNull()
+                } else wm.drawable?.toBitmapOrNull()
                 wallpaper.postValue(b)
             }
         }

@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
 import android.window.SplashScreen
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
@@ -26,6 +27,7 @@ class MainActivity : BaseActivity(), IActivity {
     var large: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         val splachScreen = installSplashScreen()
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         updateOrient()
         displayCut(this)

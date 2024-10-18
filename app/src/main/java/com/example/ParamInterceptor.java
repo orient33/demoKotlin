@@ -3,7 +3,6 @@ package com.example;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.kotlindemo.BuildConfig;
 
 import java.io.IOException;
 import java.net.URI;
@@ -144,9 +143,9 @@ public class ParamInterceptor implements Interceptor {
                 .request(recoveryNoCahcedParam(responseRequest))
                 .build();
 
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, String.format("intercept:  retrofit %s, %d", request.url().toString(), response.code()));
-        }
+//        if (BuildConfig.DEBUG) {
+//            Log.d(TAG, String.format("intercept:  retrofit %s, %d", request.url().toString(), response.code()));
+//        }
 
         return response;
     }

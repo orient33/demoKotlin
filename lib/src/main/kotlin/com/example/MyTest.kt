@@ -8,6 +8,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
@@ -55,13 +56,14 @@ object MyTest {
         mylog("list2 after sorted: is $list2")
 
         val job = mainScope.launch {
-            sf.combineTransform(wifi) { a, b ->
-                if (a == 3 && b ){
-                    emit("$a $b")
-                }
-            }.collect{
-                mylog(" collect----$it")
-            }
+//            sf.combineTransform(wifi) { a, b ->
+//                if (a == 3 && b ){
+//                    emit("$a $b")
+//                }
+//            }.collect{
+//                mylog(" collect----$it")
+//            }
+            flow1()
 
             mylog("协程 done! tid=" + Thread.currentThread().id)
         }
@@ -105,30 +107,28 @@ object MyTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun flow1() {
-        val flowA = flowOf(1, 2, 3, 4, 5, 6)
-//        flow {
-//            emit(1)
-//            delay(111)
-//            emit(2)
-//            delay(12)
-//            emit(3)
-//            delay(3111)
-//            emit(4)
-//            delay(2222)
-//            emit(5)
-//        }
+        val flowA = flowOf(1, 2, 3, 4, 5, 6).onEach { delay(122) }
+        val flowB = flowOf(false, true, false, false).onEach {
+            delay(300)
+        }//.stateIn(myScope)
 
-        flowA.transformLatest {
-            if (it == 3) {
-                delay(2000)
-                emit(it)
-            } else {
-                emit(it)
-            }
+        combine(flowA, flowB
+        ){a, b ->
+            "$a+ $b"
+        }.collect{
+            mylog("collect $it")
         }
-            .collect {
-                mylog("1: collect $it")
-            }
+//        flowA.transformLatest {
+//            if (it == 3) {
+//                delay(2000)
+//                emit(it)
+//            } else {
+//                emit(it)
+//            }
+//        }
+//            .collect {
+//                mylog("1: collect $it")
+//            }
     }
 
     @OptIn(FlowPreview::class)
