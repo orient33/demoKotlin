@@ -8,11 +8,11 @@ plugins {
 
 dependencies {
 //    implementation(fileTree(dir: "libs", include: ["*.jar"])
-    implementation("io.reactivex.rxjava2:rxjava:2.2.20")
-    implementation("com.google.code.gson:gson:2.8.9")
+//    implementation("io.reactivex.rxjava2:rxjava:2.2.20")
+    implementation("com.google.code.gson:gson:2.10.1")
 //    implementation("org.simpleframework:simple-xml:2.7.1")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$1.8.20")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 }
 
 java {
