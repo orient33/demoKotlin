@@ -7,6 +7,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.pm.PackageManager
 import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.Bundle
@@ -15,17 +16,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.example.StatusBarTool
 import com.example.kotlindemo.R
 import com.example.kotlindemo.databinding.FragmentRecorderBinding
-import pub.devrel.easypermissions.AfterPermissionGranted
-import pub.devrel.easypermissions.EasyPermissions
 
-const val PERMISSION_REQ = 1
-const val RECORD_REQUEST_CODE = 10
-
-@RequiresApi(21)
 class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
 
     private val mServiceConnection = object : ServiceConnection {
@@ -41,8 +39,22 @@ class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
         }
     }
     private var mService: RecorderService? = null
-    private var _binding : FragmentRecorderBinding?=null
+    private var _binding: FragmentRecorderBinding? = null
     private val binding get() = _binding!!
+    private var permissionLunch: ActivityResultLauncher<Array<String>>? = null
+    private var mpLunch: ActivityResultLauncher<Intent>? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        permissionLunch =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+                onPermission(it)
+            }
+        mpLunch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            onPermissionScreenCapture(it)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -90,50 +102,48 @@ class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RECORD_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            requireContext().startService(Intent(requireContext(), RecorderService::class.java))
-            mService!!.startRecording(binding.spinner.selectedItemPosition == 0, resultCode, data)
+    private fun onPermission(result: Map<String, Boolean>) {
+        var success = true
+        result.forEach { (t, u) ->
+            success = u && success
         }
+        if (success) intentStartRecorder()
     }
 
     private fun startRecorder() {
         val _context = context ?: return
-        val has = EasyPermissions.hasPermissions(
+        val p = permissionLunch ?: return
+        val has = ContextCompat.checkSelfPermission(
             _context,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.RECORD_AUDIO
-        )
+        ) == PackageManager.PERMISSION_GRANTED
         if (has) {
             intentStartRecorder()
         } else {
-            EasyPermissions.requestPermissions(
-                this, "录屏需要使用的权限", PERMISSION_REQ,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.RECORD_AUDIO
+            p.launch(
+                arrayOf(
+                    Manifest.permission.RECORD_AUDIO,
+                    //Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                )
             )
         }
     }
 
-    @TargetApi(21)
-    @AfterPermissionGranted(PERMISSION_REQ)
     private fun intentStartRecorder() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            val pm =
-                context?.getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-            val intent = pm.createScreenCaptureIntent()
-            startActivityForResult(intent, RECORD_REQUEST_CODE)
-        }
+        val pm =
+            context?.getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+        val intent = pm.createScreenCaptureIntent()
+        // 申请录屏 将会拉起systemui相关dialog 等用户确认(选择单app 还是 整个屏幕)
+        mpLunch?.launch(intent)
+//        startActivityForResult(intent, RECORD_REQUEST_CODE)
     }
 
+    private fun onPermissionScreenCapture(ar: ActivityResult) {
+        mService?.startRecording(
+            binding.spinner.selectedItemPosition == 0,
+            ar.resultCode,
+            ar.data!!
+        )
+    }
 }

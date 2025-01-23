@@ -4,6 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Pair
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -74,6 +78,16 @@ class HomeFragment : androidx.fragment.app.Fragment(R.layout.fragment_home) {
                         MD3Activity::class.java
                     )
                 )
+            }
+            ViewCompat.setOnApplyWindowInsetsListener(fab) { v, insets ->
+                val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+//                    leftMargin += inset.left
+                    rightMargin += inset.right
+//                    topMargin += inset.top
+                    bottomMargin += inset.bottom
+                }
+                insets
             }
             fabBtn.setOnLongClickListener {
                 PhotoPickerDemo.startPhotoPickerSingle(this, requireActivity())

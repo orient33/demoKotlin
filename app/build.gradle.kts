@@ -91,7 +91,6 @@ dependencies {
     api("com.google.android.exoplayer:exoplayer-core:2.19.1")
 
     implementation("com.airbnb.android:lottie:5.0.3") //support包用2.7.0
-    implementation("pub.devrel:easypermissions:3.0.0")//非androidX时候使用版本 2.0.1
     //方便调试,查看数据库的.可以在PC上直接浏览db,,不需要每次pull出来文件.
 //    debugImplementation ("com.amitshekhar.android:debug-db:1.0.6")
 }

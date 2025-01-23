@@ -135,8 +135,12 @@ class RecorderMediaRecorder(
         listener.onMessage("File: $mFilePath")
         mediaProjection.unregisterCallback(mMpCallback)
         mediaProjection.stop()
-        mMediaRecorder.stop()
-        log("stop MediaProjection. stop media recorder!")
+        try {
+            mMediaRecorder.stop()
+            log("stop MediaProjection. stop media recorder!")
+        } catch (e: Exception) {
+            log("stop MediaRecorder Fail!$e")
+        }
         return true
     }
 

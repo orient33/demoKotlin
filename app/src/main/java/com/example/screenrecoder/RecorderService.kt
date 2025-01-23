@@ -9,6 +9,7 @@ import android.media.projection.MediaProjectionManager
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.kotlindemo.MainActivity
@@ -89,6 +90,7 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
 
     override fun onBind(intent: Intent): IBinder? {
         onRebind(intent)
+        showNotification()
         return binder
     }
 
@@ -119,12 +121,17 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
 
     fun startRecording(codec: Boolean, resultCode: Int, data: Intent): Boolean {
         val pm = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-        val mp = pm.getMediaProjection(resultCode, data)
-        mRecorder = if (codec) RecorderMediaCodec(this, mp, this)
-        else RecorderMediaRecorder(this, mp, this)
-        val success = mRecorder!!.startVideo()
+        try {
+
+            val mp = pm.getMediaProjection(resultCode, data)
+            mRecorder = if (codec) RecorderMediaCodec(this, mp, this)
+            else RecorderMediaRecorder(this, mp, this)
+        } catch (e: Exception) {
+            Toast.makeText(this, "fail " + e, Toast.LENGTH_LONG).show()
+        }
+        val success = mRecorder?.startVideo() ?: false
         setState(success)
-        updateMessage("${mRecorder!!.name()} ${if (success) "recording" else "init fail"} ,")
+        updateMessage("${mRecorder?.name()} ${if (success) "recording" else "init fail"} ,")
         return success
     }
 

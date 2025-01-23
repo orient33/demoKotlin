@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.WorkerThread
 import com.example.formatTimeNow
 import com.example.isMainThread
+import com.example.log
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.ByteBuffer
@@ -140,7 +141,11 @@ class RecorderMediaCodec(
             fileChannel = FileOutputStream(destFile).channel
             filePath = destFile.path
         }
-        fileChannel!!.write(data)
+        try {
+            fileChannel!!.write(data)
+        } catch (e: Exception) {
+            log("write fail. $e")
+        }
     }
 
     //implement MediaCodec.Callback.

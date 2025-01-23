@@ -40,6 +40,7 @@ class CircleImageView extends androidx.appcompat.widget.AppCompatImageView {
         final int shadowYOffset = (int) (density * Y_OFFSET);
         final int shadowXOffset = (int) (density * X_OFFSET);
 
+        setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         mShadowRadius = (int) (density * SHADOW_RADIUS);
 
         ShapeDrawable circle;
