@@ -2,12 +2,11 @@ package com.example.pip
 
 import android.net.Uri
 import android.view.SurfaceView
-import com.example.App
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
 import com.example.Injector
 import com.example.log
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
 import java.io.File
 
 interface IPlayer {
@@ -21,12 +20,10 @@ interface IPlayer {
 }
 
 class EPlayerImpl() : IPlayer, Player.Listener {
-    var surfaceView: SurfaceView? = null
-    var ePlayer: ExoPlayer? = null
+    private var surfaceView: SurfaceView? = null
+    private var player: ExoPlayer = ExoPlayer.Builder(Injector.sContext).build()
     override fun createPlayer(): IPlayer {
-        val player = ExoPlayer.Builder(Injector.sContext).build()
         player.addListener(this)
-        ePlayer = player
         log("build player $player")
         return this
     }
@@ -48,7 +45,6 @@ class EPlayerImpl() : IPlayer, Player.Listener {
                     Uri.parse(path)
                 }
             }
-        val player = ePlayer ?: return
         val mediaItem = MediaItem.fromUri(uri)
         player.setMediaItem(mediaItem)
         player.setVideoSurfaceView(surfaceView)
@@ -61,9 +57,9 @@ class EPlayerImpl() : IPlayer, Player.Listener {
     }
 
     override fun release() {
-        log("release $ePlayer")
-        ePlayer?.removeListener(this)
-        ePlayer?.release()
+        log("release $player")
+        player.removeListener(this)
+        player.release()
     }
 
 }

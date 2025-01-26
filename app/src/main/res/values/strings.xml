@@ -19,6 +19,27 @@
         <item>MediaCodec</item>
         <item>MediaRecorder</item>
     </array>
+    <string-array name="width_height" translatable="false">
+        <item>屏幕宽高</item>
+        <item>1080*2400</item>
+        <item>720*1280</item>
+        <item>480*800</item>
+    </string-array>
+
+    <string-array name="rate" translatable="false">
+        <item>24</item>
+        <item>30</item>
+        <item>48</item>
+        <item>60</item>
+    </string-array>
+
+    <string-array name="bit_rate" translatable="false">
+        <item>2</item>
+        <item>6</item>
+        <item>15</item>
+        <item>24</item>
+        <item>30</item>
+    </string-array>
 
     <!-- AppListFragment -->
     <string name="final_color">最终匹配颜色</string>

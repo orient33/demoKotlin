@@ -211,7 +211,7 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener,
                 log("already has permission : $permission")
             }
         }
-        vm.loadVideo()
+        vm.loadVideo(act.application)
     }
 
 

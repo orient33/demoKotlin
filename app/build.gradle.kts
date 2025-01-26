@@ -63,7 +63,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
 //    kapt("androidx.lifecycle:lifecycle-compiler:2.2.0")
     // alternately - if using Java8, use the following instead of compiler
-    val lifecycleVer = "2.8.6"
+    val lifecycleVer = "2.8.7"
     implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycleVer")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVer")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVer")
@@ -88,7 +88,10 @@ dependencies {
     api("com.squareup.retrofit2:converter-gson:2.9.0")
     api("com.squareup.okhttp3:okhttp:4.10.0")
     api("com.squareup.okhttp3:logging-interceptor:4.10.0")
-    api("com.google.android.exoplayer:exoplayer-core:2.19.1")
+//    api("com.google.android.exoplayer:exoplayer-core:2.19.1")
+    implementation("androidx.media3:media3-exoplayer:1.4.0")
+    implementation("androidx.media3:media3-ui:1.4.0")
+//    implementation("androidx.media3:media3-exoplayer-dash:1.X.X")
 
     implementation("com.airbnb.android:lottie:5.0.3") //support包用2.7.0
     //方便调试,查看数据库的.可以在PC上直接浏览db,,不需要每次pull出来文件.

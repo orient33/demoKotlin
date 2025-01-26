@@ -1,6 +1,5 @@
 package com.example.screenrecoder
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.ImageFormat
@@ -8,7 +7,6 @@ import android.hardware.display.DisplayManager
 import android.media.ImageReader
 import android.media.MediaRecorder
 import android.media.projection.MediaProjection
-import android.os.Environment
 import com.example.formatTime
 import com.example.formatTimeNow
 import com.example.log
@@ -20,7 +18,6 @@ import java.io.FileOutputStream
  * 参考android CTS  : AOSP/cts/tests/tests/media/src/android/media/cts/EncoderXX.java
  * https://developer.android.google.cn/reference/android/media/MediaCodec
  */
-@TargetApi(21)
 class RecorderMediaRecorder(
     private val context: Context,
     private val mediaProjection: MediaProjection,
@@ -36,12 +33,16 @@ class RecorderMediaRecorder(
     }
 
     //可配置 分辨率,画质(比特率),帧数,
-    override fun startVideo(): Boolean {
+    override fun startVideo(config: RecordConfig): Boolean {
         val dm = context.resources.displayMetrics
         val width = dm.widthPixels
         val height = dm.heightPixels
         try {
-            configMediaRecorder(width, height)
+            configMediaRecorder(
+                if (config.size.first > 0) config.size.first else width,
+                if (config.size.second > 0) config.size.second else height,
+                config
+            )
         } catch (e: Exception) {
             listener.onMessage("prepare. fail $e")
             return false
@@ -59,7 +60,7 @@ class RecorderMediaRecorder(
         return true
     }
 
-    private fun configMediaRecorder(w: Int, h: Int) {
+    private fun configMediaRecorder(w: Int, h: Int, config: RecordConfig) {
         //注意Android Q上的sdcard权限.
         val dir = context.getExternalFilesDir(null)//Environment.DIRECTORY_MOVIES)
         //Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)
@@ -75,11 +76,11 @@ class RecorderMediaRecorder(
         mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264)
 
         mMediaRecorder.setVideoSize(w, h)
-        mMediaRecorder.setVideoFrameRate(30)
+        mMediaRecorder.setVideoFrameRate(config.rate)
 
 //        mMediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_1080P))
         mMediaRecorder.setOutputFile(path)
-        mMediaRecorder.setVideoEncodingBitRate(6 * 1000 * 1000)//这个决定清晰度!!
+        mMediaRecorder.setVideoEncodingBitRate(config.bitRate * 1000 * 1000)//这个决定清晰度!!
 //            int rotation = getWindowManager().getDefaultDisplay().getRotation();
 //            int orientation = ORIENTATIONS.get(rotation + 90);
 //            mMediaRecorder.setOrientationHint(orientation);
@@ -90,7 +91,7 @@ class RecorderMediaRecorder(
                 val fixH = (16f / 9 * w).toInt()
                 listener.onMessage("$w x $h prepare fail. use $w x $fixH")
                 mMediaRecorder.reset()
-                configMediaRecorder(w, fixH)
+                configMediaRecorder(w, fixH, config)
             }
         }
     }

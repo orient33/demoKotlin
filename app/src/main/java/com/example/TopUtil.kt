@@ -79,7 +79,7 @@ fun isMainThread(): Boolean {
 
 fun formatTimeNow() = formatTime(System.currentTimeMillis())
 fun formatTime(time: Long): String {
-    val yy = "yyyy-MM-dd HH:mm:ss"
+    val yy = "yyyy-MM-dd-HH-mm-ss"
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val ldt = LocalDateTime.now()//(LocalTime.now())
         val dtf = DateTimeFormatter.ofPattern(yy)

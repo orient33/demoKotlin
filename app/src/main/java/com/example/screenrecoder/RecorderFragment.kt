@@ -1,18 +1,14 @@
 package com.example.screenrecoder
 
 import android.Manifest
-import android.annotation.TargetApi
-import android.app.Activity.RESULT_OK
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.media.projection.MediaProjectionManager
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,10 +16,17 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.example.StatusBarTool
 import com.example.kotlindemo.R
 import com.example.kotlindemo.databinding.FragmentRecorderBinding
 
+/**
+ * 录屏demo
+ * 1 录屏先需要 audio 权限
+ * 2 需要screen capture 经由用户确认 dialog选择全屏幕or单一应用
+ * 3 最后 开始录屏 MediaCodec 或者 Recorder 见service里
+ */
 class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
 
     private val mServiceConnection = object : ServiceConnection {
@@ -48,7 +51,7 @@ class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
         super.onAttach(context)
         permissionLunch =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-                onPermission(it)
+                onAudioPermission(it)
             }
         mpLunch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             onPermissionScreenCapture(it)
@@ -102,12 +105,12 @@ class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
         }
     }
 
-    private fun onPermission(result: Map<String, Boolean>) {
+    private fun onAudioPermission(result: Map<String, Boolean>) {
         var success = true
         result.forEach { (t, u) ->
             success = u && success
         }
-        if (success) intentStartRecorder()
+        if (success) launchScreenCapture()
     }
 
     private fun startRecorder() {
@@ -119,7 +122,7 @@ class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
             Manifest.permission.RECORD_AUDIO
         ) == PackageManager.PERMISSION_GRANTED
         if (has) {
-            intentStartRecorder()
+            launchScreenCapture()
         } else {
             p.launch(
                 arrayOf(
@@ -130,20 +133,27 @@ class RecorderFragment : Fragment(), View.OnClickListener, IRecorderCallback {
         }
     }
 
-    private fun intentStartRecorder() {
+    private fun launchScreenCapture() {
         val pm =
             context?.getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
         val intent = pm.createScreenCaptureIntent()
         // 申请录屏 将会拉起systemui相关dialog 等用户确认(选择单app 还是 整个屏幕)
         mpLunch?.launch(intent)
-//        startActivityForResult(intent, RECORD_REQUEST_CODE)
     }
 
     private fun onPermissionScreenCapture(ar: ActivityResult) {
         mService?.startRecording(
             binding.spinner.selectedItemPosition == 0,
             ar.resultCode,
-            ar.data!!
+            ar.data!!,
+            getConfig(),
         )
+    }
+
+    private fun getConfig(): RecordConfig {
+        val s = binding.size.selectedItem
+        val r = binding.rate.selectedItem
+        val br = binding.rate.selectedItem
+        return generateConfig(s, r, br)
     }
 }

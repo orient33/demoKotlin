@@ -29,7 +29,6 @@ import java.nio.channels.FileChannel
  */
 const val TAG = "RecorderMediaCodec"
 
-@RequiresApi(21)
 class RecorderMediaCodec(
     private val context: Context,
     private val mediaProjection: MediaProjection,
@@ -39,22 +38,17 @@ class RecorderMediaCodec(
     private var mEncoder: MediaCodec? = null
     private lateinit var mHandler: Handler
     private var mDoing = false
-    override fun startVideo(): Boolean {
+    override fun startVideo(config: RecordConfig): Boolean {
         if (mDoing) return false
         val dm = context.resources.displayMetrics
-        val r = findEncoderParam(dm) ?: return false
+        val r = findEncoderParam(dm, config) ?: return false
         val width = ENCODER_PARAM_TABLE[r.first][1]
         val height = ENCODER_PARAM_TABLE[r.first][0]
         val encoder = MediaCodec.createByCodecName(r.second)
-        if (Build.VERSION.SDK_INT >= 23) {
-            val ht = HandlerThread("encoder.callback")
-            ht.start()
-            mHandler = Handler(ht.looper)
-            encoder.setCallback(this, mHandler)
-        } else {
-            mHandler = Handler()
-            encoder.setCallback(this)//, Handler(ht.looper)) :TODO api 21/22的线程问题.
-        }
+        val ht = HandlerThread("encoder.callback")
+        ht.start()
+        mHandler = Handler(ht.looper)
+        encoder.setCallback(this, mHandler)
         try {
             encoder.configure(
                 mFormat!!,
@@ -78,7 +72,7 @@ class RecorderMediaCodec(
         return true
     }
 
-    override fun stop():Boolean {
+    override fun stop(): Boolean {
         if (!mDoing) return false
         mDoing = false
         mHandler.post {
@@ -98,8 +92,13 @@ class RecorderMediaCodec(
         return "MediaCodec"
     }
 
-    private fun findEncoderParam(dm: DisplayMetrics): Pair<Int, String>? {
-        ENCODER_PARAM_TABLE[0] = intArrayOf(dm.heightPixels, dm.widthPixels, 14000000, 25)
+    private fun findEncoderParam(dm: DisplayMetrics, c: RecordConfig): Pair<Int, String>? {
+        ENCODER_PARAM_TABLE[0] = intArrayOf(
+            if (c.size.second > 0) c.size.second else dm.heightPixels,
+            if (c.size.first > 0) c.size.first else dm.widthPixels,
+            c.bitRate * 1000000,
+            c.rate,
+        )
         for (i in ENCODER_PARAM_TABLE.indices) {
             // Check if we can support it?
             val mcl = MediaCodecList(MediaCodecList.REGULAR_CODECS)
@@ -116,10 +115,10 @@ class RecorderMediaCodec(
             mFormat!!.setInteger(MediaFormat.KEY_FRAME_RATE, ENCODER_PARAM_TABLE[i][3])
             val name = mcl.findEncoderForFormat(mFormat)
             if (name != null) {
-                Log.d(TAG, "$i , encoder parameters : $mFormat")
+                listener.onMessage("use support: $mFormat")
                 return Pair(i, name)
             } else {
-                listener.onMessage("not support $mFormat")
+                Log.d(TAG, "$i ,not support. encoder parameters : $mFormat")
             }
         }
         return null

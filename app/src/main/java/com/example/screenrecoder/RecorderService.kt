@@ -22,7 +22,7 @@ const val n_channel = "d"
  * 参考下面的, 使得Service在bindService时,无需notification,,unbind后,若在录屏才开始startForeground.
  * 而且 无需 context.startForegroundService()
  * https://github.com/android/location-samples/blob/master/LocationUpdatesForegroundService
-*/
+ */
 class RecorderService : Service(), IRecorder.IMessageInfo {
     private val EXTRA_FROM = "from.notification"
     lateinit var mNotification: Notification
@@ -32,14 +32,17 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
     override fun onCreate() {
         super.onCreate()
         val start = PendingIntent.getActivity(
-            this, 1, Intent(this, MainActivity::class.java)
-            , PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            this,
+            1,
+            Intent(this, MainActivity::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        val stop = PendingIntent.getService(this, 1,
+        val stop = PendingIntent.getService(
+            this, 1,
             Intent(this, RecorderService::class.java).apply {
                 putExtra(EXTRA_FROM, true)
-            }
-            , PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            }, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
         mNotification = NotificationCompat.Builder(this, n_channel)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setChannelId(n_channel)
@@ -88,7 +91,7 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
         return START_NOT_STICKY
     }
 
-    override fun onBind(intent: Intent): IBinder? {
+    override fun onBind(intent: Intent): IBinder {
         onRebind(intent)
         showNotification()
         return binder
@@ -96,7 +99,7 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
 
     override fun onRebind(intent: Intent?) {
         mConfigChanged = false
-        stopForeground(true)
+        stopForeground(STOP_FOREGROUND_REMOVE)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -119,7 +122,7 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
         updateMessage(msg)
     }
 
-    fun startRecording(codec: Boolean, resultCode: Int, data: Intent): Boolean {
+    fun startRecording(codec: Boolean, resultCode: Int, data: Intent, c: RecordConfig): Boolean {
         val pm = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
         try {
 
@@ -127,11 +130,11 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
             mRecorder = if (codec) RecorderMediaCodec(this, mp, this)
             else RecorderMediaRecorder(this, mp, this)
         } catch (e: Exception) {
-            Toast.makeText(this, "fail " + e, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "fail $e", Toast.LENGTH_LONG).show()
         }
-        val success = mRecorder?.startVideo() ?: false
+        val success = mRecorder?.startVideo(c) ?: false
         setState(success)
-        updateMessage("${mRecorder?.name()} ${if (success) "recording" else "init fail"} ,")
+        updateMessage("${mRecorder?.name()} ${if (success) "recording : $c" else "init fail"} ,")
         return success
     }
 

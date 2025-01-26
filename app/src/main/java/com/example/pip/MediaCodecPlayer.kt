@@ -23,7 +23,11 @@ class MediaCodecPlayer(val view: SurfaceView) : DefaultLifecycleObserver, Handle
 
     fun play(uri: String) {
         logg("setDataSource. $uri")
-        extractor.setDataSource(uri)
+        try {
+            extractor.setDataSource(uri)
+        } catch (e: Exception) {
+            logg("setDataSource. fail $e")
+        }
 //        var videoIndex = -1
         var videoFormat: MediaFormat? = null
 //        var audioIndex = -1

@@ -4,28 +4,23 @@ import android.content.Context
 import android.view.TextureView
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
 
-//ExoPlayer
+//Media3. androidx
 class MyPlayer(context: Context) : DefaultLifecycleObserver {
-    private val player: SimpleExoPlayer = SimpleExoPlayer.Builder(context)
+    private val player  = ExoPlayer.Builder(context)
         .setAudioAttributes(AudioAttributes.Builder().build(), true)
         .build()
-    private val source = DefaultDataSourceFactory(context)
 
     private var mUrl: String? = null
 
     fun setUrl(url: String, surface: TextureView) {
         mUrl = url
         player.setVideoTextureView(surface)
-        player.setMediaSource(
-            ProgressiveMediaSource.Factory(source)
-                .createMediaSource(MediaItem.fromUri(url))
-        )
+        val mi = MediaItem.fromUri(url)
+        player.setMediaItem(mi)
         player.playWhenReady = true
         player.prepare()
     }

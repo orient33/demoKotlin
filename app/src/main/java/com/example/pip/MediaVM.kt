@@ -2,7 +2,7 @@ package com.example.pip
 
 import android.app.Application
 import android.content.ContentResolver
-import android.database.Cursor
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
 import android.provider.BaseColumns
@@ -23,17 +23,27 @@ class MediaVM(val app: Application) : AndroidViewModel(app) {
 
     fun getMediaData(): LiveData<List<PiPFragment.VideoInfo>> = videoData
 
-    fun loadVideo() {
+    fun loadVideo(ctx: Context) {
         val old = videoData.value
         if (old == null || old.isEmpty()) {
             viewModelScope.launch(Dispatchers.IO) {
                 val all = loadVideoInternal()
+                loadAppVideo(ctx, all)
                 videoData.postValue(all)
             }
         }
     }
 
-    private fun loadVideoInternal(): List<PiPFragment.VideoInfo> {
+    private fun loadAppVideo(ctx: Context, list: MutableList<PiPFragment.VideoInfo>) {
+        val d = ctx.getExternalFilesDir(null) ?: return
+        d.listFiles { _, name ->
+            name != null && name.endsWith(".mp4")
+        }?.forEach {
+            list.add(PiPFragment.VideoInfo(-1, it.path, null, it.name))
+        }
+    }
+
+    private fun loadVideoInternal(): MutableList<PiPFragment.VideoInfo> {
         val cr = app.contentResolver
         val result: MutableList<PiPFragment.VideoInfo> = mutableListOf()
         cr.query(
@@ -58,10 +68,20 @@ class MediaVM(val app: Application) : AndroidViewModel(app) {
                     id = cursor.getLong(idIndex)
                     path = cursor.getString(pathIndex)
                     title = cursor.getString(titleIndex)
-                    val img = if (atLeast(30)) cr.loadThumbnail(
-                        MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL, id),
-                        Size(100, 100), null
-                    ) else null
+                    val img = if (atLeast(30)) {
+                        try {
+                            cr.loadThumbnail(
+                                MediaStore.Video.Media.getContentUri(
+                                    MediaStore.VOLUME_EXTERNAL,
+                                    id
+                                ),
+                                Size(100, 100), null
+                            )
+                        } catch (e: Exception) {
+                            Log.w("df", "load thumb fail . $e")
+                            null
+                        }
+                    } else null
                     val dn = cursor.getString(displayNameIndex)
 //                    if (title.isNullOrEmpty()) title = dn
                     Log.i("df", "loadVideo: $id,$title,$dn")
