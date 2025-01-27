@@ -3,18 +3,17 @@ package com.example.kotlindemo
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
-import android.window.SplashScreen
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.window.layout.WindowMetricsCalculator
 import com.example.BaseActivity
 import com.example.displayCut
-import com.example.log
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
+import java.util.SimpleTimeZone
 
 //import org.jetbrains.anko.toast
 

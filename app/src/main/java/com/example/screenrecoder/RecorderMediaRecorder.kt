@@ -64,7 +64,7 @@ class RecorderMediaRecorder(
         //注意Android Q上的sdcard权限.
         val dir = context.getExternalFilesDir(null)//Environment.DIRECTORY_MOVIES)
         //Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)
-        val path = dir!!.path + File.separator + "video-${formatTimeNow()}.mp4"
+        val path = dir!!.path + File.separator + "V.Recorder-${formatTimeNow()}.mp4"
         mFilePath = path
         log("config. video save path $path")
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER)

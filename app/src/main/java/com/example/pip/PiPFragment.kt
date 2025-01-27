@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PictureInPictureParams
 import android.content.ContentResolver
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -29,6 +30,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.StatusBarTool
 import com.example.atLeast
+import com.example.kotlindemo.IActivity
 import com.example.kotlindemo.R
 import com.example.kotlindemo.databinding.FragmentPipBinding
 import com.example.log
@@ -158,15 +160,13 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener,
         val tag = view?.tag as VideoInfo
         val p = player
         if (p != null) {
-//            val pf = PlayerFragment.newInstance(tag.path)
-//            val ma = requireActivity() as MainActivity
-//            ma.toFragment(pf)
             p.play(tag.path)
             return
         }
-        binding.videoView.setVideoURI(Uri.fromFile(File(tag.path)))
-        binding.videoView.visibility = View.VISIBLE
-        binding.videoView.start()
+        enterPip()
+//        binding.videoView.setVideoURI(Uri.fromFile(File(tag.path)))
+//        binding.videoView.visibility = View.VISIBLE
+//        binding.videoView.start()
     }
 
     override fun onItemLongClick(
@@ -176,8 +176,8 @@ class PiPFragment : Fragment(), AdapterView.OnItemClickListener,
         id: Long
     ): Boolean {
         binding.surfaceView.visibility = View.VISIBLE
-        onItemClick(parent, view, position, id)
-        enterPip()
+        val tag = view?.tag as VideoInfo
+        (requireActivity() as IActivity).toFragment(PlayerFragment.newInstance(tag.path))
         return true
     }
 

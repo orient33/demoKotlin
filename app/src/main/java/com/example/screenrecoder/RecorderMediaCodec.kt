@@ -136,7 +136,7 @@ class RecorderMediaCodec(
         }
         if (fileChannel == null) {
             val destFile =
-                File(context.getExternalFilesDir(null), "ScreenRecorder-${formatTimeNow()}.mp4")
+                File(context.getExternalFilesDir(null), "MediaCodec-${formatTimeNow()}.mp4")
             fileChannel = FileOutputStream(destFile).channel
             filePath = destFile.path
         }
@@ -159,7 +159,11 @@ class RecorderMediaCodec(
         if (buffer != null) {
             appendBuffer(buffer)
         }
-        codec.releaseOutputBuffer(index, false)
+        try {
+            codec.releaseOutputBuffer(index, false)
+        } catch (e:Exception) {
+            Log.w(TAG, "onOutputBufferAvailable. $e")
+        }
     }
 
     override fun onInputBufferAvailable(codec: MediaCodec, index: Int) {

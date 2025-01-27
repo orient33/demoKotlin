@@ -35,12 +35,6 @@ class EPlayerImpl() : IPlayer, Player.Listener {
                 path.startsWith("/") -> {
                     Uri.fromFile(File(path))
                 }
-//            path.startsWith("content://") -> {
-//                Uri.parse(path)
-//            }
-//            path.startsWith("file://") -> {
-//                Uri.parse(path)
-//            }
                 else -> {
                     Uri.parse(path)
                 }
