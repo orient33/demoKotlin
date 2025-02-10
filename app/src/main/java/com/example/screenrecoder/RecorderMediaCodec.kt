@@ -38,6 +38,12 @@ class RecorderMediaCodec(
     private var mEncoder: MediaCodec? = null
     private lateinit var mHandler: Handler
     private var mDoing = false
+    private val mMediaProjectionCallback = object : MediaProjection.Callback() {
+        override fun onStop() {
+            log("RecorderMediaCodec. MediaProjection.Callback.onStop()!!")
+            stopEncoder()
+        }
+    }
     override fun startVideo(config: RecordConfig): Boolean {
         if (mDoing) return false
         val dm = context.resources.displayMetrics
@@ -57,6 +63,7 @@ class RecorderMediaCodec(
                 MediaCodec.CONFIGURE_FLAG_ENCODE
             )
             val outputSurface = encoder.createInputSurface()
+            mediaProjection.registerCallback(mMediaProjectionCallback, null)
             mediaProjection.createVirtualDisplay(
                 "encoder.2", width, height, dm.densityDpi,
                 DisplayManager.VIRTUAL_DISPLAY_FLAG_OWN_CONTENT_ONLY or DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC,
@@ -78,10 +85,15 @@ class RecorderMediaCodec(
         mHandler.post {
             appendBuffer(null)
         }
+        stopEncoder()
+        mediaProjection.unregisterCallback(mMediaProjectionCallback)
+        mediaProjection.stop()
+        return true
+    }
+    private fun stopEncoder(){
         listener.onMessage("File: $filePath")
         mEncoder?.stop()
         mEncoder?.release()
-        return true
     }
 
     override fun startImage() {
