@@ -41,7 +41,8 @@ class RecorderMediaCodec(
     private val mMediaProjectionCallback = object : MediaProjection.Callback() {
         override fun onStop() {
             log("RecorderMediaCodec. MediaProjection.Callback.onStop()!!")
-            stopEncoder()
+//            stopEncoder()
+            listener.stopBySystem()
         }
     }
     override fun startVideo(config: RecordConfig): Boolean {

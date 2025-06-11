@@ -29,6 +29,7 @@ class RecorderMediaRecorder(
     private val mMpCallback = object : MediaProjection.Callback() {
         override fun onStop() {
             log("MediaProjection.Callback.onStop()!!")
+            listener.stopBySystem()
         }
     }
 

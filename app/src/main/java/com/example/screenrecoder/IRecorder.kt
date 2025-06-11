@@ -9,6 +9,7 @@ interface IRecorder {
     fun startImage()
     interface IMessageInfo {
         fun onMessage(msg: String)
+        fun stopBySystem()
     }
 }
 

@@ -27,6 +27,7 @@ object MyTest {
 
     val mainScope = CoroutineScope(Dispatchers.Default)
 //    val ioScope = CoroutineScope(Dispatchers.IO)
+    //java/jvm/ 中没有 Main
 
     val sf = flow {
         for (i in 1..3) {
@@ -233,6 +234,8 @@ object MyTest {
     }
 
     fun mylog(msg: String) {
-        println(LocalDateTime.now().toString() + ":" + msg)
+        println(LocalDateTime.now().toString()+", thread: " + Thread.currentThread()+
+         ", tid: "+ Thread.currentThread().id +
+                " : " + msg)
     }
 }

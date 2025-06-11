@@ -4,20 +4,23 @@
 plugins {
     id("java-library")
     id("kotlin")
+    id("com.google.devtools.ksp")
 }
 
 dependencies {
 //    implementation(fileTree(dir: "libs", include: ["*.jar"])
-//    implementation("io.reactivex.rxjava2:rxjava:2.2.20")
+    implementation("io.reactivex.rxjava2:rxjava:2.2.20")
     implementation("com.google.code.gson:gson:2.10.1")
 //    implementation("org.simpleframework:simple-xml:2.7.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$1.8.20")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("com.google.dagger:dagger:2.56.2")
+    ksp("com.google.dagger:dagger-compiler:2.56.2")
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 //sourceCompatibility = "8"
 //targetCompatibility = "8"

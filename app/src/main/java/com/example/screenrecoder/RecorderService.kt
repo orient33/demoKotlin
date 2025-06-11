@@ -118,6 +118,10 @@ class RecorderService : Service(), IRecorder.IMessageInfo {
         super.onDestroy()
     }
 
+    override fun stopBySystem() {
+        stopRecording()
+    }
+
     override fun onMessage(msg: String) {
         updateMessage(msg)
     }

@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -9,6 +10,7 @@ android {
     compileSdk = 34
     defaultConfig {
         applicationId = "com.example.kotlindemo"
+        //applicationId = "com.test.sdk1_1"
         minSdk = 26
         targetSdk = 33
         versionCode = 1
@@ -58,7 +60,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.room:room-runtime:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
     // ViewModel and LiveData
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
 //    kapt("androidx.lifecycle:lifecycle-compiler:2.2.0")
