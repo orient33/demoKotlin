@@ -6,11 +6,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.*
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import android.util.Log
@@ -104,14 +102,12 @@ class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
             binding.locationInfo.append("$it , ")
         }
         val it = if (gps) "gps" else lm.getBestProvider(cr, true)
-        log("provider : $it")
-        binding.locationInfo.append("\n ------ provider: $it ---------\n")
+        log("request provider : $it")
+        binding.locationInfo.append("\n -----request provider: $it ---------\n")
         val location = lm.getLastKnownLocation(it!!)
         binding.locationInfo.append("最后位置: ${location2String(location)}\n")
         lm.requestSingleUpdate(it, /*8000L, 1000f,*/ ll, Looper.getMainLooper())
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            lm.registerGnssNavigationMessageCallback(gnssCb, Handler())
-        }
+        lm.registerGnssNavigationMessageCallback(gnssCb, Handler(Looper.getMainLooper()))
     }
 
     private val ll = object : LocationListener {
@@ -134,7 +130,6 @@ class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private val gnssCb = object : GnssNavigationMessage.Callback() {
 
         override fun onStatusChanged(status: Int) {
@@ -168,8 +163,6 @@ class LocationFragment : Fragment(), OnClickListener, View.OnLongClickListener {
     override fun onStop() {
         super.onStop()
         lm.removeUpdates(ll)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            lm.unregisterGnssNavigationMessageCallback(gnssCb)
-        }
+        lm.unregisterGnssNavigationMessageCallback(gnssCb)
     }
 }

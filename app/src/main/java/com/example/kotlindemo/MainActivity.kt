@@ -1,10 +1,11 @@
 package com.example.kotlindemo
 
-import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.window.layout.WindowMetricsCalculator
@@ -22,20 +23,23 @@ private const val fragmentId = android.R.id.content
 class MainActivity : BaseActivity(), IActivity {
 
     lateinit var fm: FragmentManager
-    var config: Configuration? = null
+    lateinit var containerView: View
+    lateinit var config: Configuration
+    lateinit var wic: WindowInsetsControllerCompat
     var large: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         val splachScreen = installSplashScreen()
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        updateOrient()
+        config = resources.configuration
         displayCut(this)
         fm = supportFragmentManager
+        containerView = findViewById<View>(fragmentId)
+        wic = WindowInsetsControllerCompat(window, containerView)
         if (savedInstanceState == null) {
             fm.beginTransaction().replace(fragmentId, HomeFragment()).commit()
         }
         log("onCreate.resource is $resources, $this")
-        config = resources.configuration
 //        val pi = packageManager.getPackageInfo(packageName, 0)
 //        val ai = packageManager.getApplicationInfo(packageName, 0)
 //        textView.text = getString(R.string.version_info, pi.versionName, pi.versionCode, ai.targetSdkVersion)
@@ -61,6 +65,7 @@ class MainActivity : BaseActivity(), IActivity {
 //        with(p) {
 //            log("age is $age , name is $name, height is $gao")
 //        }
+        updateOrient()
 
         val current = Date(System.currentTimeMillis())
         val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK)
@@ -76,10 +81,9 @@ class MainActivity : BaseActivity(), IActivity {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        log("onConfig change $newConfig , \ndiff ${newConfig.diff(config)}")
-        config = newConfig
+        val diff = config.updateFrom( newConfig)
         updateOrient()
-        log("onConfig. update orientation $requestedOrientation")
+        log("onConfig Change. diff =  orientation 0x${Integer.toHexString(diff)}")
     }
 
     fun updateOrient() {
@@ -87,7 +91,9 @@ class MainActivity : BaseActivity(), IActivity {
         val bounds = wmc.computeCurrentWindowMetrics(this).bounds
         val ratio = 1f * bounds.height() / bounds.width()
         large = ratio < 2f && ratio > 0.5f
-        log("update orient. ratio=$ratio, large =$large")
+        log("update orient. ratio=$ratio, large =$large,  set light status bar: ${config.orientation}")
+        wic.isAppearanceLightStatusBars =
+            config.orientation != Configuration.ORIENTATION_LANDSCAPE
     }
 
     override fun toFragment(fragmentName: String) {
