@@ -88,8 +88,6 @@ class MainActivity : BaseActivity(), IActivity {
         val ratio = 1f * bounds.height() / bounds.width()
         large = ratio < 2f && ratio > 0.5f
         log("update orient. ratio=$ratio, large =$large")
-        requestedOrientation = if (large) ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-        else ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
     override fun toFragment(fragmentName: String) {
